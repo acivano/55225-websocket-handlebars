@@ -1,0 +1,23 @@
+[
+  {
+    "id": 1,
+    "code": "ABCD1234",
+    "title": "Palta",
+    "description": "Descript Palta",
+    "price": "10.23",
+    "thumbnail": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQncB5AsRLoP9FNT6PnSEU8insn2I6XSWl_0ry2OBa67_lLmyiKdrOghUMX8AfVZz5EN28&usqp=CAU",
+    "stock": 12,
+    "category": "Fruta/verdura"
+  },
+  {
+    "id": 5,
+    "code": "ABCD1235",
+    "title": "SmartWatch",
+    "description": "Descript SmartWatch",
+    "price": "9999",
+    "thumbnail": "https://www.fitbit.com/global/content/dam/fitbit/global/marketing-pages/quiz/desktop/fall2022-quiz-pathing-module-trackers.jpg",
+    "stock": 12,
+    "status": true,
+    "category": "Tecnología"
+  }
+]

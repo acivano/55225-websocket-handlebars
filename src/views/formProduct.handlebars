@@ -1,0 +1,54 @@
+ <main class="">
+        <section class="container  align-content-center flex-lg-row justify-content-lg-between gap-5">
+            <form class="formClass needs-validation formMap">
+                <h1 class="container mb-3">Contactanos</h1>
+                <div class="formClass__fila">
+                    <div class="row g-2">
+                        <div class="col-md">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control focusColor" id="Code" placeholder="Code" required>
+                                <label for="Code">Code</label>
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control focusColor" id="Title" placeholder="Title" required>
+                                <label for="Title">Title</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row g-2">
+                        <div class="col-md">
+                            <div class="form-floating mb-3">
+                                <input type="number" step="0.01" class="form-control focusColor" id="Price" placeholder="Price" required>
+                                <label for="Price">Price</label>
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <div class="form-floating mb-3">
+                                <input type="number" class="form-control focusColor" id="Stock" placeholder="Stock" required>
+                                <label for="Stock">Stock</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="url" class="form-control focusColor" id="Thumbnail" placeholder="Thumbnail" required>
+                        <label for="Thumbnail">Thumbnail</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="text" class="form-control focusColor" id="Category" placeholder="Category" required>
+                        <label for="Category">Category</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <textarea class="form-control focusColor" placeholder="Description" id="Description" style="height: 250px"></textarea>
+                        <label for="Description">Description</label>
+                    </div>
+                    <div class="formClass__fila">
+                        <div class="col-12">
+                            <button class="btn btn-primary botonPersonalizado mt-2" onclick="addProducto()">Enviar</button>
+                        </div>
+                    </div>
+                </div>
+            </form> 
+        </section>
+    </main> 
