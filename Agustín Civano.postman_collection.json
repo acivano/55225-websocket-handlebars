@@ -1,0 +1,213 @@
+{
+	"info": {
+		"_postman_id": "a257cc59-e834-45a2-8ec9-6ac7d97175dd",
+		"name": "Agustín Civano",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CarritobyId",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/carts/64cfb569717bf4105d2b8e7d",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"carts",
+						"64cfb569717bf4105d2b8e7d"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "postProductCarrito",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/carts/64cfe2f0d3f2e094c673a6a0/product/ABC3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"carts",
+						"64cfe2f0d3f2e094c673a6a0",
+						"product",
+						"ABC3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "newCart",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/carts/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"carts",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Products",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/products/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"products",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "ProductsById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/products/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"products",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "NuevoProduct",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\r\n        \"code\": \"ABC33424234323\",\r\n        \"title\": \"Producto 4\",\r\n        \"description\": \"Descript Producto 4\",\r\n        \"price\": 9999,\r\n        \"thumbnail\": \"https://google.com\",\r\n        \"stock\": 12,\r\n        \"category\":\"categoria 1\",\r\n        \"status\": false\r\n    }"
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/products",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"products"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "updateProduct",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \r\n    \"code\": \"ABC33422323\",\r\n    \"title\": \"Producto 4\",\r\n    \"description\": \"Descript Producto 4\",\r\n    \"price\": 9999,\r\n    \"thumbnail\": \"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSMKKU1yz-bRQFkLlTY704aGOGbz-F1C15STg&usqp=CAU\",\r\n    \"stock\": 12,\r\n    \"status\": false,\r\n    \"category\": \"categoria 1\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/products/64ce96dcce1fe0261931a6e6",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"products",
+						"64ce96dcce1fe0261931a6e6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/products/64ce918505665c887f2d134d",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"products",
+						"64ce918505665c887f2d134d"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
