@@ -1,7 +1,7 @@
 
 <main>
     <section  class="container seccionDonacion">
-        <div id="contenedorPadreHome" class="d-flex flex-column align-content-center justify-content-start gap-4 flex-lg-row flex-lg-wrap mt-5">
+        <div id="contenedorPadre" class="d-flex flex-column align-content-center justify-content-start gap-4 flex-lg-row flex-lg-wrap mt-5">
         {{#each products}}
             <div class="d-flex justify-content-center">
                 <div class="seccion_datos">
@@ -11,17 +11,13 @@
                         <div>
                             <p class="card-text text-center mt-1 altotexto">{{this.title}}</p>
                             <h3 class="montoDonacion text-center mt-1">${{this.price}}</h3>
-                            <form class="">
-                                <div class="form-floating mb-3">
-                                    <input type="number" class="form-control focusColor text-center cantidadMenu" id="cantidad${producto.id}" placeholder="Cantidad" value="1" min="1" max="10" required>
-                                    <label>Cantidad: </label>
-                                </div>
-                            </form>
                             <h6 id="idProducto" class="display-none">{{this.code}}</h6>
-                            <button  class="botonPersonalizado mt-1">Agregar</button>
+                            <button  class="botonPersonalizado mt-1" onclick="addProductoCarrito({{this._id}})">Agregar</button>
                         </div>
                 </div>
             </div>
         {{/each}}    
+        </div>
     </section>
 </main> 
+<script src="/socket.io/socket.io.js"></script>

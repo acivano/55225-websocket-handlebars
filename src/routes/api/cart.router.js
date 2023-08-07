@@ -1,16 +1,13 @@
 const { Router } = require('express')
-const CartManager = require('../../managers/CartManager')
-const ProductManager = require('../../managers/ProductManager')
-
 
 const router = Router()
-const cartManager = new CartManager('carrito.json')
-const productManager = new ProductManager('productos.json')
+const cartManager = require('../../dao/managers/cart.manager')
+const productManager = require('../../dao/managers/product.manager')
 
 router.post('/' , async(req, res)=>{
   
   const response = await cartManager.addCart()
-  res.status(200).json(response)
+  res.status(201).json(response)
 })
 
 

@@ -19,5 +19,27 @@
     "stock": 12,
     "status": true,
     "category": "Tecnología"
+  },
+  {
+    "id": 6,
+    "code": "t435",
+    "title": "543",
+    "description": "345",
+    "price": "435",
+    "thumbnail": "345",
+    "stock": "435",
+    "status": true,
+    "category": "345"
+  },
+  {
+    "id": 7,
+    "code": "435354",
+    "title": "43",
+    "description": "345",
+    "price": "43534",
+    "thumbnail": "345",
+    "stock": "435",
+    "status": true,
+    "category": "345"
   }
 ]

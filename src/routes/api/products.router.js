@@ -1,7 +1,5 @@
 const {Router} = require('express')
-const ProductManager = require('../../managers/ProductManager')
-
-const productManager = new ProductManager('productos.json')
+const productManager = require('../../dao/managers/product.manager')
 const router = Router()
 
 router.get('/', async(req, res)=>{
@@ -51,6 +49,7 @@ router.put('/:id', async(req, res)=>{
     const id = req.params.id
 
     const prd = await productManager.updateProduct(id, body)
+    console.log(prd)
     if(!prd){
         res.status(404).json({ error: `The product with the id ${id} was not found` });  
         return

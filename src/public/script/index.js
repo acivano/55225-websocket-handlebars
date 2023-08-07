@@ -2,11 +2,9 @@ console.log('se conectó')
 
 const socket = io()
 
-let nodopadre = document.getElementById("contenedorPadre")
-if(nodopadre){
-
-    socket.on('products', products => {
-
+socket.on('products', (products) => {
+    let nodopadre = document.getElementById("contenedorPadre")
+    if(nodopadre){
         nodopadre.innerHTML = ''
 
         if(products){
@@ -20,14 +18,9 @@ if(nodopadre){
                                     <div>
                                         <p class="card-text text-center mt-1 altotexto">${producto.title}</p>
                                         <h3 class="montoDonacion text-center mt-1">${redondeo(producto.price)}</h3>
-                                        <form class="">
-                                            <div class="form-floating mb-3">
-                                                <input type="number" class="form-control focusColor text-center cantidadMenu" id="cantidad${producto.id}" placeholder="Cantidad" value="1" min="1" max="10" required>
-                                                <label>Cantidad: </label>
-                                            </div>
-                                        </form>
+                                       
                                         <h6 id="idProducto" class="display-none">${producto.code}</h6>
-                                        <button  class="botonPersonalizado mt-1">Agregar</button>
+                                        <button  class="botonPersonalizado mt-1" onclick="addProductoCarrito('${producto.code}')">Agregar</button>
                                     </div>
                                 </div>`;
                 nodopadre.classList = ''
@@ -35,11 +28,19 @@ if(nodopadre){
                 nodopadre.appendChild(nodo);
             }
         }
-    })
-}
+    }
+})
 
+socket.on('addProductoCarrito', ()=>{
+    let cantCarrito = document.querySelector('#cantidadEnCarrito')
+
+    let cantidad = parseInt(cantCarrito.innerHTML) +1
+    cantCarrito.innerHTML = cantidad
+
+})
 
 function addProducto() {
+    
     let title = document.querySelector('#Title').value
     let code = document.querySelector('#Code').value
     let description = document.querySelector('#Description').value
@@ -47,11 +48,15 @@ function addProducto() {
     let thumbnail = document.querySelector('#Thumbnail').value
     let stock = document.querySelector('#Stock').value
     let category = document.querySelector('#Category').value
-
     if(title,code, description, price, thumbnail, stock, category){
 
         socket.emit('addProduct', { title, code, description, price, thumbnail, stock, category })
     }
+
+} 
+function addProductoCarrito(code) {
+
+    socket.emit('addProductoCarrito', {code})    
 
 } 
 

@@ -1,13 +1,9 @@
 const { Router } = require('express')
-const path = require('path')
-const ProductManager = require('../managers/ProductManager')
-const productManager = new ProductManager('productos.json')
+
+const productManager = require('../dao/managers/product.manager.js')
 
 const router = Router()
 
-// function getRandomNumber(min, max) {
-//   return Math.floor(Math.random() * (max - min + 1)) + min;
-// }
 
 router.get('/', async (req, res) => {
   // res.sendFile(path.join(__dirname, '../public/index.html'))
@@ -26,6 +22,9 @@ router.get('/realtimeproducts', (req, res) => {
 router.get('/addProduct', (req, res) => {
   // res.sendFile(path.join(__dirname, '../public/carrito.html'))
   res.render('formProduct')
+})
+router.get('/chat', (req, res) => {
+  res.render('chat')
 })
 
 module.exports = router
