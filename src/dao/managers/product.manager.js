@@ -30,9 +30,9 @@ class ProductManager{
     }
     //ok
     async getProductById(productId){
-        
+        console.log(productId)
         const product = await productModel.find({_id : productId}).lean()
-
+        // console.log(product[0])
         return product[0]
     }
     //ok
@@ -44,7 +44,7 @@ class ProductManager{
     async updateProduct(productId, prd){
 
 
-        const result = await productModel.updateOne({_id: productId}, {prd})
+        const result = await productModel.updateOne({_id: productId}, prd)
 
         return result
     }

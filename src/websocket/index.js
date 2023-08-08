@@ -45,8 +45,15 @@ async function socketManager(socket) {
 
 
   socket.on('addProductoCarrito', async (producto) => {
-    const id = '64cfb569717bf4105d2b8e7d'
-    const newProductBack = await cartManager.updateCart(id,producto.code,1)
+    // const newCart = await cartManager.addCart()
+    // console.log('id')
+    // const id = newCart._id.toString()
+
+    //Hardcodeo un id del cart
+    const id = '64cfb58653b6696dec02b09a'
+
+    const newProductBack = await cartManager.updateCart(id,producto.id,1)
+    console.log(newProductBack)
 
     socket.emit('addProductoCarrito',  {})
   })

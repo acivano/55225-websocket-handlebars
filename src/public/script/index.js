@@ -20,7 +20,7 @@ socket.on('products', (products) => {
                                         <h3 class="montoDonacion text-center mt-1">${redondeo(producto.price)}</h3>
                                        
                                         <h6 id="idProducto" class="display-none">${producto.code}</h6>
-                                        <button  class="botonPersonalizado mt-1" onclick="addProductoCarrito('${producto.code}')">Agregar</button>
+                                        <button  class="botonPersonalizado mt-1" onclick="addProductoCarrito('${producto._id.toString()}')">Agregar</button>
                                     </div>
                                 </div>`;
                 nodopadre.classList = ''
@@ -54,9 +54,9 @@ function addProducto() {
     }
 
 } 
-function addProductoCarrito(code) {
+function addProductoCarrito(id) {
 
-    socket.emit('addProductoCarrito', {code})    
+    socket.emit('addProductoCarrito', {id})    
 
 } 
 

@@ -7,7 +7,9 @@ class CartManager{
     //ok
     async addCart(){
         const products = []
-        return await cartModel.create({products})
+        const newCart= await cartModel.create({products})
+        console.log(newCart)
+        return newCart
         
     }
     //ok
@@ -21,14 +23,19 @@ class CartManager{
     }
 
     async updateCart(id, pid,quantity){
+        // console.log({id,pid,quantity})
         const cart = await cartModel.findOne({_id: id}).lean()
-        const prod = await productModel.findOne({code: pid}).lean()
+        console.log('cart.products')
+
+        console.log(cart.products)
+        const prod = await productModel.findOne({_id: pid}).lean()
         console.log(prod)
 
 
-        if(cart.products.some(prd => prd._id == prod._id)){
+        if(cart.products.some(prd => prd._id.toString() == prod._id.toString())){
+            console.log('entro al some')
             cart.products.forEach(element => {
-                if (element._id == prod._id){
+                if (element._id.toString() == prod._id.toString()){
                     element.quantity+= parseInt(quantity)
                 }
             })
@@ -39,9 +46,10 @@ class CartManager{
 
         }
         const prdsNew= {_id: id, products: cart.products}
-        const result = await cartModel.updateOne({_id: id}, {prdsNew})
-        // const result = await productModel.updateOne({_id:cartId}, {cart})
-        return result
+        console.log(prdsNew)
+        const result = await cartModel.updateOne({_id: id}, prdsNew)
+        // const result = await productModel.updateOne({_id:cartId}, cart)}
+        return result.modifiedCount >=1? prdsNew:null
     }
 }
 

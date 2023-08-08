@@ -14,8 +14,10 @@ router.post('/' , async(req, res)=>{
 router.post('/:cid/product/:pid', async (req, res) => {
   const cid = req.params.cid
   const pid = req.params.pid
-  const existCart = await cartManager.getCartById(cid)
+
   const existPrd = await productManager.getProductById(pid)
+  console.log(existPrd)
+  const existCart = await cartManager.getCartById(cid)
   const quantity = 1 
   if(!existPrd){
     res.status(404).json({ error: `The product with the id ${pid} was not found` }) 
@@ -30,7 +32,7 @@ router.post('/:cid/product/:pid', async (req, res) => {
     res.status(404).json({ error: `The cart with the id ${cid} was not found` }) 
     return
   }
-
+return
 })
 
 router.get('/:cid', async(req, res)=>{

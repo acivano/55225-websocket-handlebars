@@ -50,11 +50,11 @@ router.put('/:id', async(req, res)=>{
 
     const prd = await productManager.updateProduct(id, body)
     console.log(prd)
-    if(!prd){
+    if(prd.matchedCount < 1){
         res.status(404).json({ error: `The product with the id ${id} was not found` });  
         return
     }
-    res.status(202).json(prd)
+    res.status(202).json(body)
 
 })
 
