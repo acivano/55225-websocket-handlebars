@@ -3,13 +3,41 @@ const productManager = require('../../dao/managers/product.manager')
 const router = Router()
 
 router.get('/', async(req, res)=>{
-    const limit = req.query.limit 
-    const prd = await productManager.getProducts()
-    let prdRes = prd
-    if(limit){
-        prdRes = prd.slice(0,limit)
-    }
-    res.send(prdRes)
+    const { query, sort , limit } = req.query
+    const ipage = req.query.page
+    // console.log(`Buscando productos con ${query}`)
+
+
+    const prdRes = await productManager.getProducts(ipage, limit,sort,query)
+    let prd = prdRes
+    let hasquery = ''
+    let hasSort =''
+    // if (query) {
+    //      filtrar
+    //     prd.docs = prd.docs
+    //       .filter(p => p.code.toLowerCase().includes(query.toLowerCase()) || 
+    //       p.title.toLowerCase().includes(query.toLowerCase()) || 
+    //       p.description.toLowerCase().includes(query.toLowerCase()) || 
+    //       p.category.toLowerCase().includes(query.toLowerCase()))
+
+          
+    //     }
+      hasquery= query?`&query=${query}`:''
+      hasSort= sort?`&sort=${sort}`:'' 
+
+      const status = prd.docs.length>=1 ? 'success':'error'
+      const payload = prd.docs
+      const totalPages = prd.totalPages
+      const prevPage = prd.prevPage
+      const nextPage = prd.nextPage
+      const page = prd.page
+      const hasPrevPage= prd.hasPrevPage
+      const hasNextPage = prd.hasNextPage
+      const prevLink = hasPrevPage? `http://localhost:8081/api/products/?limit=${prd.limit}&page=${prevPage}${hasSort}${hasquery}`:null
+      const nextLink = hasNextPage? `http://localhost:8081/api/products/?limit=${prd.limit}&page=${nextPage}${hasSort}${hasquery}`:null
+      
+      const respuesta = {status, payload, totalPages, prevPage, nextPage,page, hasPrevPage,hasNextPage, prevLink, nextLink} 
+    res.send(respuesta)
 })
 
 router.get('/:pid', async(req, res)=>{
@@ -49,7 +77,6 @@ router.put('/:id', async(req, res)=>{
     const id = req.params.id
 
     const prd = await productManager.updateProduct(id, body)
-    console.log(prd)
     if(prd.matchedCount < 1){
         res.status(404).json({ error: `The product with the id ${id} was not found` });  
         return

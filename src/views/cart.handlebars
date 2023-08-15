@@ -1,0 +1,33 @@
+    <main>
+        <div class="d-flex flex-column justify-content-center">
+          <h1 id="carritoId" class="w-75 align-self-center display-none">{{this.id}}</h1>
+          <div class="seccion_datos w-75 align-self-center" id="cartPrd">
+            <div class="container d-flex flex-column justify-content-between mt-3" >
+ 
+                {{!-- <div key={item.id} className="d-flex flex-row justify-content-between align-items-center border-bottom">
+                    <img className="imgCarrito" src={item.imgUrl} alt="Producto1"/>
+                    <div className="d-flex flex-column columnaNombreCarrito w-50">
+                        <h2 className="align-self-start mt-5">{item.nombre}</h2>
+                        <div className="d-flex flex-row justify-content-between align-items-end">
+                            <h4 className=" text-start mt-1 w-75">{`${item.cantidad} u. x ${priceFormat(item.precioventa)} =  `}<span className='h2'>{priceFormat(item.precioventa * item.cantidad)}</span></h4>   
+                        </div>
+                        <div className="form-floating mb-3 w-50 align-self-center d-flex flex-row justify-content-between">
+                            <ItemCount producto={item} agregarProdCarrito={modifyCartStatus} initial={item.cantidad} origin={origin}/>
+                            <button onClick={()=>deleteItem(item.id)} className="btn txtColorCarrito carrito"> <BsTrash/></button>
+                        </div>
+                    </div> 
+                </div>  --}}
+            </div>
+          </div>
+          <div id= 'total' class='d-flex flex-column justify-content-center w-75 align-self-center'>
+                {{!-- <div class='d-flex flex-column justify-content-center align-self-end w-50'>
+                    <div class="d-flex flex-column justify-content-center align-self-center">
+                        <p>Total:</p>
+                        <h2 class='h1'>{priceFormat(totalPrice())}</h2> 
+                    </div>
+                </div> --}}
+            </div>
+        </div>
+    </main>
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/static/script/cart.js" defer></script>

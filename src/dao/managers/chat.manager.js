@@ -13,7 +13,6 @@ class ChatManager{
     }
     //ok
     async getMessages(){
-        
         return chatModel.find().lean()
     }
 

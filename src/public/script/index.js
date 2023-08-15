@@ -4,6 +4,7 @@ const socket = io()
 
 socket.on('products', (products) => {
     let nodopadre = document.getElementById("contenedorPadre")
+    console.log(nodopadre)
     if(nodopadre){
         nodopadre.innerHTML = ''
 

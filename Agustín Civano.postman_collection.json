@@ -39,10 +39,10 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": ""
+					"raw": "{\"quantity\":10}"
 				},
 				"url": {
-					"raw": "http://localhost:8081/api/carts/64cfe2f0d3f2e094c673a6a0/product/ABC3",
+					"raw": "http://localhost:8081/api/carts/64cfb5cbd6b457529f5e477c/product/64d91e0616f33dd9fa078b8e",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -51,9 +51,40 @@
 					"path": [
 						"api",
 						"carts",
-						"64cfe2f0d3f2e094c673a6a0",
+						"64cfb5cbd6b457529f5e477c",
 						"product",
-						"ABC3"
+						"64d91e0616f33dd9fa078b8e"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "postProductoSCarrito",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"products\":[\r\n        {\r\n            \"id\": \"64d91e0616f33dd9fa078b91\",\r\n            \"quantity\":6\r\n        },\r\n        {\r\n            \"id\": \"64d91e0616f33dd9fa078b94\",\r\n            \"quantity\":1\r\n        },\r\n        {\r\n            \"id\": \"3423\",\r\n            \"quantity\":1\r\n        }\r\n    ]\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:8081/api/carts/64cfb5cbd6b457529f5e477c",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"carts",
+						"64cfb5cbd6b457529f5e477c"
 					]
 				}
 			},
@@ -86,7 +117,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8081/api/products/",
+					"raw": "http://localhost:8081/api/products/?limit=100&query=t&sort=asc",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -96,6 +127,20 @@
 						"api",
 						"products",
 						""
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "100"
+						},
+						{
+							"key": "query",
+							"value": "t"
+						},
+						{
+							"key": "sort",
+							"value": "asc"
+						}
 					]
 				}
 			},
@@ -204,6 +249,74 @@
 						"api",
 						"products",
 						"64ce918505665c887f2d134d"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteProductInCart",
+			"request": {
+				"method": "GET",
+				"header": []
+			},
+			"response": []
+		},
+		{
+			"name": "deleteProductsinCart",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/carts/64cfe2f0d3f2e094c673a6a0",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"carts",
+						"64cfe2f0d3f2e094c673a6a0"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8081/api/products/?limit=10&page=2&sort=desc&query=Car",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8081/api/products/?limit=10&page=2&sort=desc&query=Car",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8081",
+					"path": [
+						"api",
+						"products",
+						""
+					],
+					"query": [
+						{
+							"key": "limit",
+							"value": "10"
+						},
+						{
+							"key": "page",
+							"value": "2"
+						},
+						{
+							"key": "sort",
+							"value": "desc"
+						},
+						{
+							"key": "query",
+							"value": "Car"
+						}
 					]
 				}
 			},

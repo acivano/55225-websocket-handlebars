@@ -19,6 +19,12 @@ router.get('/realtimeproducts', (req, res) => {
   // res.sendFile(path.join(__dirname, '../public/carrito.html'))
   res.render('realTimeProducts')
 })
+router.get('/cart/:id', (req, res) => {
+  const id = req.params.id
+  console.log(id)
+  // res.sendFile(path.join(__dirname, '../public/carrito.html'))
+  res.render('cart',{id})
+})
 router.get('/addProduct', (req, res) => {
   // res.sendFile(path.join(__dirname, '../public/carrito.html'))
   res.render('formProduct')
