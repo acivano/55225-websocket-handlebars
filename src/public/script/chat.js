@@ -1,6 +1,7 @@
 const messagesEl = document.querySelector('#chat-content')
 const inputElement = document.querySelector('#inputMessage')
 const inputName = document.querySelector('#inputName')
+// const socket = io()
 
 
 // messagesEl.innerHTML = ""

@@ -2,13 +2,15 @@ const fs = require('fs/promises')
 
 const cartModel = require('../models/cart.model')
 const productModel = require('../models/product.model')
+const userModel = require('../models/user.model')
 
 
 class CartManager{
     //ok
-    async addCart(){
+    async addCart(uid){
+        const user = uid
         const products = []
-        const newCart= await cartModel.create({products})
+        const newCart= await cartModel.create({user, products})
         return newCart
         
     }
@@ -16,6 +18,19 @@ class CartManager{
     async getCartById(cartId){
         
         const cart = await cartModel.find({_id : cartId}).lean()
+
+        
+        console.log(cart)
+        return cart? cart[0]:null
+    }
+
+    async getCartByUser(uid){
+        
+        const user = await userModel.find({_id: uid}).lean()
+        if(!user){
+            return null
+        }
+        const cart = await cartModel.find({user : uid}).lean()
 
         
         console.log(cart)
@@ -45,7 +60,8 @@ class CartManager{
         const productos = {products: cart.products}
         const result = await cartModel.updateOne({_id: id}, productos)
         // const result = await productModel.updateOne({_id:cartId}, cart)}
-        return result.modifiedCount >=1? await cartModel.getCartById:null
+        console.log(result)
+        return result.modifiedCount >=1? await cartModel.findOne({_id: id}).lean():null
     }
 
     async deleteCart(id){
@@ -63,12 +79,14 @@ class CartManager{
 
         console.log(cart)
         console.log(prod)
-
+        if(!cart || !prod){
+            return
+        }
         const prdsCartNew= cart.products.filter(prd => prd._id.toString() != prod._id.toString())
 
         const cartNew= {_id: id, products: prdsCartNew}
         const result = await cartModel.updateOne({_id: id}, cartNew)
-
+        console.log(result.modifiedCount)
         return result.modifiedCount >=1? prdsCartNew:null
     }
 }

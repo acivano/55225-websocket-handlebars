@@ -1,0 +1,48 @@
+ <main class="">
+        <section class="container  align-content-center flex-lg-row justify-content-lg-between gap-5 w-50">
+            <form class="formClass needs-validation formMap" action="" method="post">
+                <h1 class="container mb-3">Crear cuenta</h1>
+                <div class="formClass__fila">
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control focusColor" name="user" id="email" placeholder="email" required>
+                        <label for="email">User (email)</label>
+                    </div>
+                    <div class="row g-2">
+                        <div class="col-md">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control focusColor" name="firstname" id="firstname" placeholder="Firstname" required>
+                                <label for="firstname">Firstname</label>
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control focusColor" name="lastname" id="lastname" placeholder="Lastname" required>
+                                <label for="lastname">Lastname</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-floating mb-3 ">
+                        <input type="password" class="form-control focusColor" name="password" id="password" placeholder="password" required>
+                        <label for="password">Password</label>
+                    </div>
+                    <div class="form-floating mb-3">
+                        <input type="password" class="form-control focusColor" name="password2"  id="password2" placeholder="password2" required>
+                        <label for="password2">Repeat password</label>
+                    </div>
+                    {{#if error}}
+                        <div class="col-md">
+                                <span class="text-danger">{{error}}</span>
+                        </div>
+                    {{/if}}
+                    <div class="formClass__fila">
+                        <div class="col-12">
+                            <button class="btn btn-primary botonPersonalizado mt-2" >Registrarse</button>
+                        </div>
+                    </div>
+                </div>
+            </form> 
+        </section>
+    </main> 
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/static/script/index.js"></script>
+

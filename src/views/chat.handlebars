@@ -80,7 +80,7 @@
                                 </div>
 
                                 <div class="publisher bt-1 border-light">
-                                    <input id="inputName" class="publisher-input " style="max-width: 70px" type="text" placeholder="Nombe">
+                                    <input id="inputName" class="publisher-input readonly " style="max-width: 70px" type="text" placeholder="Nombre" value="{{user.firstname}}" readonly>
 
                                     <input id="inputMessage" class="publisher-input" type="text" placeholder="Ingrese mensaje">
 
@@ -94,5 +94,6 @@
     </section>
 </main> 
 <script src="/socket.io/socket.io.js"></script>
+<script src="/static/script/index.js" ></script>
 <script src="/static/script/chat.js" defer></script>
 <!-- includes de handlebars -->

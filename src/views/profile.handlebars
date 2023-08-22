@@ -1,0 +1,33 @@
+ <main class="">
+        <section class="container  align-content-center flex-lg-row justify-content-lg-between gap-5 w-50">
+            <form class="formClass needs-validation formMap">
+                {{#if user}}
+                <h1 class="container mb-3">My Profile</h1>
+                <div class="formClass__fila">
+                    <div class="form-floating mb-3">
+                        <input type="email" class="form-control focusColor read" name="user" id="email" placeholder="email" value="{{user.user}}"readonly>
+                        <label for="email">User (email)</label>
+                    </div>
+                    <div class="row g-2">
+                        <div class="col-md">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control focusColor" name="firstname" id="firstname" placeholder="Firstname"  value="{{user.firstname}}"readonly>
+                                <label for="firstname">Firstname</label>
+                            </div>
+                        </div>
+                        <div class="col-md">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control focusColor" name="lastname" id="lastname" placeholder="Lastname"  value="{{user.lastname}}" readonly>
+                                <label for="lastname">Lastname</label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                {{/if}}
+            </form> 
+        </section>
+    </main> 
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="/static/script/index.js"></script>
+

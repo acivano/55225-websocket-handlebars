@@ -1,6 +1,10 @@
 
 <main>
     <section  class="container seccionDonacion">
+        {{#if user}}
+
+        <h2>Bienvenido, {{user.firstname}}</h2>
+        {{/if}}
         <div id="contenedorPadre" class="d-flex flex-column align-content-center justify-content-start gap-4 flex-lg-row flex-lg-wrap mt-5">
         {{!-- {{#each products}}
             <div class="d-flex justify-content-center">
@@ -21,3 +25,5 @@
     </section>
 </main> 
 <script src="/socket.io/socket.io.js"></script>
+<script src="/static/script/index.js"></script>
+

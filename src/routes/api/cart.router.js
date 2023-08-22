@@ -3,14 +3,20 @@ const { Router } = require('express')
 const router = Router()
 const cartManager = require('../../dao/managers/cart.manager')
 const productManager = require('../../dao/managers/product.manager')
+const userManager = require('../../dao/managers/user.manager')
 
-router.post('/' , async(req, res)=>{
-  
-  const response = await cartManager.addCart()
+
+router.post('/:uid' , async(req, res)=>{
+  const uid = req.params.uid
+  const user = await userManager.getUserById(uid)
+  console.log('user')
+
+  console.log(user)
+  const response = await cartManager.addCart(user._id)
   res.status(201).json(response)
 })
 
-router.post('/:cid' , async(req, res)=>{
+router.post('/:cid/products' , async(req, res)=>{
   const {products}= req.body
   const cid= req.params.cid
   let errores= []
@@ -38,7 +44,7 @@ router.post('/:cid' , async(req, res)=>{
 })
 
 
-router.post('/:cid/product/:pid', async (req, res) => {
+router.put('/:cid/product/:pid', async (req, res) => {
   const cid = req.params.cid
   const pid = req.params.pid
   const {quantity} = req.body
@@ -75,6 +81,19 @@ router.get('/:cid', async(req, res)=>{
 
 })
 
+router.get('/user/:uid', async(req, res)=>{
+  const uid = req.params.uid
+  const cartRes = await cartManager.getCartByUser(uid)
+  console.log(cartRes)
+  if (cartRes) {
+      res.send(cartRes)
+      return
+  }
+  res.status(404).json({ error: `The user with the id ${uid} does not have a cart` });  
+
+})
+
+
 router.delete('/:id', async(req, res)=>{
   const id = req.params.id
   const cart = await cartManager.getCartById(id)
@@ -87,19 +106,21 @@ router.delete('/:id', async(req, res)=>{
 })
 
 router.delete('/:cid/product/:pid', async(req, res)=>{
-const cid = req.params.cid
-const pid = req.params.pid
+  const cid = req.params.cid
+  const pid = req.params.pid
 
 
-const existCart = await cartManager.getCartById(cid)
-if(existCart){
-  const update = await cartManager.deleteProductInCart(cid, pid)
-  res.status(200)
-  return
-}else{
-  res.status(404).json({ error: `The cart with the id ${cid} was not found` }) 
-  return
-}
+  const existCart = await cartManager.getCartById(cid)
+  if(existCart){
+    const update = await cartManager.deleteProductInCart(cid, pid)
+    console.log('update')
+    console.log(update)
+    return res.sendStatus(200)
+    
+  }else{
+    res.status(404).json({ error: `The cart with the id ${cid} was not found` }) 
+    return
+  }
 })
 
 

@@ -1,7 +1,7 @@
 const { Schema, model } = require('mongoose')
 
 const schema = new Schema({
-// user: { type: Schema.Types.ObjectId, ref: 'users' },
+user: { type: Schema.Types.ObjectId, ref: 'users' },
   products: { 
     type: [{
       _id: { type: Schema.Types.ObjectId, ref: 'products' },

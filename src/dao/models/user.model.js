@@ -1,16 +1,14 @@
 const { Schema, model } = require('mongoose')
 
 const schema = new Schema({
-  firstname: String,
-  lastname: String,
-  email: String,
+  user: String,//Correo
   password: String,
-  role: String,
-  gender: String,
-  createdDate: { type: Number, default: Date.now() },
-  address: { type: Schema.Types.ObjectId, ref: 'addresses' }
+  firstname: String,
+  lastname:String,
+  role:{ type: String, default: 'Custommer' },
+  createDate:{ type: Number, default: Date.now() }
 })
 
-const userModel = model('users', schema)
+const userModel  = model('users', schema)
 
-module.exports = userModel
+module.exports = userModel 

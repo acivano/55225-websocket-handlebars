@@ -1,9 +1,4 @@
 
-let idCarrito = document.querySelector('#carritoId').innerHTML
-console.log(idCarrito)
-socket.emit('cart', idCarrito)    
-
-
 socket.on('cart-productos', (cart) => {
     let messagesEl = document.querySelector('#cartPrd')
     let totalEl = document.querySelector('#total')

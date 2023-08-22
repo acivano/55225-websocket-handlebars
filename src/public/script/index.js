@@ -2,8 +2,25 @@ console.log('se conectó')
 
 const socket = io()
 
+let idCarrito = document.querySelector('#carritoId')?.innerHTML
+
+socket.emit('products', {}) 
+console.log(idCarrito)
+if (idCarrito) {
+    
+    socket.emit('cart', idCarrito)    
+    
+    
+    socket.on('quantity-cart-productos', (quantity)=>{
+        let spanCarrito = document.querySelector('#cantidadEnCarrito').innerHTML = quantity
+    
+    })
+}
+
 socket.on('products', (products) => {
     let nodopadre = document.getElementById("contenedorPadre")
+    console.log('nodopadre')
+
     console.log(nodopadre)
     if(nodopadre){
         nodopadre.innerHTML = ''
@@ -32,13 +49,13 @@ socket.on('products', (products) => {
     }
 })
 
-socket.on('addProductoCarrito', ()=>{
-    let cantCarrito = document.querySelector('#cantidadEnCarrito')
+// socket.on('addProductoCarrito', ()=>{
+//     let cantCarrito = document.querySelector('#cantidadEnCarrito')
 
-    let cantidad = parseInt(cantCarrito.innerHTML) +1
-    cantCarrito.innerHTML = cantidad
+//     let cantidad = parseInt(cantCarrito.innerHTML) +1
+//     cantCarrito.innerHTML = cantidad
 
-})
+// })
 
 function addProducto() {
     
@@ -57,7 +74,7 @@ function addProducto() {
 } 
 function addProductoCarrito(id) {
 
-    socket.emit('addProductoCarrito', {id})    
+    socket.emit('addProductoCarrito', {idCarrito , id})    
 
 } 
 

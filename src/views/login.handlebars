@@ -1,0 +1,39 @@
+ <main class="">
+        <section class="container  align-content-center flex-lg-row justify-content-lg-between gap-5 w-50">
+            <h1 class="container mb-3">Login</h1>
+            <form class="formClass needs-validation formMap"action="" method="post">
+                <div class="formClass__fila">
+                    <div class="row g-2">
+                        <div class="col-md">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control focusColor" id="user" name="user" placeholder="Username" required>
+                                <label for="user">Username</label>
+                            </div>
+                        </div>
+                    </div>
+                        <div class="col-md">
+                            <div class="form-floating mb-3">
+                                <input type="password" class="form-control focusColor" id="password" name="password" placeholder="Password" required>
+                                <label for="password">Password</label>
+                            </div>
+                        </div>
+                        <div class="col-md">
+                                <span>No tienes cuenta? <a href="/signup">Registrate!</a></span>
+                        </div>
+                        {{#if error}}
+                            <div class="col-md">
+                                    <span class="text-danger">{{error}}</span>
+                            </div>
+                        {{/if}}
+                    <div class="formClass__fila">
+                        <div class="col-12">
+                            <button class="btn btn-primary botonPersonalizado mt-2" >Entrar</button>
+                        </div>
+                    </div>
+                </div>
+            </form> 
+        </section>
+    </main> 
+    <script src="/socket.io/socket.io.js"></script>
+    {{!-- <script src="/static/script/index.js"></script> --}}
+
