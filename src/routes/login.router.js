@@ -47,19 +47,23 @@ router.get('/logout', isAuth, (req, res) => {
 
 router.post('/login', async(req, res) => {
     // console.log(req.body)
-    const user = req.body
-  
+    const user = {user: req.body.user.toLowerCase(), password : req.body.password}   
+    console.log(user)
+
     try {
       
-          const existing = await userManager.getUserByUsername(user.user)
+          const existing = await userManager.getUserByUsername( user.user)
+          console.log(user)
           console.log(existing)
         
           if(!existing){
             return res.render('login', {error:'Usuario inexistente'})
           }
+          if(user.password!=existing.password){
+            return res.render('login', {error:'Contraseña incorrecta'})
+          }
           const cartExisting = await cartManager.getCartByUser(existing._id)
-        
-          console.log(existing)
+
           req.session.user = {
             firstname: existing.firstname,
             lastname: existing.lastname,
