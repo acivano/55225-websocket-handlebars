@@ -23,6 +23,15 @@ class UserManager{
         return user
     }
 
+    async updateUser(id, usu){
+        console.log('ingresó', id, usu)
+        const result = userModel.updateOne({_id: id}, usu)
+        console.log('result')
+        console.log(result)
+
+        return result
+    }
+
 }
 
 module.exports = new UserManager()

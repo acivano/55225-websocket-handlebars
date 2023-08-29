@@ -1,5 +1,6 @@
+
 function isAuth(req, res, next) {
-    if (req.user) {
+    if (req.isAuthenticated()) {
       next()
       return
     }
@@ -7,7 +8,7 @@ function isAuth(req, res, next) {
     res.redirect('/login')
 }
 function isAuthLogin(req, res, next) {
-    if (!req.user) {
+    if (!req.isAuthenticated()) {
       next()
       return
     }

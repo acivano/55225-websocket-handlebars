@@ -1,4 +1,5 @@
 (async()=>{
+    const {MONGO_URL, HOST, PORT} = require('./src/config/config.passwords')
     const express = require('express')
     const http = require('http')
     const Routes = require('./src/routes/index')
@@ -9,11 +10,12 @@
     const cookieParser = require('cookie-parser')
     const session = require('express-session')
     const MongoStore = require('connect-mongo')
+    const passport = require('passport')
+    const initPassportLocal = require('./src/config/passport.init.js')
     
     const socketManager = require('./src/websocket')
-    //mongodb+srv://agustincivano:CyIyEfz39CK8k6Je@cluster0.hcav26p.mongodb.net/
-    
-    await mongoose.connect("mongodb+srv://agustincivano:CyIyEfz39CK8k6Je@cluster0.hcav26p.mongodb.net/ecommerce?retryWrites=true&w=majority")
+
+    await mongoose.connect(MONGO_URL)
     const app = express() 
     const server = http.createServer(app) 
     const io = new Server(server) 
@@ -31,21 +33,26 @@
         resave:true,
         saveUninitialized: true,
         store: MongoStore.create({
-            mongoUrl: 'mongodb+srv://agustincivano:CyIyEfz39CK8k6Je@cluster0.hcav26p.mongodb.net/ecommerce?retryWrites=true&w=majority',
+            mongoUrl: MONGO_URL,
             ttl: 60 * 60
         })
     }))
-    app.use((req, res, next) =>{
-        console.log(req.session)
-        if(req.session?.user){
-            req.user={
-                firstname: req.session.user.firstname,
-                lastname: req.session.user.lastname,
-                role: req.session.user.role,
-                user: req.session.user.user,
-                cart: req.session.user.cart
-            }
-        }
+
+    initPassportLocal()
+    app.use(passport.initialize())
+    app.use(passport.session())
+
+    app.use(async(req, res, next) =>{
+        a = console.log(req.session, req.user)
+    //     if(req.session?.user){
+    //         req.user={
+    //             firstname: req.session.user.firstname,
+    //             lastname: req.session.user.lastname,
+    //             role: req.session.user.role,
+    //             user: req.session.user.user,
+    //             cart: req.session.user.cart
+    //         }
+    //     }
         next()
     })
     
@@ -58,10 +65,10 @@
     
     //---- Defino Express------
     
-    const port = 8081
     
-    server.listen(port, ()=>{
-        console.log(`Express Server listening at http://localhost:${port}`)
+    
+    server.listen(PORT, ()=>{
+        console.log(`Express Server listening at http://${HOST}:${PORT}`)
     })
     
     //-------------------------
