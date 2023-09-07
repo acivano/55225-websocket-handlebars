@@ -18,23 +18,26 @@ const gitHubUsers = async(profile, done)=>{
     if(!_user){
         console.log('Usuario no encontrado')
 
+        const cart =  await cartManager.addCart()
+        console.log(cart)
         const newUser ={
             firstname: name.split(" ")[0],
             lastname: name.split(" ")[1],
             user: email,
             password:"",
-            role: 'Custommer'
+            role: 'Custommer',
+            cart: cart._id
 
         }
 
         const createUsr = await userManager.addUser(newUser)
 
-        const cart =  await cartManager.addCart(createUsr._id)
+
         const usu = {
             firstname: createUsr.firstname,
             lastname: createUsr.lastname,
             _id: createUsr._id,
-            cart: cart._id,
+            cart: createUsr.cart._id,
             ...createUsr._doc
           }
           console.log('usu')

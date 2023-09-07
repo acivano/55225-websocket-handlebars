@@ -25,14 +25,14 @@
                             <a class="nav-link navHover txtColor" href="/">Home</a>
                         </li>
                         {{#if user}}
-                            <li class="nav-item display-none">
-                                <a class="nav-link navHover txtColor" id="carritoId" href="/chat">{{user.cart}}</a>
+                            <li class="nav-item">
+                                <a class="nav-link navHover txtColor" id="carritoId" href="">{{user.cart}}</a>
                             </li>
                             <li class="nav-item ">
                                 <a class="nav-link navHover txtColor" href="/chat">Chat</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link navHover txtColorCarrito carrito" id="carthref" href="http://localhost:8081/cart/{{user.cart}}" > <i class="bi bi-cart-check"></i><span id="cantidadEnCarrito" class="badge rounded-pill bg-danger notificacion">0</span></a>                            
+                                <a class="nav-link navHover txtColorCarrito carrito" id="carthref" href="/cart/{{user.cart}}" > <i class="bi bi-cart-check"></i><span id="cantidadEnCarrito" class="badge rounded-pill bg-danger notificacion">0</span></a>                            
                             </li>
                             <li class="nav-item ">
                                 <a class="nav-link navHover txtColor" href="/profile">My Profile</a>

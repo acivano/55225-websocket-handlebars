@@ -5,14 +5,17 @@ const UserRouter = require('./api/user.router')
 const LoginRoutes = require('./login.router')
 
 const HomeRoutes = require('./home.router')
+const { jwtRoutes } = require('./api/auth.router')
+const { jwtVerifyAuthToken } = require('../dao/middlewares/jwt.auth.middleware')
 
 
 const api = Router()
 
-api.use('/products', ProductRouter)
-api.use('/user', UserRouter)
+api.use('/products', jwtVerifyAuthToken,ProductRouter)
+api.use('/user',  jwtVerifyAuthToken, UserRouter)
+api.use('/carts',  jwtVerifyAuthToken, CartRouter)
 
-api.use('/carts', CartRouter)
+api.use('/jwtAuth', jwtRoutes)
 
 const home = Router()
 

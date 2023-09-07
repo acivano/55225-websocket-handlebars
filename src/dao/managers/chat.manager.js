@@ -13,7 +13,9 @@ class ChatManager{
     }
     //ok
     async getMessages(){
-        return chatModel.find().lean()
+        const messages = await chatModel.find().lean()
+        console.log(messages)
+        return messages
     }
 
 }

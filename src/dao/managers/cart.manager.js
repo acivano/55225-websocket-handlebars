@@ -7,10 +7,10 @@ const userModel = require('../models/user.model')
 
 class CartManager{
     //ok
-    async addCart(uid){
-        const user = uid
+    async addCart(){
+        // const user = uid
         const products = []
-        const newCart= await cartModel.create({user, products})
+        const newCart= await cartModel.create({products})
         return newCart
         
     }
@@ -19,7 +19,8 @@ class CartManager{
         
         const cart = await cartModel.find({_id : cartId}).lean()
 
-        
+        console.log('cart')
+
         console.log(cart)
         return cart? cart[0]:null
     }
@@ -38,14 +39,21 @@ class CartManager{
     }
 
     async updateCart(id, pid,quantity){
+        console.log('updateCart')
+        console.log('cart', id)
+        console.log('product', pid)
+
         const cart = await cartModel.findOne({_id: id}).lean()
+        console.log(cart)
 
         const prod = await productModel.findOne({_id: pid}).lean()
+        console.log(prod)
 
-        const existe = cart?.products.some(prd => prd._id.toString() == prod._id.toString())
+        const existe = cart.products?.some(prd => prd._id.toString() == prod._id.toString())
         if(existe){
+            console.log(existe)
 
-            cart.products.forEach(element => {
+            cart.products?.forEach(element => {
 
                 if (element._id.toString() == prod._id.toString()){
                     element.quantity+= parseInt(quantity)
@@ -53,13 +61,17 @@ class CartManager{
             })
 
         }  else {
-            const newProd = {'id': prod._id, quantity:parseInt(quantity)}
+            const newProd = {'_id': prod._id.toString(), quantity:parseInt(quantity)}
             cart.products.push(newProd)
+            console.log('cart luego de pushear')
+            console.log(cart)
 
         }
         const productos = {products: cart.products}
+        console.log(productos)
         const result = await cartModel.updateOne({_id: id}, productos)
-        // const result = await productModel.updateOne({_id:cartId}, cart)}
+        console.log('result')
+
         console.log(result)
         return result.modifiedCount >=1? await cartModel.findOne({_id: id}).lean():null
     }

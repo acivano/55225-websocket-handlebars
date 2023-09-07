@@ -6,6 +6,7 @@ const schema = new Schema({
   firstname: String,
   lastname:String,
   role:{ type: String, default: 'Custommer' },
+  cart: { type: Schema.Types.ObjectId, ref: 'carts' },
   createDate:{ type: Number, default: Date.now() }
 })
 

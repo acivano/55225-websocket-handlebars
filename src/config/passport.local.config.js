@@ -23,18 +23,18 @@ const signup = async (req , user , password, done) => {
         }
         if(user.password==user.password2){
             delete user.password2
+            const cart =  await cartManager.addCart()
 
-            const newUser ={..._user, password: hashPassword(_user.password)}
+            const newUser ={..._user, cart: cart._id, password: hashPassword(_user.password)}
             console.log(newUser)
 
             const createUsr = await userManager.addUser(newUser)
 
-            const cart =  await cartManager.addCart(createUsr._id)
             const usu = {
                 firstname: createUsr.firstname,
                 lastname: createUsr.lastname,
                 _id: createUsr._id,
-                cart: cart._id,
+                cart: createUsr.cart._id,
                 ...createUsr._doc
               }
               console.log('usu')
@@ -86,12 +86,12 @@ const login = async(user, password, done) => {
             console.log('Contraseña incorrecta')
             return done(null, false)
         }
-        const cartExisting = await cartManager.getCartByUser(existing._id)
+        // const cartExisting = await cartManager.getCartByUser(existing._id)
         const _user = {
             firstname: existing.firstname,
             lastname: existing.lastname,
             role: existing.role,
-            cart: cartExisting._id,
+            cart: existing.cart._id,
             ...existing
         }
         console.log('_user')

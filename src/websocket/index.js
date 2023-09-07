@@ -9,8 +9,10 @@ async function socketManager(socket) {
     console.log(prdCart)
     let quantity = 0
     prdCart.products.forEach(element => {
+      console.log(element)
       quantity=quantity+element.quantity
     });
+    console.log('quantity', quantity)
     socket.emit('quantity-cart-productos', quantity)
     socket.emit('cart-productos', prdCart)
   
@@ -87,12 +89,13 @@ async function socketManager(socket) {
     const id = param.idCarrito
     const idProducto = param.id
 
+    
     const newProductBack = await cartManager.updateCart(id,idProducto,1)
     console.log('newProductBack')
 
     console.log(newProductBack)
     let quantity = 0
-    newProductBack.products.forEach(element => {
+    newProductBack.products?.forEach(element => {
       quantity=quantity+element.quantity
     });
     socket.emit('quantity-cart-productos',  quantity)

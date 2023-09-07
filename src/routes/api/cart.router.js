@@ -12,7 +12,14 @@ router.post('/:uid' , async(req, res)=>{
   console.log('user')
 
   console.log(user)
-  const response = await cartManager.addCart(user._id)
+  const response = await cartManager.addCart()
+
+  const updateUser = {
+    ...user,
+    cart: cart._id
+  }
+  const _user = await userManager.updateUser(updateUser)
+  console.log(_user)
   res.status(201).json(response)
 })
 

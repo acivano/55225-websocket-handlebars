@@ -26,14 +26,14 @@ const login = async(req, res) => {
         if(!isValidPassword(user.password, existing.password)){
           return res.render('login', {error:'Contraseña incorrecta'})
         }
-        const cartExisting = await cartManager.getCartByUser(existing._id)
+        // const cartExisting = await cartManager.getCartByUser(existing._id)
 
         req.session.user = {
           firstname: existing.firstname,
           lastname: existing.lastname,
           id: existing._id,
           role: existing.role,
-          cart: cartExisting._id,
+          cart: existing.cart._id,
           // role: 'Admin'
           ...user
         }
@@ -62,14 +62,14 @@ const signup =  async (req,res)=>{
       }
       if(user.password==user.password2){
           delete user.password2
+          const cart =  await cartManager.addCart()
 
-          const newUser ={...user, password: hashPassword(user.password)}
+          const newUser ={...user, cart: cart._id, password: hashPassword(user.password)}
           console.log(user)
           console.log(newUser)
 
           const createUsr = await userManager.addUser(newUser)
 
-          const cart =  await cartManager.addCart(createUsr._id)
           console.log('newcart')
 
           console.log(cart)
@@ -77,7 +77,7 @@ const signup =  async (req,res)=>{
             firstname: createUsr.firstname,
             lastname: createUsr.lastname,
             id: createUsr._id,
-            cart: cart._id,
+            cart: createUsr.cart._id,
             ...createUsr._doc
           }
         
