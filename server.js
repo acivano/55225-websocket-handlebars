@@ -1,9 +1,24 @@
 (async()=>{
-    const {MONGO_URL, HOST, PORT} = require('./src/config/config.passwords')
+    const { Command } = require('commander')
+
+    const program = new Command()
+  
+    program.option('-e, --env <env>', 'Entorno de ejecucion', 'development')
+    program.parse()
+  
+    const { env } = program.opts()
+    const path = require('path')
+    const dotenv = require('dotenv')
+    
+    dotenv.config({
+      path: path.join(__dirname, env === 'development' ? '.env.development' : '.env')
+    })
+    console.log(env)
+    const config = require('./src/config/config')
+
     const express = require('express')
     const http = require('http')
     const Routes = require('./src/routes/index')
-    const path = require('path')
     const handlebars = require('express-handlebars')
     const { Server } = require("socket.io")
     const mongoose = require('mongoose')
@@ -14,8 +29,10 @@
     const initPassportLocal = require('./src/config/passport.init.js')
     
     const socketManager = require('./src/websocket')
+    console.log(config)
 
-    await mongoose.connect(MONGO_URL)
+
+    await mongoose.connect(config.MONGO_URL)
     const app = express() 
     const server = http.createServer(app) 
     const io = new Server(server) 
@@ -33,7 +50,7 @@
         resave:true,
         saveUninitialized: true,
         store: MongoStore.create({
-            mongoUrl: MONGO_URL,
+            mongoUrl: config.MONGO_URL,
             ttl: 60 * 60
         })
     }))
@@ -67,8 +84,8 @@
     
     
     
-    server.listen(PORT, ()=>{
-        console.log(`Express Server listening at http://${HOST}:${PORT}`)
+    server.listen(config.PORT, ()=>{
+        console.log(`Express Server listening at http://${config.URL}:${config.PORT}`)
     })
     
     //-------------------------

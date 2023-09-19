@@ -1,12 +1,13 @@
 const GithubStrategy =  require('passport-github2')
 const userManager= require('../dao/managers/user.manager')
 const cartManager= require('../dao/managers/cart.manager')
-const {GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, GITHUB_STRATEGY_NAME, PORT, HOST} = require('../config/config.passwords')
+const config = require('../config/config')
+
 
 const GitHubAccessConfig ={
-    clientID: GITHUB_CLIENT_ID,
-    clientSecret: GITHUB_CLIENT_SECRET, 
-    callBackURL: `http://${HOST}:${PORT}/githubSessions`
+    clientID: config.GITHUB_CLIENT_ID,
+    clientSecret: config.GITHUB_CLIENT_SECRET, 
+    callBackURL: `http://${config.URL}:${config.PORT}/githubSessions`
 }
 
 const gitHubUsers = async(profile, done)=>{
@@ -62,6 +63,6 @@ module.exports = {
     GithubStrategy,
     GitHubAccessConfig,
     profileGitHubController,
-    strategyName : GITHUB_STRATEGY_NAME
+    strategyName : config.GITHUB_STRATEGY_NAME
 
 }

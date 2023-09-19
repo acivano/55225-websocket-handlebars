@@ -39,19 +39,14 @@ class CartManager{
     }
 
     async updateCart(id, pid,quantity){
-        console.log('updateCart')
-        console.log('cart', id)
-        console.log('product', pid)
 
         const cart = await cartModel.findOne({_id: id}).lean()
         console.log(cart)
-
+        
         const prod = await productModel.findOne({_id: pid}).lean()
-        console.log(prod)
 
-        const existe = cart.products?.some(prd => prd._id.toString() == prod._id.toString())
+        const existe = cart?.products?.some(prd => prd._id.toString() == prod._id.toString())
         if(existe){
-            console.log(existe)
 
             cart.products?.forEach(element => {
 
@@ -63,16 +58,12 @@ class CartManager{
         }  else {
             const newProd = {'_id': prod._id.toString(), quantity:parseInt(quantity)}
             cart.products.push(newProd)
-            console.log('cart luego de pushear')
-            console.log(cart)
+
 
         }
         const productos = {products: cart.products}
-        console.log(productos)
         const result = await cartModel.updateOne({_id: id}, productos)
-        console.log('result')
 
-        console.log(result)
         return result.modifiedCount >=1? await cartModel.findOne({_id: id}).lean():null
     }
 
@@ -89,8 +80,7 @@ class CartManager{
 
         const prod = await productModel.findOne({_id: pid}).lean()
 
-        console.log(cart)
-        console.log(prod)
+
         if(!cart || !prod){
             return
         }
