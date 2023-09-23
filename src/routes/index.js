@@ -11,9 +11,10 @@ const { jwtVerifyAuthToken } = require('../dao/middlewares/jwt.auth.middleware')
 
 const api = Router()
 
-api.use('/products', jwtVerifyAuthToken,ProductRouter)
-api.use('/user',  jwtVerifyAuthToken, UserRouter)
-api.use('/carts',  jwtVerifyAuthToken, CartRouter)
+api.use('/products', ProductRouter)
+api.use('/user', jwtVerifyAuthToken,UserRouter)
+//agregar jwtVerifyAuthToken
+api.use('/carts', CartRouter)
 
 api.use('/jwtAuth', jwtRoutes)
 

@@ -5,32 +5,28 @@ const cartManager = require('../../dao/managers/cart.manager')
 const productManager = require('../../dao/managers/product.manager')
 const userManager = require('../../dao/managers/user.manager')
 
-
+//le actualizo el carrito al usuario
 router.post('/:uid' , async(req, res)=>{
   const uid = req.params.uid
   const user = await userManager.getUserById(uid)
-  console.log('user')
 
-  console.log(user)
-  const response = await cartManager.addCart()
+  const products = []
+  const response = await cartManager.add({products})
 
-  const updateUser = {
-    ...user,
-    cart: cart._id
-  }
-  const _user = await userManager.updateUser(updateUser)
-  console.log(_user)
-  res.status(201).json(response)
+  const _user = await userManager.update(uid, {cart: response})
+
+  res.status(201).json({'status':'success'})
 })
 
+//actualizo el carrito con productos
 router.post('/:cid/products' , async(req, res)=>{
   const {products}= req.body
   const cid= req.params.cid
   let errores= []
 
-  const existCart = await cartManager.getCartById(cid)
+  const existCart = await cartManager.getById(cid)
   if(!existCart){
-    res.status(404).json({ error: `The cart with the id ${pid} was not found` }) 
+    res.status(404).json({ error: `The cart with the id ${cid} was not found` }) 
     return
   }else{
     for(const element of products){
@@ -38,36 +34,68 @@ router.post('/:cid/products' , async(req, res)=>{
       const existPrd =  await productManager.getProductById(element._id)
 
       if(existPrd){
-        const resultado = await cartManager.updateCart(cid, element._id,parseInt(element.quantity))
+        const exisPrdCart = existCart?.products?.some(prd => prd._id._id.toString() == element._id)
+            if(exisPrdCart){
+
+                existCart.products?.forEach(elm => {
+
+                    if (elm._id._id.toString() == element._id){
+                      elm.quantity+= parseInt(element.quantity)
+                    }
+                })
+
+            }  else {
+                const newProd = {'_id': element._id, quantity:parseInt(element.quantity)}
+                existCart.products.push(newProd)
+            }
+
       }else{
             let error = `The prod with the id ${element._id} was not found`
 
             errores.push(error)
           }
     }
-    
-    res.status(200).json(errores.length>0?{errors:errores}:{resultado:'Ok'})
+    if(errores.length < products.length){
+
+      const productos = {products: existCart.products}
+      await cartManager.update(cid, productos)
+    }    
+    res.status(200).json(errores.length>0?{errors:errores}:{status:'success'})
   }
 })
 
-
+//actualizo el carrito con un producto
 router.put('/:cid/product/:pid', async (req, res) => {
   const cid = req.params.cid
   const pid = req.params.pid
   const {quantity} = req.body
 
-
   const existPrd = await productManager.getProductById(pid)
-  console.log(existPrd)
-  const existCart = await cartManager.getCartById(cid)
+  const existCart = await cartManager.getById(cid)
   if(!existPrd){
     res.status(404).json({ error: `The product with the id ${pid} was not found` }) 
     return
   }
-  
+
   if(existCart){
-    const update = await cartManager.updateCart(cid, pid,parseInt(quantity))
-    res.status(200).json(update)
+    const exisPrdCart = existCart?.products?.some(prd => prd._id._id.toString() == pid)
+        if(exisPrdCart){
+
+            existCart.products?.forEach(element => {
+
+                if (element._id._id.toString() == pid){
+                    element.quantity+= parseInt(quantity)
+                }
+            })
+
+        }  else {
+            const newProd = {'_id': pid, quantity:parseInt(quantity)}
+            existCart.products.push(newProd)
+        }
+        const productos = {products: existCart.products}
+
+    const update = await cartManager.update(cid, productos)
+    res.status(200).json({'status':'success'})
     return
   }else{
     res.status(404).json({ error: `The cart with the id ${cid} was not found` }) 
@@ -75,53 +103,52 @@ router.put('/:cid/product/:pid', async (req, res) => {
   }
 
 })
+//obtengo la cantidad de un producto del carrito
+router.get('/:cid/:pid', async(req, res)=>{
+  const {cid, pid} = req.params
+  const cartRes = await cartManager.getQuantityProductCart(cid, pid)
 
-router.get('/:cid', async(req, res)=>{
-  const id = req.params.cid
-  const cartRes = await cartManager.getCartById(id)
-  console.log(cartRes)
-  if (cartRes) {
-      res.send(cartRes)
+  if (cartRes !== null) {
+      let response = {'quantity': cartRes}
+      res.status(200).json(response)
       return
   }
   res.status(404).json({ error: `The cart with the id ${id} was not found` });  
-
+  
 })
-
-router.get('/user/:uid', async(req, res)=>{
-  const uid = req.params.uid
-  const cartRes = await cartManager.getCartByUser(uid)
-  console.log(cartRes)
+//recupero un carrito por su id
+router.get('/:cid', async(req, res)=>{
+  const cid = req.params.cid
+  const cartRes = await cartManager.getById(cid)
   if (cartRes) {
-      res.send(cartRes)
-      return
+    return res.send(cartRes)
+      
   }
-  res.status(404).json({ error: `The user with the id ${uid} does not have a cart` });  
+  res.status(404).json({ error: `The car with the id ${cid} not exist` });  
 
 })
 
-
+//elimino un carrito
 router.delete('/:id', async(req, res)=>{
   const id = req.params.id
-  const cart = await cartManager.getCartById(id)
+  const cart = await cartManager.getById(id)
   if (!cart){
      res.status(404).json({ error: `The cart with the id ${id} was not found` });
      return  
   }
-  await cartManager.deleteCart(id)
+  await cartManager.delete(id)
   res.sendStatus(200)
 })
 
+//elimino un producto del carrito
 router.delete('/:cid/product/:pid', async(req, res)=>{
   const cid = req.params.cid
   const pid = req.params.pid
 
-
-  const existCart = await cartManager.getCartById(cid)
+  const existCart = await cartManager.getById(cid)
   if(existCart){
     const update = await cartManager.deleteProductInCart(cid, pid)
-    console.log('update')
-    console.log(update)
+
     return res.sendStatus(200)
     
   }else{

@@ -1,48 +1,29 @@
-const fs = require('fs/promises')
-
 const cartModel = require('../models/cart.model')
 const productModel = require('../models/product.model')
 const userModel = require('../models/user.model')
+const BaseManager = require('./base.manager')
 
 
-class CartManager{
-    //ok
-    async addCart(){
-        // const user = uid
-        const products = []
-        const newCart= await cartModel.create({products})
-        return newCart
-        
+class CartManager extends BaseManager{
+
+    constructor(){
+        super(cartModel)
     }
     //ok
-    async getCartById(cartId){
+    // async addCart(){
+    //     const products = []
+    //     const newCart= await this.model.create({products})
+    //     return newCart
         
-        const cart = await cartModel.find({_id : cartId}).lean()
-
-        console.log('cart')
-
-        console.log(cart)
-        return cart? cart[0]:null
-    }
-
-    async getCartByUser(uid){
-        
-        const user = await userModel.find({_id: uid}).lean()
-        if(!user){
-            return null
-        }
-        const cart = await cartModel.find({user : uid}).lean()
-
-        
-        console.log(cart)
-        return cart? cart[0]:null
-    }
+    // }
+    //ok
+    // async getCartById(cartId){
+    //     const cart = await cartModel.find({_id : cartId}).lean()
+    //     return cart[0]
+    // }
 
     async updateCart(id, pid,quantity){
-
-        const cart = await cartModel.findOne({_id: id}).lean()
-        console.log(cart)
-        
+        const cart = await this.model.findOne({_id: id}).lean()
         const prod = await productModel.findOne({_id: pid}).lean()
 
         const existe = cart?.products?.some(prd => prd._id.toString() == prod._id.toString())
@@ -58,25 +39,25 @@ class CartManager{
         }  else {
             const newProd = {'_id': prod._id.toString(), quantity:parseInt(quantity)}
             cart.products.push(newProd)
-
-
         }
         const productos = {products: cart.products}
-        const result = await cartModel.updateOne({_id: id}, productos)
+        const result = await this.model.updateOne({_id: id}, productos)
 
-        return result.modifiedCount >=1? await cartModel.findOne({_id: id}).lean():null
+        return result.modifiedCount >=1? await this.model.findOne({_id: id}).lean():null
     }
 
-    async deleteCart(id){
-        const prdsNew= {id: id, products: []}
+    async getQuantityProductCart(id, pid){
+        // console.log({id,pid,quantity})
+        const cart = await this.model.findOne({_id: id}).lean()
 
-        const result = await cartModel.updateOne({_id:id},prdsNew)
-        return result
+        const prd = cart?.products?.filter(prd => prd._id.toString() == pid)
+        
+        return prd[0] ? prd[0].quantity : 0
     }
 
     async deleteProductInCart(id, pid){
         // console.log({id,pid,quantity})
-        const cart = await cartModel.findOne({_id: id}).lean()
+        const cart = await this.model.findOne({_id: id}).lean()
 
         const prod = await productModel.findOne({_id: pid}).lean()
 
@@ -87,8 +68,7 @@ class CartManager{
         const prdsCartNew= cart.products.filter(prd => prd._id.toString() != prod._id.toString())
 
         const cartNew= {_id: id, products: prdsCartNew}
-        const result = await cartModel.updateOne({_id: id}, cartNew)
-        console.log(result.modifiedCount)
+        const result = await this.model.updateOne({_id: id}, cartNew)
         return result.modifiedCount >=1? prdsCartNew:null
     }
 }

@@ -12,7 +12,6 @@ socket.on('cart-productos', (cart) => {
     let precioTotal = 0
 
     cart.products.forEach(item => {
-        console.log(item)
         nodo.innerHTML = nodo.innerHTML +`  <div key=${item._id._id} class="d-flex flex-row justify-content-between align-items-center border-bottom">
                                                 <img class="imgCarrito" src=${item._id.thumbnail} alt="Producto1"/>
                                                 <div class="d-flex flex-column columnaNombreCarrito w-50">

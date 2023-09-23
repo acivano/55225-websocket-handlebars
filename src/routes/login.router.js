@@ -11,13 +11,11 @@ const router = Router()
 const login = async(req, res) => {
   // console.log(req.body)
   const user = {user: req.body.user.toLowerCase(), password : req.body.password}   
-  console.log(user)
 
   try {
     
         const existing = await userManager.getUserByUsername( user.user)
-        console.log(user)
-        console.log(existing)
+
       
         if(!existing){
           return res.render('login', {error:'Usuario inexistente'})
@@ -26,7 +24,6 @@ const login = async(req, res) => {
         if(!isValidPassword(user.password, existing.password)){
           return res.render('login', {error:'Contraseña incorrecta'})
         }
-        // const cartExisting = await cartManager.getCartByUser(existing._id)
 
         req.session.user = {
           firstname: existing.firstname,
@@ -62,17 +59,14 @@ const signup =  async (req,res)=>{
       }
       if(user.password==user.password2){
           delete user.password2
-          const cart =  await cartManager.addCart()
+          const products = []
+          const cart =  await cartManager.add({products})
+
 
           const newUser ={...user, cart: cart._id, password: hashPassword(user.password)}
-          console.log(user)
-          console.log(newUser)
 
-          const createUsr = await userManager.addUser(newUser)
 
-          console.log('newcart')
-
-          console.log(cart)
+          const createUsr = await userManager.add(newUser)
           req.session.user = {
             firstname: createUsr.firstname,
             lastname: createUsr.lastname,
@@ -96,13 +90,11 @@ const signup =  async (req,res)=>{
   }
 }
 const resetpassword = async (req,res)=>{
-  console.log(req.body)
   const user = req.body
 
   try {
       const existing = await userManager.getUserByUsername(user.user)
-      console.log('resetpassword existing')
-      console.log(existing)
+
 
       if(!existing){
           return res.render('resetpassword', {error: 'EL usuario no existe.'})
@@ -111,13 +103,10 @@ const resetpassword = async (req,res)=>{
           delete user.password2
 
           const newUser ={...existing, password: hashPassword(user.password)}
-          console.log(user)
-          console.log(newUser)
+
 
           const createUsr = await userManager.updateUser(existing._id,newUser)
-          console.log('createUsr')
 
-          console.log(createUsr)
 
           if(createUsr.modifiedCount >=1 ){
             res.redirect('/login')
@@ -165,9 +154,7 @@ router.get('/profile', isAuth,(req, res) => {
 })
 router.get('/logout', isAuth, (req, res) => {
     const firstname = req.user.firstname
-    console.log('user LogOut')
 
-    console.log(firstname)
     req.logOut((err) =>{
       res.render('logout',{
         firstname

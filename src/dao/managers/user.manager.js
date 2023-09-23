@@ -1,14 +1,17 @@
-const fs = require('fs/promises')
 
 const userModel = require('../models/user.model')
+const BaseManager = require('./base.manager')
 
-class UserManager{
-    //ok
-    async addUser(user){
-
-        return await userModel.create(user)
-        
+class UserManager extends BaseManager{
+    constructor(){
+        super(userModel)
     }
+    //ok
+    // async addUser(user){
+
+    //     return await userModel.create(user)
+        
+    // }
     //ok
     async getUsers(){
         return userModel.find().lean()
@@ -19,15 +22,17 @@ class UserManager{
 
     async getUserById(id){
         const user = userModel.findOne({_id: id}).lean()
-        console.log( user)
         return user
     }
+    async update(id, entity) {
+        const result = await userModel.updateOne({ _id: id }, entity)
+    
+        return result
+      }
 
     async updateUser(id, usu){
-        console.log('ingresó', id, usu)
         const result = userModel.updateOne({_id: id}, usu)
-        console.log('result')
-        console.log(result)
+
 
         return result
     }

@@ -2,7 +2,7 @@ const { Router } = require('express')
 const userManager = require('../../dao/managers/user.manager')
 
 const router = Router()
-
+//creo o actualizo usuario
 router.post('/', async (req, res) => {
     const user =  req.body
     console.log(user)
@@ -11,23 +11,21 @@ router.post('/', async (req, res) => {
     console.log(existing)
     if (!existing) {
         
-        const created = await userManager.addUser(user)
+        const created = await userManager.add(user)
         res.send(created)
         return
     }
-    res.status(404).json({ error: `User ${user.user} alredy exists` })
     
+    const update = await userManager.update(existing._id,user)
+    res.send(user)
 
 })
-
+//obtengo usuario por id
 router.get('/:uid', async (req, res)=> {
     const uid = req.params.uid
-    const existing = await userManager.getUserById(uid)
-    console.log('existing')
-
+    const existing = await userManager.getById(uid)
     console.log(existing)
     if (!existing || existing == null) {
-        console.log('entró')
         res.status(404).json({ error: `The user with the id ${uid} was not found` })
         return
     }

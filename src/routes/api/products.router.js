@@ -42,7 +42,7 @@ router.get('/', async(req, res)=>{
 
 router.get('/:pid', async(req, res)=>{
     const id = req.params.pid
-    const prdRes = await productManager.getProductById(id)
+    const prdRes = await productManager.getById(id)
     if (prdRes) {
         res.send(prdRes)
         return
@@ -62,12 +62,15 @@ router.post('/', async(req, res)=>{
     if(body.status == undefined){
         body.status = true
     }
-    
-    const prdRes = await productManager.addProduct(body)
-    if (prdRes) {
-        res.status(201).json(prdRes)
-        return
+    const exist = await productManager.getProductByCode(body.code)
+    if(!exist){
+        const prdRes = await productManager.add(body)
+        if (prdRes) {
+            res.status(201).json(prdRes)
+            return
+        }
     }
+
     res.status(409).json({ error: `The product with the code ${body.code} alredy exists` });  
 
 })    
@@ -76,7 +79,7 @@ router.put('/:id', async(req, res)=>{
     const {body}  = req
     const id = req.params.id
 
-    const prd = await productManager.updateProduct(id, body)
+    const prd = await productManager.update(id, body)
     if(prd.matchedCount < 1){
         res.status(404).json({ error: `The product with the id ${id} was not found` });  
         return
@@ -87,12 +90,12 @@ router.put('/:id', async(req, res)=>{
 
 router.delete('/:id', async(req, res)=>{
     const id = req.params.id
-    const prd = await productManager.getProductById(id)
+    const prd = await productManager.getById(id)
     if (!prd){
        res.status(404).json({ error: `The product with the id ${id} was not found` });
        return  
     }
-    await productManager.deleteProduct(id)
+    await productManager.delete(id)
     res.sendStatus(200)
 
 })

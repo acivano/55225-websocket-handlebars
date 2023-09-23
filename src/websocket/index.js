@@ -3,15 +3,27 @@ const cartManager = require('../dao/managers/cart.manager')
 const chatManager = require('../dao/managers/chat.manager')
 
 async function socketManager(socket) {
-  
-  socket.on('cart', async(id) => {
-    const prdCart = await cartManager.getCartById(id)
+
+  async function getQuantityCart(id){
+    const prdCart = await cartManager.getById(id)
     console.log(prdCart)
     let quantity = 0
     prdCart.products.forEach(element => {
       console.log(element)
       quantity=quantity+element.quantity
     });
+    return quantity
+  }
+  
+  socket.on('cart', async(id) => {
+     const prdCart = await cartManager.getById(id)
+    // console.log(prdCart)
+    // let quantity = 0
+    // prdCart.products.forEach(element => {
+    //   console.log(element)
+    //   quantity=quantity+element.quantity
+    // });
+    const quantity = await getQuantityCart(id)
     console.log('quantity', quantity)
     socket.emit('quantity-cart-productos', quantity)
     socket.emit('cart-productos', prdCart)
@@ -43,7 +55,7 @@ async function socketManager(socket) {
     console.log(cid)
     console.log(pid)
     const result = await cartManager.deleteProductInCart(cid,pid)
-    const prdCart = await cartManager.getCartById(cid)
+    const prdCart = await cartManager.getById(cid)
     let quantity = 0
     console.log('prdCart')
 
@@ -57,7 +69,10 @@ async function socketManager(socket) {
 
 
   socket.on('addProduct', async (producto) => {
-    const newProductBack = await productManager.addProduct(producto)
+
+
+
+    const newProductBack = await productManager.add(producto)
     if(newProductBack){
       const products = await productManager.getProducts()
       socket.broadcast.emit('products',  products)
@@ -81,26 +96,37 @@ async function socketManager(socket) {
 
 
   socket.on('addProductoCarrito', async (param) => {
-    // const newCart = await cartManager.addCart()
-    // console.log('id')
-    // const id = newCart._id.toString()
 
-    //Hardcodeo un id del cart
-    const id = param.idCarrito
-    const idProducto = param.id
+    const cid = param.idCarrito
+    const pid = param.id
+    const quantity = 1
+    const existCart = await cartManager.getById(cid)
 
-    
-    const newProductBack = await cartManager.updateCart(id,idProducto,1)
-    console.log('newProductBack')
+    if(existCart){
 
-    console.log(newProductBack)
-    let quantity = 0
-    newProductBack.products?.forEach(element => {
-      quantity=quantity+element.quantity
-    });
-    socket.emit('quantity-cart-productos',  quantity)
+      const exisPrdCart = existCart?.products?.some(prd => prd._id._id.toString() == pid)
+          if(exisPrdCart){
+
+              existCart.products?.forEach(element => {
+
+                  if (element._id._id.toString() == pid){
+                      element.quantity+= parseInt(quantity)
+                  }
+              })
+
+          }  else {
+            const newProd = {'_id': pid, quantity:parseInt(quantity)}
+            existCart.products.push(newProd)
+          }
+          const productos = {products: existCart.products}
+
+      const update = await cartManager.update(cid, productos)
+      
+      const quantityCart = await getQuantityCart(cid)
+
+      socket.emit('quantity-cart-productos',  quantityCart)
+    }
   })
-
 
 }
 

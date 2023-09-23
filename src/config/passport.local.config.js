@@ -17,18 +17,16 @@ const signup = async (req , user , password, done) => {
         const existing = await userManager.getUserByUsername(_user.user)
 
         if(existing){
-            // return res.render('signup', {error: 'EL usuario ya existe.'})
-            console.log('EL usuario ya existe.')
             return done(null, false)
         }
         if(user.password==user.password2){
             delete user.password2
-            const cart =  await cartManager.addCart()
+            const products = []
+            const cart =  await cartManager.add({products})
 
             const newUser ={..._user, cart: cart._id, password: hashPassword(_user.password)}
-            console.log(newUser)
 
-            const createUsr = await userManager.addUser(newUser)
+            const createUsr = await userManager.add(newUser)
 
             const usu = {
                 firstname: createUsr.firstname,
@@ -37,24 +35,9 @@ const signup = async (req , user , password, done) => {
                 cart: createUsr.cart._id,
                 ...createUsr._doc
               }
-              console.log('usu')
 
-              console.log(usu)
             return done(null, usu)
-            // req.session.user = {
-            //   firstname: createUsr.firstname,
-            //   lastname: createUsr.lastname,
-            //   id: createUsr._id,
-            //   cart: cart._id,
-            //   ...createUsr._doc
-            // }
-          
-            // console.log(req.session)
-            // req.session.save((err) => {
-            //   if(!err) {
-            //     res.redirect('/')
-            //   }
-            // })    
+
         }else{
 
             // return res.render('signup', {error: 'Las contraseñas no coinciden.'})
@@ -77,13 +60,11 @@ const login = async(user, password, done) => {
         
         if(!existing){
             // return res.render('login', {error:'Usuario inexistente'})
-            console.log('Usuario inexistente')
             return done(null, false)
         }
         //user.password!=existing.password
         if(!isValidPassword(password, existing.password)){
             // return res.render('login', {error:'Contraseña incorrecta'})
-            console.log('Contraseña incorrecta')
             return done(null, false)
         }
         // const cartExisting = await cartManager.getCartByUser(existing._id)
@@ -94,9 +75,7 @@ const login = async(user, password, done) => {
             cart: existing.cart._id,
             ...existing
         }
-        console.log('_user')
 
-        console.log(_user)
 
         done(null, _user)
         // req.session.user = {

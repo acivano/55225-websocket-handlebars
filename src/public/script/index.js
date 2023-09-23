@@ -1,11 +1,9 @@
-console.log('se conectó')
 
 const socket = io()
 
 let idCarrito = document.querySelector('#carritoId')?.innerHTML
 
 socket.emit('products', {}) 
-console.log(idCarrito)
 if (idCarrito) {
     
     socket.emit('cart', idCarrito)    
@@ -19,9 +17,7 @@ if (idCarrito) {
 
 socket.on('products', (products) => {
     let nodopadre = document.getElementById("contenedorPadre")
-    console.log('nodopadre')
 
-    console.log(nodopadre)
     if(nodopadre){
         nodopadre.innerHTML = ''
 

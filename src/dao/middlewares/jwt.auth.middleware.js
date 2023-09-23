@@ -2,9 +2,7 @@ const jwt = require('jsonwebtoken')
 const { JWT_SECRET } = require('../../config/config.jwt')
 
 const jwtVerifyAuthToken = (req, res, next) =>{
-    console.log(req.headers)
     const authHeader = req.headers.authorization
-    console.log(authHeader)
 
     if(!authHeader){
         res.status(401).send({
@@ -18,7 +16,6 @@ const jwtVerifyAuthToken = (req, res, next) =>{
     try {
         const credentials =jwt.verify(token, JWT_SECRET)
         req.user = credentials
-        console.log(credentials)
 
         next()
     } catch (error) {

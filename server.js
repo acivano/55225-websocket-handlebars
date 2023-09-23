@@ -29,7 +29,6 @@
     const initPassportLocal = require('./src/config/passport.init.js')
     
     const socketManager = require('./src/websocket')
-    console.log(config)
 
 
     await mongoose.connect(config.MONGO_URL)
@@ -61,15 +60,7 @@
 
     app.use(async(req, res, next) =>{
         a = console.log(req.session, req.user)
-    //     if(req.session?.user){
-    //         req.user={
-    //             firstname: req.session.user.firstname,
-    //             lastname: req.session.user.lastname,
-    //             role: req.session.user.role,
-    //             user: req.session.user.user,
-    //             cart: req.session.user.cart
-    //         }
-    //     }
+
         next()
     })
     

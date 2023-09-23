@@ -11,16 +11,13 @@ const GitHubAccessConfig ={
 }
 
 const gitHubUsers = async(profile, done)=>{
-    console.log(profile)
     const {name, email} = profile._json
 
     const _user= await userManager.getUserByUsername(email)
 
     if(!_user){
-        console.log('Usuario no encontrado')
-
-        const cart =  await cartManager.addCart()
-        console.log(cart)
+        const products = []
+        const cart =  await cartManager.add({products})
         const newUser ={
             firstname: name.split(" ")[0],
             lastname: name.split(" ")[1],
@@ -31,7 +28,7 @@ const gitHubUsers = async(profile, done)=>{
 
         }
 
-        const createUsr = await userManager.addUser(newUser)
+        const createUsr = await userManager.add(newUser)
 
 
         const usu = {
@@ -41,13 +38,10 @@ const gitHubUsers = async(profile, done)=>{
             cart: createUsr.cart._id,
             ...createUsr._doc
           }
-          console.log('usu')
 
-          console.log(usu)
         return done(null, usu)
     }
 
-    console.log("el usuario ya existe")
     return done(null, _user)
 }
 

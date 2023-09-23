@@ -7,14 +7,12 @@ class ChatManager{
     async addMessage(message){
         const fecha = new Date()
         const messageNew = {user: message.user, text: message.message, datetime: fecha.toLocaleTimeString('en-US') }
-        console.log(messageNew)
         return await chatModel.create(messageNew)
         
     }
     //ok
     async getMessages(){
         const messages = await chatModel.find().lean()
-        console.log(messages)
         return messages
     }
 

@@ -24,6 +24,8 @@ router.get('/', async (req, res) => {
 router.get('/realtimeproducts', (req, res) => {
   res.render('realTimeProducts')
 })
+
+//agregar middleware isAuth
 router.get('/cart/:id', isAuth, async (req, res) => {
   const id = req.params.id
   console.log(id)

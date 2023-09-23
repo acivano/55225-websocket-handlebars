@@ -1,8 +1,11 @@
-const fs = require('fs/promises')
 
 const productModel = require('../models/product.model')
+const BaseManager = require('./base.manager')
 
-class ProductManager{
+class ProductManager extends BaseManager{
+    constructor(){
+        super(productModel)
+    }
     //ok
     async addProduct({code, title, description, price, thumbnail, stock, status, category}){
         const exist = await productModel.findOne({code : code})
@@ -27,16 +30,14 @@ class ProductManager{
     //ok
     async getProducts(page =1, limit=5, sort=null, query=null){
         if (sort||query) {
-            console.log(sort,query)
             const resultado = await productModel.paginate({$or:[{title :{$regex : query, $options : 'i'}},{category :{$regex : query,$options : 'i'}},{description :{$regex : query,$options : 'i'}},{code :{$regex : query,$options : 'i'}}] }, {limit, page, lean:true, sort:{price: sort}})
             return resultado
         }
         return await productModel.paginate({}, {limit, page, lean:true})
-
     }
     //ok
-    async getProductById(productId){
-        const product = await productModel.find({_id : productId}).lean()
+    async getProductByCode(code){
+        const product = await productModel.find({code : code}).lean()
         // console.log(product[0])
         return product[0]
     }
