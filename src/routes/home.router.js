@@ -1,9 +1,9 @@
 const { Router } = require('express')
-const productManager = require('../dao/managers/product.manager.js')
-const cartManager = require('../dao/managers/cart.manager.js')
+const productManager = require('../managers/product.manager.js')
+const cartManager = require('../managers/cart.manager.js')
 
-const userManager = require('../dao/managers/user.manager.js')
-const {isAuth, isAuthLogin, isAuthAdmin} = require('../dao/middlewares/auth.middleware.js')
+const userManager = require('../managers/user.manager.js')
+const {isAuth, isAuthLogin, isAuthAdmin} = require('../middlewares/auth.middleware.js')
 
 
 const router = Router()

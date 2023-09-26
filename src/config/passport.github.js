@@ -1,6 +1,6 @@
 const GithubStrategy =  require('passport-github2')
-const userManager= require('../dao/managers/user.manager')
-const cartManager= require('../dao/managers/cart.manager')
+const userManager= require('../managers/user.manager')
+const cartManager= require('../managers/cart.manager')
 const config = require('../config/config')
 
 

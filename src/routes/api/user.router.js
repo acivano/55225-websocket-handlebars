@@ -1,5 +1,5 @@
 const { Router } = require('express')
-const userManager = require('../../dao/managers/user.manager')
+const userManager = require('../../managers/user.manager')
 
 const router = Router()
 //creo o actualizo usuario

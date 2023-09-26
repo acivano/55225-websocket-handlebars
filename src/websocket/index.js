@@ -1,6 +1,7 @@
-const productManager = require('../dao/managers/product.manager')
-const cartManager = require('../dao/managers/cart.manager')
-const chatManager = require('../dao/managers/chat.manager')
+const productManager = require('../managers/product.manager')
+const cartManager = require('../managers/cart.manager')
+const chatManager = require('../managers/chat.manager')
+const { response } = require('express')
 
 async function socketManager(socket) {
 
@@ -50,6 +51,12 @@ async function socketManager(socket) {
   // socket.on('cart-productos', (id) => {
   //   console.log('petición productos')
   // })
+
+  socket.on('generateTicket', async(obj) => {
+    const actualiza = await updateCartFront(obj.id)
+  })
+
+
   socket.on('delteProduct', async(obj) =>{
     const {cid, pid} = obj
     console.log(cid)
@@ -66,6 +73,19 @@ async function socketManager(socket) {
     socket.emit('quantity-cart-productos',  quantity)
     socket.emit('cart-productos', prdCart)
   })
+
+  async function updateCartFront(cid){
+    const prdCart = await cartManager.getById(cid)
+    let quantity = 0
+    console.log('prdCart')
+
+    console.log(prdCart)
+    prdCart.products.forEach(element => {
+      quantity=quantity+element.quantity
+    });
+    socket.emit('quantity-cart-productos',  quantity)
+    socket.emit('cart-productos', prdCart)
+  }
 
 
   socket.on('addProduct', async (producto) => {

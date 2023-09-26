@@ -6,15 +6,19 @@ const LoginRoutes = require('./login.router')
 
 const HomeRoutes = require('./home.router')
 const { jwtRoutes } = require('./api/auth.router')
-const { jwtVerifyAuthToken } = require('../dao/middlewares/jwt.auth.middleware')
+const { jwtVerifyAuthToken } = require('../middlewares/jwt.auth.middleware')
+const NotificationRoutes = require('./api/notifications.router')
+
 
 
 const api = Router()
 
-api.use('/products', ProductRouter)
-api.use('/user', jwtVerifyAuthToken,UserRouter)
 //agregar jwtVerifyAuthToken
-api.use('/carts', CartRouter)
+api.use('/products',ProductRouter)
+api.use('/user',UserRouter)
+api.use('/carts',CartRouter)
+api.use('/notification', NotificationRoutes)
+
 
 api.use('/jwtAuth', jwtRoutes)
 

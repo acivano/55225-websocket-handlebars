@@ -1,8 +1,8 @@
 const passport = require('passport')
 const local = require('passport-local')
 
-const userManager = require('../dao/managers/user.manager')
-const cartManager = require('../dao/managers/cart.manager')
+const userManager = require('../managers/user.manager')
+const cartManager = require('../managers/cart.manager')
 
 const {hashPassword, isValidPassword}= require('../utils/password.utils')
 

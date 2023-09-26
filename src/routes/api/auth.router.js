@@ -4,7 +4,7 @@ const { isValidPassword } = require('../../utils/password.utils')
 const passport = require('passport')
 const { generateToken } = require('../../utils/generate.token')
 const e = require('express')
-const userManager = require('../../dao/managers/user.manager')
+const userManager = require('../../managers/user.manager')
 
 
 router.post('/login', async (req, res) => {

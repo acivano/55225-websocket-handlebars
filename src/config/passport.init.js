@@ -1,5 +1,5 @@
 const passport = require('passport')
-const userManager= require('../dao/managers/user.manager')
+const userManager= require('../managers/user.manager')
 
 const {LocalStrategy, signup, login} = require("./passport.local.config")
 const {GithubStrategy, GitHubAccessConfig, profileGitHubController, strategyName} = require('../config/passport.github')

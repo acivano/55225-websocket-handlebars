@@ -1,5 +1,5 @@
 const { faker } = require('@faker-js/faker');
-const productModel = require('../../dao/models/product.model')
+const productModel = require('../../models/product.model')
 const mongoose = require('mongoose')
 
 function generateUsersRecord(count) {

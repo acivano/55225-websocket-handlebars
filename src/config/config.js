@@ -4,5 +4,10 @@ module.exports = {
     GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
     PORT: process.env.PORT,
     URL: process.env.URL,
-    GITHUB_STRATEGY_NAME: process.env.GITHUB_STRATEGY_NAME
+    PERSISTANCE: process.env.MANAGER_PERSISTANCE,
+    GITHUB_STRATEGY_NAME: process.env.GITHUB_STRATEGY_NAME,
+    mail: {
+      GMAIL_ADDRESS: process.env.GMAIL_ADDRESS,
+      GMAIL_PWD: process.env.GMAIL_PWD
+    }
   }

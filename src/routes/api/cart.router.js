@@ -1,9 +1,10 @@
 const { Router } = require('express')
 
 const router = Router()
-const cartManager = require('../../dao/managers/cart.manager')
-const productManager = require('../../dao/managers/product.manager')
-const userManager = require('../../dao/managers/user.manager')
+const cartManager = require('../../managers/cart.manager')
+const productManager = require('../../managers/product.manager')
+const userManager = require('../../managers/user.manager')
+const ticketManager = require('../../managers/ticket.manager')
 
 //le actualizo el carrito al usuario
 router.post('/:uid' , async(req, res)=>{
@@ -62,6 +63,93 @@ router.post('/:cid/products' , async(req, res)=>{
     }    
     res.status(200).json(errores.length>0?{errors:errores}:{status:'success'})
   }
+})
+
+router.post('/:cid/ticket' , async(req, res)=>{
+  const cid = req.params.cid
+  const cart = await cartManager.getById(cid)
+
+  if(!cart){return res.sendStatus(404)}
+  
+  const productsCart = cart.products
+  const newProductsCart = []
+  // _id: { type: Schema.Types.ObjectId, ref: 'products' },
+  // quantity: { type: Number, default: 0 }
+  const productsTicket = []
+  
+  for (prd of productsCart){
+
+    const prodData = await productManager.getById(prd._id._id)
+    console.log(prodData)
+
+    if(prodData.stock == 0){
+      newProductsCart.push({
+        _id: prodData._id,
+        quantity: prd.quantity
+      })
+    }else{
+      console.log('stock', prodData.stock)
+      console.log('quantity', prd.quantity)
+
+      const toBuy = prodData.stock >= prd.quantity ? prd.quantity : prodData.stock
+
+      productsTicket.push({
+        id: prodData._id,
+        price: prodData.price,
+        quantity: toBuy
+      })
+
+      prodData.stock = prodData.stock - toBuy
+
+      await prodData.save()
+
+      if (toBuy !== prd.quantity){
+        newProductsCart.push({
+          _id: prodData._id,
+          quantity: prd.quantity - toBuy
+        })
+      }
+    }
+  }
+  
+  console.log('newProductsCart', newProductsCart)
+  const updateCart = await cartManager.update(cid, {products: newProductsCart})
+  const code = await ticketManager.getNextTicket()
+  console.log(code)
+
+  const ticket = {
+    user: req.session.user?.id ?? "",
+    code: code+1,
+    amount: productsTicket.reduce((total, {price, quantity}) => (price * quantity) + total, 0),
+    products: productsTicket.map(({id, quantity})=> {
+      return {
+        _id : id,
+        quantity
+      }
+    })
+  }
+
+  
+  console.log(ticket)
+  const newTicket = await ticketManager.add(ticket)
+  
+  const requestOptions = {
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body:JSON.stringify({
+      to: "agustincivano@gmail.com",//hardcodeo por las dudas
+      from: "no-reply@pruebascoderhoyse.com",
+      subject: 'Tu compra fue confirmada',
+      body: `<p>Compra confirmada $${ticket.amount} - Codigo compra: ${ticket.code}<p>`
+    })
+  }
+  const response = await fetch('http://localhost:8081/api/notification/mail', requestOptions)
+
+  res.send(newTicket)
+
 })
 
 //actualizo el carrito con un producto

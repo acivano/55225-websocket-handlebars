@@ -30,13 +30,14 @@ socket.on('cart-productos', (cart) => {
     messagesEl.appendChild(nodo)
 
     let total = document.createElement("div")
-    total.classList='container d-flex flex-column justify-content-between mt-3d-flex flex-column justify-content-center w-75 align-self-center'
+    total.classList='container d-flex flex-column justify-content-between mt-3 d-flex flex-column justify-content-center w-75 align-self-center'
     total.innerHTML = `
                             <div class='d-flex flex-column justify-content-center align-self-end w-50'>
                                 <div class="d-flex flex-column justify-content-center align-self-center">
                                     <p>Total:</p>
                                     <h2 class='h1'id='total'>$${precioTotal}</h2> 
                                 </div>
+                                <button  class="botonPersonalizado mt-1" onclick="generateTicket('${cart._id.toString()}')">Finalizar Compra</button>
                             </div>`
     totalEl.appendChild(total) 
 
@@ -44,4 +45,18 @@ socket.on('cart-productos', (cart) => {
 
 function deleteProduct(cid, pid) {
     socket.emit('delteProduct', {cid, pid})    
+} 
+async function generateTicket(id) {
+    // 
+    console.log('generateTicket')
+
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+    }
+    const response = await fetch(`/api/carts/${id}/ticket`, requestOptions)
+
+    
+    const data = console.log(response.json())
+    socket.emit('generateTicket', {id})  
 } 
