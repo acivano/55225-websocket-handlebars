@@ -13,13 +13,16 @@ router.post('/login', async (req, res) => {
     try {
 
         const userDB = await userManager.getUserByUsername(user) 
-        console.log(userDB)
+
+        
         if(!userDB || !isValidPassword(password, userDB?.password)){
             return res.send({
-                status:'fail'
+                status:'fail',
+                error:'Contraseña incorrecta'
             })
         }
-    
+        delete userDB.password
+
         const token = generateToken(userDB)
         return res.send({
             status: 'success',

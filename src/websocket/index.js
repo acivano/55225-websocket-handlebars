@@ -1,4 +1,7 @@
-const productManager = require('../managers/product.manager')
+// const productManager = require('../managers/product.manager')
+const ManagerFactory = require('../managers/manager.factory')
+const productManager = ManagerFactory.getManagerInstance("products")
+
 const cartManager = require('../managers/cart.manager')
 const chatManager = require('../managers/chat.manager')
 const { response } = require('express')
@@ -7,10 +10,8 @@ async function socketManager(socket) {
 
   async function getQuantityCart(id){
     const prdCart = await cartManager.getById(id)
-    console.log(prdCart)
     let quantity = 0
     prdCart.products.forEach(element => {
-      console.log(element)
       quantity=quantity+element.quantity
     });
     return quantity
@@ -25,18 +26,14 @@ async function socketManager(socket) {
     //   quantity=quantity+element.quantity
     // });
     const quantity = await getQuantityCart(id)
-    console.log('quantity', quantity)
     socket.emit('quantity-cart-productos', quantity)
     socket.emit('cart-productos', prdCart)
   
   })
 
   socket.on('products', async()=>{
-    console.log('se conecto producto')
     const products = await productManager.getProducts()
-    console.log('socker products')
-    // console.log(products)
-    socket.emit('products',  products.docs)
+    socket.emit('products',  products)
   })
 
   const messages = await chatManager.getMessages()
@@ -59,14 +56,10 @@ async function socketManager(socket) {
 
   socket.on('delteProduct', async(obj) =>{
     const {cid, pid} = obj
-    console.log(cid)
-    console.log(pid)
+
     const result = await cartManager.deleteProductInCart(cid,pid)
     const prdCart = await cartManager.getById(cid)
     let quantity = 0
-    console.log('prdCart')
-
-    console.log(prdCart)
     prdCart.products.forEach(element => {
       quantity=quantity+element.quantity
     });
@@ -77,9 +70,6 @@ async function socketManager(socket) {
   async function updateCartFront(cid){
     const prdCart = await cartManager.getById(cid)
     let quantity = 0
-    console.log('prdCart')
-
-    console.log(prdCart)
     prdCart.products.forEach(element => {
       quantity=quantity+element.quantity
     });

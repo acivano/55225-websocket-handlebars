@@ -75,7 +75,6 @@ const signup =  async (req,res)=>{
             ...createUsr._doc
           }
         
-          console.log(req.session)
           req.session.save((err) => {
             if(!err) {
               res.redirect('/')

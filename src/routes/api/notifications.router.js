@@ -1,35 +1,8 @@
 const { Router } = require('express')
-const mailSenderService = require('../../services/mail.sender.service')
-
+const { mailNotificationController } = require('../../controllers/mail.controller')
 const router = Router()
 
-router.post('/mail', async (req, res) => {
-
-    console.log(req.body)
-    const to = req.body.to
-    const from = req.body.from
-    const subject = req.body.subject
-    const body = req.body.body
-    console.log('aaa')
-  // ejecutar send de mail.sender
-  const template = `
-
-    <p>Tu pedido en la tienda<p>
-    <br/>
-    <ol>
-      <li>Producto 1</li>
-      <li>Producto 2</li>
-    </ol>
-
-    <p>Tiene status <span style="color: red">Incompleto</span></p>
-
-    <img src="cid:perrito" />
-  `
-  await mailSenderService.send(to, from, subject, body)
-//   .send('agustincivano@gmail.com', template)
-
-  res.send('OK')
-})
+router.post('/mail', mailNotificationController)
 
 
 module.exports = router

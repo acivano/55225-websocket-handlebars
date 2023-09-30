@@ -1,6 +1,7 @@
 
 function isAuth(req, res, next) {
     if (req.isAuthenticated()) {
+      console.log('esta autenticado')
       next()
       return
     }
@@ -9,6 +10,8 @@ function isAuth(req, res, next) {
 }
 function isAuthLogin(req, res, next) {
     if (!req.isAuthenticated()) {
+      console.log('no esta autenticado')
+
       next()
       return
     }
@@ -17,11 +20,23 @@ function isAuthLogin(req, res, next) {
 }
 function isAuthAdmin(req, res, next) {
     if (req.user.role =='Admin') {
+      console.log('es admin')
+
       next()
       return
     }
   
     res.redirect('/')
 }
+function isAuthNotAdmin(req, res, next) {
+  if (req.user.role !=='Admin') {
+    console.log('no es admin')
 
-module.exports = {isAuth, isAuthLogin, isAuthAdmin}
+    next()
+    return
+  }
+
+  res.redirect('/')
+}
+
+module.exports = {isAuth, isAuthLogin, isAuthAdmin, isAuthNotAdmin}

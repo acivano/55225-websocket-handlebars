@@ -17,7 +17,6 @@ const init =()=>{
     })
     passport.deserializeUser(async(_id, done)=>{
         const user = await userManager.getUserById(_id)
-        console.log('userDeserialize')
         const _user = {            
             ...user
         }

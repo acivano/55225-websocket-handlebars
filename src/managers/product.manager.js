@@ -30,10 +30,16 @@ class ProductManager extends BaseManager{
     //ok
     async getProducts(page =1, limit=5, sort=null, query=null){
         if (sort||query) {
-            const resultado = await productModel.paginate({$or:[{title :{$regex : query, $options : 'i'}},{category :{$regex : query,$options : 'i'}},{description :{$regex : query,$options : 'i'}},{code :{$regex : query,$options : 'i'}}] }, {limit, page, lean:true, sort:{price: sort}})
-            return resultado
+            const resultado = await productModel.paginate({$and:[{$or:[{title :{$regex : query, $options : 'i'}},{category :{$regex : query,$options : 'i'}},{description :{$regex : query,$options : 'i'}},
+                                                            {code :{$regex : query,$options : 'i'}}]},{stock:{$ne: 0}}]} ,{limit, page, lean:true, sort:{price: sort}} )
+
+                                                            
+            console.log(resultado)                                                
+            return resultado.docs
         }
-        return await productModel.paginate({}, {limit, page, lean:true})
+        const productos = await productModel.paginate({stock:{$ne: 0}}, {limit, page, lean:true})
+        console.log(productos)
+        return productos.docs
     }
     //ok
     async getProductByCode(code){

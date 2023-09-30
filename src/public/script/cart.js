@@ -47,16 +47,19 @@ function deleteProduct(cid, pid) {
     socket.emit('delteProduct', {cid, pid})    
 } 
 async function generateTicket(id) {
-    // 
-    console.log('generateTicket')
 
-    const requestOptions = {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' }
-    }
-    const response = await fetch(`/api/carts/${id}/ticket`, requestOptions)
-
+    try {
+        const requestOptions = {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' }
+        }
+        const response = await fetch(`/api/carts/${id}/ticket`, requestOptions)
     
-    const data = console.log(response.json())
-    socket.emit('generateTicket', {id})  
+        console.log(response)
+        socket.emit('generateTicket', {id})  
+    } catch (error) {
+        console.log(error)
+        
+    }
+    
 } 

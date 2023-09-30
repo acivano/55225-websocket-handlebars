@@ -13,10 +13,12 @@ const NotificationRoutes = require('./api/notifications.router')
 
 const api = Router()
 
-//agregar jwtVerifyAuthToken
-api.use('/products',ProductRouter)
-api.use('/user',UserRouter)
+//agregar jwtVerifyAuthToken,
+api.use('/products',jwtVerifyAuthToken,ProductRouter)
+api.use('/user',jwtVerifyAuthToken,UserRouter)
 api.use('/carts',CartRouter)
+api.use('/ticket',jwtVerifyAuthToken,CartRouter)
+
 api.use('/notification', NotificationRoutes)
 
 

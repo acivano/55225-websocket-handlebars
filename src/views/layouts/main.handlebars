@@ -26,20 +26,28 @@
                         </li>
                         {{#if user}}
                             <li class="nav-item">
-                                <a class="nav-link navHover txtColor" id="carritoId" href="">{{user.cart}}</a>
+                                <a class="nav-link navHover txtColor display-none" id="carritoId" href="">{{user.cart}}</a>
                             </li>
-                            <li class="nav-item ">
-                                <a class="nav-link navHover txtColor" href="/chat">Chat</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link navHover txtColorCarrito carrito" id="carthref" href="/cart/{{user.cart}}" > <i class="bi bi-cart-check"></i><span id="cantidadEnCarrito" class="badge rounded-pill bg-danger notificacion">0</span></a>                            
-                            </li>
+                            
+
                             <li class="nav-item ">
                                 <a class="nav-link navHover txtColor" href="/profile">My Profile</a>
                             </li>
                             <li class="nav-item ">
                                 <a class="nav-link navHover txtColor" href="/logout">Log-out</a>
                             </li>
+                            {{#if user.isAdmin}}
+                                <li class="nav-item ">
+                                    <a class="nav-link navHover txtColor" href="/addProduct">New Product</a>
+                                </li>
+                            {{else}}
+                                <li class="nav-item">
+                                    <a class="nav-link navHover txtColorCarrito carrito" id="carthref" href="/cart/{{user.cart}}" > <i class="bi bi-cart-check"></i><span id="cantidadEnCarrito" class="badge rounded-pill bg-danger notificacion">0</span></a>                            
+                                </li>
+                                <li class="nav-item ">
+                                    <a class="nav-link navHover txtColor" href="/chat">Chat</a>
+                                </li>
+                            {{/if}}
                         {{else}}
                             <li class="nav-item ">
                                 <a class="nav-link navHover txtColor" href="/login">Login</a>
@@ -49,11 +57,7 @@
                             </li>
                             
                         {{/if}}
-                        {{#if user.isAdmin}}
-                            <li class="nav-item ">
-                                <a class="nav-link navHover txtColor" href="/addProduct">Admin</a>
-                            </li>
-                         {{/if}}
+
                        
                     </ul>
                 </div>

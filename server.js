@@ -7,13 +7,14 @@
     program.parse()
   
     const { env } = program.opts()
+
     const path = require('path')
     const dotenv = require('dotenv')
     
     dotenv.config({
       path: path.join(__dirname, env === 'development' ? '.env.development' : '.env')
     })
-    console.log(env)
+    // console.log(env)
     const config = require('./src/config/config')
 
     const express = require('express')
@@ -59,7 +60,7 @@
     app.use(passport.session())
 
     app.use(async(req, res, next) =>{
-        a = console.log(req.session, req.user)
+        // a = console.log(req.session, req.user)
 
         next()
     })
