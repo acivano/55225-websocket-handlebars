@@ -9,6 +9,7 @@ function isAuth(req, res, next) {
     res.redirect('/login')
 }
 function isAuthLogin(req, res, next) {
+  console.log(req)
     if (!req.isAuthenticated()) {
       console.log('no esta autenticado')
 

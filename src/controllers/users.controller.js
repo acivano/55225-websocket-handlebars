@@ -1,4 +1,5 @@
-const userManager = require('../managers/user.manager')
+const ManagerFactory = require('../managers/manager.factory')
+const userManager = ManagerFactory.getManagerInstance("users")
 
 const updateUserController = async (req, res) => {
     const user =  req.body

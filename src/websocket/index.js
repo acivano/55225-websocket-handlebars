@@ -1,9 +1,8 @@
 // const productManager = require('../managers/product.manager')
 const ManagerFactory = require('../managers/manager.factory')
+const cartManager = ManagerFactory.getManagerInstance("carts")
 const productManager = ManagerFactory.getManagerInstance("products")
-
-const cartManager = require('../managers/cart.manager')
-const chatManager = require('../managers/chat.manager')
+const chatManager = ManagerFactory.getManagerInstance("chat")
 const { response } = require('express')
 
 async function socketManager(socket) {

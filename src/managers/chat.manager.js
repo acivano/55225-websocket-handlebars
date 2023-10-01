@@ -1,8 +1,6 @@
-const fs = require('fs/promises')
-
 const chatModel = require('../models/chat.model')
 
-class ChatManager{
+class chatManager{
     //ok
     async addMessage(message){
         const fecha = new Date()
@@ -18,4 +16,4 @@ class ChatManager{
 
 }
 
-module.exports = new ChatManager()
+module.exports = new chatManager()

@@ -51,6 +51,7 @@ const getProductByIdController = async(req, res)=>{
 }
 const newProductController = async(req, res)=>{
     const {body}  = req
+    console.log(body)
 
     if(!body.title || !body.description || !body.price || !body.thumbnail || !body.stock || !body.code || !body.category  ){
         res.status(404).json({error:'Todos los datos son obligatorios'})

@@ -1,8 +1,8 @@
 const passport = require('passport')
 const local = require('passport-local')
-
-const userManager = require('../managers/user.manager')
-const cartManager = require('../managers/cart.manager')
+const ManagerFactory = require('../managers/manager.factory')
+const cartManager = ManagerFactory.getManagerInstance("carts")
+const userManager = ManagerFactory.getManagerInstance("users")
 
 const {hashPassword, isValidPassword}= require('../utils/password.utils')
 

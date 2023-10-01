@@ -4,7 +4,7 @@ const userModel = require('../models/user.model')
 const BaseManager = require('./base.manager')
 
 
-class CartManager extends BaseManager{
+class cartManager extends BaseManager{
 
     constructor(){
         super(cartModel)
@@ -73,4 +73,4 @@ class CartManager extends BaseManager{
     }
 }
 
-module.exports = new CartManager()
+module.exports = new cartManager()

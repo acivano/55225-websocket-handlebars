@@ -1,6 +1,10 @@
 const GithubStrategy =  require('passport-github2')
+const ManagerFactory = require('../managers/manager.factory')
+const cartManager = ManagerFactory.getManagerInstance("carts")
+
 const userManager= require('../managers/user.manager')
-const cartManager= require('../managers/cart.manager')
+
+
 const config = require('../config/config')
 
 

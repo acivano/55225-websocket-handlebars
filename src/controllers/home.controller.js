@@ -3,7 +3,7 @@
 const homerViewController = async (req, res) => {
   // res.sendFile(path.join(__dirname, '../public/index.html'))
   // const randomId = getRandomNumber(0, products.length - 1)
-
+  // console.log('homerViewController')
   res.render('home', {
     user: req.user ?  {
       ...req.user,
@@ -16,7 +16,7 @@ const realTimeProductsViewController = (req, res) => {
 }
 const cartViewController = async (req, res) => {
   const id = req.params.id
-  console.log(id)
+  // console.log(id)
   res.render('cart',{id,
     user: req.user ?  {
       ...req.user,

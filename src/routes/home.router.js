@@ -1,5 +1,4 @@
 const { Router } = require('express')
-// const productManager = require('../managers/product.manager.js')
 const {homerViewController, realTimeProductsViewController, cartViewController, addProductViewController, chatViewController} = require('../controllers/home.controller')
 const {isAuth, isAuthLogin, isAuthAdmin, isAuthNotAdmin} = require('../middlewares/auth.middleware.js')
 const router = Router()

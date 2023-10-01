@@ -1,13 +1,14 @@
-const cartManager = require('../managers/cart.manager')
+const config = require('../config/config')
 const ManagerFactory = require('../managers/manager.factory')
 const productManager = ManagerFactory.getManagerInstance("products")
+const cartManager = ManagerFactory.getManagerInstance("carts")
 
-const userManager = require('../managers/user.manager')
-const ticketManager = require('../managers/ticket.manager')
+const userManager = ManagerFactory.getManagerInstance("users")
+const ticketManager = ManagerFactory.getManagerInstance("tickets")
 
 const updateCartController = async(req, res)=>{
     const uid = req.params.uid
-    const user = await userManager.getUserById(uid)
+    const user = await userManager.getById(uid)
   
     const products = []
     const response = await cartManager.add({products})
@@ -17,83 +18,85 @@ const updateCartController = async(req, res)=>{
     res.status(201).json({'status':'success'})
 }
 const createTicketController = async(req, res)=>{
-const cid = req.params.cid
-const cart = await cartManager.getById(cid)
+    const cid = req.params.cid
+    const cart = await cartManager.getById(cid)
+    // console.log(cart)
 
-if(!cart){return res.sendStatus(404)}
+    if(!cart){return res.sendStatus(404)}
 
-const productsCart = cart.products
-const newProductsCart = []
-// _id: { type: Schema.Types.ObjectId, ref: 'products' },
-// quantity: { type: Number, default: 0 }
-const productsTicket = []
+    const productsCart = cart.products
+    const newProductsCart = []
+    // _id: { type: Schema.Types.ObjectId, ref: 'products' },
+    // quantity: { type: Number, default: 0 }
+    const productsTicket = []
 
-for (prd of productsCart){
-    console.log('cada producto')
+    for (prd of productsCart){
+        // console.log('cada producto')
 
-    const prodData = await productManager.getById(prd._id._id)
+        const prodData = await productManager.getById(prd._id)
+        // console.log(prodData)
 
-    if(prodData.stock == 0){
-    newProductsCart.push({
-        _id: prodData._id,
-        quantity: prd.quantity
-    })
-    }else{
-    const toBuy = prodData.stock >= prd.quantity ? prd.quantity : prodData.stock
+        if(prodData.stock == 0){
+            newProductsCart.push({
+                _id: prodData._id,
+                quantity: prd.quantity
+            })
+        }else{
+            const toBuy = prodData.stock >= prd.quantity ? prd.quantity : prodData.stock
 
-    productsTicket.push({
-        id: prodData._id,
-        price: prodData.price,
-        quantity: toBuy
-    })
+            productsTicket.push({
+                id: prodData._id,
+                price: prodData.price,
+                quantity: toBuy
+            })
 
-    prodData.stock = prodData.stock - toBuy
+            prodData.stock = prodData.stock - toBuy
 
-    await prodData.save()
+            await productManager.update(prodData._id, prodData)
 
-    if (toBuy !== prd.quantity){
-        newProductsCart.push({
-        _id: prodData._id,
-        quantity: prd.quantity - toBuy
+            if (toBuy !== prd.quantity){
+                newProductsCart.push({
+                _id: prodData._id,
+                quantity: prd.quantity - toBuy
+                })
+            }
+        }
+    }
+
+    const updateCart = await cartManager.update(cid, {products: newProductsCart})
+    const code = await ticketManager.getNextTicket()
+    // console.log(req.user)
+
+    const ticket = {
+        user: req.user?._id ?? "",
+        code: code+1,
+        amount: productsTicket.reduce((total, {price, quantity}) => (price * quantity) + total, 0),
+        products: productsTicket.map(({id, quantity})=> {
+        return {
+            _id : id,
+            quantity
+        }
         })
     }
+
+        const newTicket = await ticketManager.add(ticket)
+
+    const requestOptions = {
+        method: 'POST',
+        headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+        },
+        body:JSON.stringify({
+        to: "agustincivano@gmail.com",//hardcodeo por las dudas
+        from: "no-reply@pruebascoderhoyse.com",
+        subject: 'Tu compra fue confirmada',
+        body: `<p>Compra confirmada $${ticket.amount} - Codigo compra: ${ticket.code}<p>`
+        })
     }
-}
+    const response = await fetch(`http://${config.URL}:${config.PORT}/api/notification/mail`, requestOptions)
 
-const updateCart = await cartManager.update(cid, {products: newProductsCart})
-const code = await ticketManager.getNextTicket()
-console.log(req.user)
-
-const ticket = {
-    user: req.user?._id ?? "",
-    code: code+1,
-    amount: productsTicket.reduce((total, {price, quantity}) => (price * quantity) + total, 0),
-    products: productsTicket.map(({id, quantity})=> {
-    return {
-        _id : id,
-        quantity
-    }
-    })
-}
-
-    const newTicket = await ticketManager.add(ticket)
-
-const requestOptions = {
-    method: 'POST',
-    headers: {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json'
-    },
-    body:JSON.stringify({
-    to: "agustincivano@gmail.com",//hardcodeo por las dudas
-    from: "no-reply@pruebascoderhoyse.com",
-    subject: 'Tu compra fue confirmada',
-    body: `<p>Compra confirmada $${ticket.amount} - Codigo compra: ${ticket.code}<p>`
-    })
-}
-const response = await fetch('http://localhost:8081/api/notification/mail', requestOptions)
-
-res.send(newTicket)
+    res.send(newTicket)
 
 }
 const productsCartController = async(req, res)=>{
@@ -108,10 +111,10 @@ if(!existCart){
 }else{
     for(const element of products){
     
-    const existPrd =  await productManager.getProductById(element._id)
+    const existPrd =  await productManager.getById(element._id)
 
     if(existPrd){
-        const exisPrdCart = existCart?.products?.some(prd => prd._id._id.toString() == element._id)
+        const exisPrdCart = existCart?.products.some(prd => prd._id?._id?.toString() == element._id)
             if(exisPrdCart){
 
                 existCart.products?.forEach(elm => {
@@ -145,7 +148,7 @@ const cid = req.params.cid
 const pid = req.params.pid
 const {quantity} = req.body
 
-const existPrd = await productManager.getProductById(pid)
+const existPrd = await productManager.getById(pid)
 const existCart = await cartManager.getById(cid)
 if(!existPrd){
     res.status(404).json({ error: `The product with the id ${pid} was not found` }) 

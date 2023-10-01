@@ -1,7 +1,7 @@
 const { Router } = require('express')
-const { getTicketController } = require('../../controllers/tickets.controller')
+const { getTicketsController } = require('../../controllers/tickets.controller')
 const router = Router()
 
-router.get('/', getTicketController)
+router.get('/', getTicketsController)
 
 module.exports = router

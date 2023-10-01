@@ -1,15 +1,17 @@
 const { Router } = require('express')
 const passport = require('passport')
 const {isAuth, isAuthLogin, isAuthAdmin} = require('../middlewares/auth.middleware.js')
+
+const ManagerFactory = require('../managers/manager.factory')
+const cartManager = ManagerFactory.getManagerInstance("carts")
 const userManager = require('../managers/user.manager.js')
-const cartManager = require('../managers/cart.manager.js')
 const {hashPassword, isValidPassword} = require('../utils/password.utils.js')
 const { GITHUB_STRATEGY_NAME } = require('../config/config.passwords.js')
 
 const router = Router()
 
 const login = async(req, res) => {
-  // console.log(req.body)
+  console.log('login login.router')
   const user = {user: req.body.user.toLowerCase(), password : req.body.password}   
 
   try {
@@ -138,12 +140,14 @@ const githubCallBack =(req,res)=>{
 }
 
 router.get('/login', isAuthLogin,(req, res) => {
+    console.log('render router')
     res.render('login')
 })
 router.get('/signup', isAuthLogin,(req, res) => {
     res.render('signup')
 })
 router.get('/profile', isAuth,(req, res) => {
+  console.log(req.user)
     res.render('profile',{
         user: req.user ?  {
           ...req.user,
@@ -167,7 +171,6 @@ router.get('/resetpassword', isAuthLogin,(req, res) => {
 router.get('/github', passport.authenticate(GITHUB_STRATEGY_NAME), (_,res) => {})
 
 router.get('/githubSessions', passport.authenticate(GITHUB_STRATEGY_NAME), githubCallBack)
-
 
 router.post('/login',  passport.authenticate('local-login', {
   successRedirect: '/',

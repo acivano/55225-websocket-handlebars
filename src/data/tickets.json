@@ -1,0 +1,76 @@
+[
+  {
+    "_id": "1",
+    "user": "1",
+    "code": 6,
+    "products": [
+      {
+        "_id": "1",
+        "quantity": 1
+      },
+      {
+        "_id": "2",
+        "quantity": 1
+      }
+    ],
+    "amount": 211,
+    "purchase_datetime": 1695767124976,
+    "__v": 0
+  },
+  {
+    "_id": "2",
+    "user": "",
+    "code": 8,
+    "products": [],
+    "purchase_datetime": 1696118255539
+  },
+  {
+    "_id": "3",
+    "user": "",
+    "code": 10,
+    "products": [],
+    "purchase_datetime": 1696118516886
+  },
+  {
+    "_id": "4",
+    "user": "",
+    "code": 12,
+    "products": [],
+    "purchase_datetime": 1696118570472
+  },
+  {
+    "_id": "5",
+    "user": "",
+    "code": 14,
+    "products": [],
+    "purchase_datetime": 1696118577940
+  },
+  {
+    "_id": "6",
+    "user": "",
+    "code": 16,
+    "products": [],
+    "purchase_datetime": 1696118583189
+  },
+  {
+    "_id": "7",
+    "user": "",
+    "code": 18,
+    "products": [],
+    "purchase_datetime": 1696118593011
+  },
+  {
+    "_id": "8",
+    "user": "",
+    "code": 20,
+    "products": [],
+    "purchase_datetime": 1696118613650
+  },
+  {
+    "_id": "9",
+    "user": "",
+    "code": 22,
+    "products": [],
+    "purchase_datetime": 1696118655856
+  }
+]

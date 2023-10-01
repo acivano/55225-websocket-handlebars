@@ -1,0 +1,104 @@
+[
+  {
+    "_id": "2",
+    "user": "agustincivads23fwno@gmail.com",
+    "password": "a",
+    "firstname": "Agustin",
+    "lastname": "Civano1",
+    "role": "Admin",
+    "cart": "1",
+    "createDate": 1695500014129,
+    "__v": 0
+  },
+  {
+    "_id": "3",
+    "user": "a@a.com",
+    "password": "ab",
+    "firstname": "Agustin",
+    "lastname": "Civano1",
+    "role": "Admin",
+    "cart": "2",
+    "createDate": 1695500014129,
+    "__v": 0
+  },
+  {
+    "_id": "5",
+    "user": "gdsgdfgds@gmail.com",
+    "password": "a",
+    "firstname": "Agustin",
+    "lastname": "Civano1",
+    "cart": "64f4eadd00383047a022584c",
+    "role": "Admin",
+    "createDate": 1696114198456
+  },
+  {
+    "_id": "6",
+    "user": "fsdfsd@gmail.com",
+    "password": "a",
+    "firstname": "Agustin",
+    "lastname": "Civano1",
+    "cart": "64f4eadd00383047a022584c",
+    "role": "Custommer",
+    "createDate": 1696114235448
+  },
+  {
+    "_id": "4",
+    "user": "sadassda@gmail.com",
+    "password": "abbbb",
+    "firstname": "Agustin",
+    "lastname": "aaaaaaaaaa",
+    "cart": "64f4eadd00383047a022584c",
+    "role": "Admin",
+    "createDate": 1696114169882
+  },
+  {
+    "_id": "7",
+    "user": "asas@as.com",
+    "password": "$2b$10$PbP.m3HQHRSTOZu5MXmxSOdBg1Vvi7Fm4sj5C5mrW7m9EA11cJkIO",
+    "firstname": "as",
+    "lastname": "as",
+    "cart": "10",
+    "role": "Custommer",
+    "createDate": 1696118693032
+  },
+  {
+    "_id": "8",
+    "user": "aaaa@aaa.com",
+    "password": "$2b$10$Skcfpgu5mITufVOB/35gU.SLaFAGqaWU8jzlQXqbcgWdKj8DCBBwO",
+    "firstname": "aaa",
+    "lastname": "aaa",
+    "cart": "11",
+    "role": "Custommer",
+    "createDate": 1696118737027
+  },
+  {
+    "_id": "9",
+    "user": "abc@abc.com",
+    "password": "$2b$10$qIdz.yeTOs8TL3vA7O9f6uZVVGYRHlHMc6KUspYyuFDQ2NzrwBlTG",
+    "firstname": "abc",
+    "lastname": "abc",
+    "cart": "12",
+    "role": "Custommer",
+    "createDate": 1696119820294
+  },
+  {
+    "_id": "10",
+    "user": "pepe@pepe.com",
+    "password": "$2b$10$G8stNEGYsVBNVR9RAw6Wfuz1qxLjbQBLXXAIgGUAuJTFbhI7Fdwq6",
+    "firstname": "pepe",
+    "lastname": "pepe",
+    "cart": "13",
+    "role": "Custommer",
+    "createDate": 1696167683037
+  },
+  {
+    "_id": "11",
+    "user": "pepe@pepea.com",
+    "password": "$2b$10$BE6uLaGKnGSslrHEk6AWKeMzLF8PiMG1JtW2FZgdAf9sgcGKyrEBa",
+    "firstname": "a",
+    "lastname": "a",
+    "cart": "14",
+    "role": "Custommer",
+    "createDate": 1696169366903
+  }
+]

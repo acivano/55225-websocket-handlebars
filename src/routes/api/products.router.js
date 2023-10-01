@@ -5,9 +5,7 @@ const { getProductByIdController, getProductController, newProductController, up
 router.get('/', getProductController)
 router.get('/:pid', getProductByIdController)
 router.post('/', newProductController)    
-
 router.put('/:id', updateProductController)
-
 router.delete('/:id', deleteProductController)
 
 module.exports = router

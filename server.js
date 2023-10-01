@@ -60,7 +60,6 @@
     app.use(passport.session())
 
     app.use(async(req, res, next) =>{
-        // a = console.log(req.session, req.user)
 
         next()
     })
