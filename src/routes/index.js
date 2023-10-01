@@ -15,9 +15,9 @@ const api = Router()
 
 //agregar jwtVerifyAuthToken,
 api.use('/products',jwtVerifyAuthToken,ProductRouter)
-api.use('/user',UserRouter)
-api.use('/carts',CartRouter)
-api.use('/ticket',CartRouter)
+api.use('/user',jwtVerifyAuthToken,UserRouter)
+api.use('/carts',jwtVerifyAuthToken,CartRouter)
+api.use('/ticket',jwtVerifyAuthToken,CartRouter)
 
 api.use('/notification', NotificationRoutes)
 
