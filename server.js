@@ -67,6 +67,15 @@
     app.use('/', Routes.home)
     app.use('/api', Routes.api)
     
+    app.use((err, req, res, next) => {
+        console.log('error!!')
+        console.log(err.message)
+      
+        res.send({
+          success: false,
+          error: err.stack
+        })
+      })
     
     // websocket
     io.on('connection',  socketManager)

@@ -10,7 +10,7 @@ const { GITHUB_STRATEGY_NAME } = require('../config/config.passwords.js')
 
 const router = Router()
 
-const login = async(req, res) => {
+const login = async(req, res, next) => {
   console.log('login login.router')
   const user = {user: req.body.user.toLowerCase(), password : req.body.password}   
 
@@ -47,7 +47,7 @@ const login = async(req, res) => {
     
   }
 }
-const signup =  async (req,res)=>{
+const signup =  async (req,res, next)=>{
 
   const usuBody = req.body
   const user = {...usuBody, user : usuBody.user.toLowerCase()}
@@ -90,7 +90,7 @@ const signup =  async (req,res)=>{
       return res.render('signup', {error: 'Ha ocurrido un error. Vuelva a intentar.'})
   }
 }
-const resetpassword = async (req,res)=>{
+const resetpassword = async (req,res, next)=>{
   const user = req.body
 
   try {
@@ -124,6 +124,7 @@ const resetpassword = async (req,res)=>{
       return res.render('resetpassword', {error: 'Ha ocurrido un error. Vuelva a intentar.'})
   }
 }
+
 const githubCallBack =(req,res)=>{
   const user = req.user
 
