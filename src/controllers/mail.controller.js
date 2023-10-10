@@ -15,7 +15,7 @@ const mailNotificationController = async (req, res, next) => {
 
   } catch (error) {
           
-          next(new Error("Ha ocurrido un error inesperado."))
+    next(new CustomError(ErrorType.General))
   }
 
 }

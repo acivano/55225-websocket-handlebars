@@ -1,7 +1,8 @@
+const logger = require("../logger")
 
 function isAuth(req, res, next) {
     if (req.isAuthenticated()) {
-      console.log('esta autenticado')
+      logger.info('esta autenticado')
       next()
       return
     }
@@ -9,9 +10,8 @@ function isAuth(req, res, next) {
     res.redirect('/login')
 }
 function isAuthLogin(req, res, next) {
-  console.log(req)
     if (!req.isAuthenticated()) {
-      console.log('no esta autenticado')
+      logger.info('no esta autenticado')
 
       next()
       return
@@ -21,7 +21,7 @@ function isAuthLogin(req, res, next) {
 }
 function isAuthAdmin(req, res, next) {
     if (req.user.role =='Admin') {
-      console.log('es admin')
+      logger.info('es admin')
 
       next()
       return
@@ -31,7 +31,7 @@ function isAuthAdmin(req, res, next) {
 }
 function isAuthNotAdmin(req, res, next) {
   if (req.user.role !=='Admin') {
-    console.log('no es admin')
+    logger.info('no es admin')
 
     next()
     return

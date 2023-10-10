@@ -7,11 +7,12 @@ const cartManager = ManagerFactory.getManagerInstance("carts")
 const userManager = require('../managers/user.manager.js')
 const {hashPassword, isValidPassword} = require('../utils/password.utils.js')
 const { GITHUB_STRATEGY_NAME } = require('../config/config.passwords.js')
+const logger = require('../logger/index.js')
 
 const router = Router()
 
 const login = async(req, res, next) => {
-  console.log('login login.router')
+  logger.debug('login login.router')
   const user = {user: req.body.user.toLowerCase(), password : req.body.password}   
 
   try {
@@ -141,14 +142,14 @@ const githubCallBack =(req,res)=>{
 }
 
 router.get('/login', isAuthLogin,(req, res) => {
-    console.log('render router')
+  logger.debug('render router')
     res.render('login')
 })
 router.get('/signup', isAuthLogin,(req, res) => {
     res.render('signup')
 })
 router.get('/profile', isAuth,(req, res) => {
-  console.log(req.user)
+  logger.debug(req.user)
     res.render('profile',{
         user: req.user ?  {
           ...req.user,

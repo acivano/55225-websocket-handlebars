@@ -1,3 +1,4 @@
+const { CustomError, ErrorType } = require('../errors/custom.error')
 const ManagerFactory = require('../managers/manager.factory')
 const productManager = ManagerFactory.getManagerInstance("products")
 
@@ -45,7 +46,7 @@ const getProductController = async(req, res, next)=>{
 
     } catch (error) {
               
-              next(new Error("Ha ocurrido un error inesperado."))
+        next(new CustomError(ErrorType.General))
     }
 
 
@@ -65,7 +66,7 @@ const getProductByIdController = async(req, res, next)=>{
     
       } catch (error) {
               
-              next(new Error("Ha ocurrido un error inesperado."))
+        next(new CustomError(ErrorType.General))
       }
 
 }
@@ -98,7 +99,7 @@ const newProductController = async(req, res, next)=>{
     
     } catch (error) {
             
-            next(new Error("Ha ocurrido un error inesperado."))
+        next(new CustomError(ErrorType.General))
     }
 
 
@@ -123,7 +124,7 @@ const updateProductController = async(req, res, next)=>{
     
     } catch (error) {
             
-            next(new Error("Ha ocurrido un error inesperado."))
+        next(new CustomError(ErrorType.General))
     }
 
 } 
@@ -143,7 +144,7 @@ const deleteProductController = async(req, res, next)=>{
     
     } catch (error) {
             
-            next(new Error("Ha ocurrido un error inesperado."))
+        next(new CustomError(ErrorType.General))
     }
 
 

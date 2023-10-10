@@ -1,3 +1,4 @@
+const { CustomError, ErrorType } = require('../errors/custom.error')
 const ManagerFactory = require('../managers/manager.factory')
 const ticketManager = ManagerFactory.getManagerInstance("tickets")
 
@@ -13,7 +14,7 @@ const getTicketController = async (req, res, next) => {
 
 } catch (error) {
         
-        next(new Error("Ha ocurrido un error inesperado."))
+    next(new CustomError(ErrorType.General))
 }
 
 
@@ -32,7 +33,7 @@ const getTicketsController = async(req, res, next)=>{
             
   } catch (error) {
           
-          next(new Error("Ha ocurrido un error inesperado."))
+    next(new CustomError(ErrorType.General))
   }
 
 }

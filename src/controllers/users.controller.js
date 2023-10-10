@@ -1,5 +1,6 @@
 const ManagerFactory = require('../managers/manager.factory')
 const userManager = ManagerFactory.getManagerInstance("users")
+const { CustomError, ErrorType} = require('../errors/custom.error')
 
 const updateUserController = async (req, res, next) => {
     try {
@@ -19,7 +20,7 @@ const updateUserController = async (req, res, next) => {
     
     } catch (error) {
             
-            next(new Error("Ha ocurrido un error inesperado."))
+        next(new CustomError(ErrorType.General))
     }
 
 }
@@ -35,7 +36,7 @@ const getUserByIdController = async (req, res, next)=> {
         res.send(existing)
     } catch (error) {
             
-            next(new Error("Ha ocurrido un error inesperado."))
+            next(new CustomError(ErrorType.ID))
     }
        
 }

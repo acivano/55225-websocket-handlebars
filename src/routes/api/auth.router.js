@@ -5,6 +5,7 @@ const passport = require('passport')
 const { generateToken } = require('../../utils/generate.token')
 const e = require('express')
 const ManagerFactory = require('../../managers/manager.factory')
+const logger = require('../../logger')
 const userManager = ManagerFactory.getManagerInstance("users")
 
 
@@ -15,7 +16,7 @@ router.post('/login', async (req, res) => {
 
         const userDB = await userManager.getUserByUsername(user) 
 
-        console.log('login auth.rouser')
+        logger.debug('login auth.rouser')
         if(!userDB || !isValidPassword(password, userDB?.password)){
             return res.send({
                 status:'fail',

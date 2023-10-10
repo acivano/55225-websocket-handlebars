@@ -1,4 +1,5 @@
 // const productManager = require('../managers/product.manager')
+const logger = require('../logger')
 const ManagerFactory = require('../managers/manager.factory')
 const cartManager = ManagerFactory.getManagerInstance("carts")
 const productManager = ManagerFactory.getManagerInstance("products")
@@ -41,7 +42,7 @@ async function socketManager(socket) {
 
 
   socket.on('disconnect', () => {
-    console.log('user disconnected')
+    logger.debug('user disconnected')
   })
 
   // socket.on('cart-productos', (id) => {

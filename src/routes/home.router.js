@@ -16,11 +16,11 @@ router.get('/chat', isAuth, isAuthNotAdmin,chatViewController)
 router.get('/mockingproducts', async(req,res, next)=>{
 
         try {
-                const productos = await generateUsersRecord()
+                const productos = await genearateUsersRecord()
                 res.send(productos)
         } catch (error) {
                 
-                next(new Error("Ha ocurrido un error inesperado."))
+                next(new CustomError(ErrorType.General))
         }
            
 

@@ -1,4 +1,6 @@
 const config = require('../config/config')
+const { CustomError, ErrorType } = require('../errors/custom.error')
+const logger = require('../logger')
 const ManagerFactory = require('../managers/manager.factory')
 const productManager = ManagerFactory.getManagerInstance("products")
 const cartManager = ManagerFactory.getManagerInstance("carts")
@@ -19,16 +21,17 @@ const updateCartController = async(req, res, next)=>{
       
         res.status(201).json({'status':'success'})
     } catch (error) {
-        next(new Error("Ha ocurrido un error inesperado."))
+        next(new CustomError(ErrorType.ID))
 
     }
 }
 const createTicketController = async(req, res, next)=>{
+    logger.info('entró al crear ticket')
 
     try {
         const cid = req.params.cid
         const cart = await cartManager.getById(cid)
-        // console.log(cart)
+        logger.debug(cart)
     
         if(!cart){return res.sendStatus(404)}
     
@@ -87,7 +90,8 @@ const createTicketController = async(req, res, next)=>{
             })
         }
     
-            const newTicket = await ticketManager.add(ticket)
+        const newTicket = await ticketManager.add(ticket)
+        console.log(newTicket)
     
         const requestOptions = {
             method: 'POST',
@@ -95,6 +99,7 @@ const createTicketController = async(req, res, next)=>{
             'Accept': 'application/json',
             'Content-Type': 'application/json'
             },
+
             body:JSON.stringify({
             to: "agustincivano@gmail.com",//hardcodeo por las dudas
             from: "no-reply@pruebascoderhoyse.com",
@@ -108,7 +113,7 @@ const createTicketController = async(req, res, next)=>{
 
     } catch (error) {
             
-            next(new Error("Ha ocurrido un error inesperado."))
+        next(new CustomError(ErrorType.General))
     }
 
 }
@@ -123,7 +128,7 @@ const productsCartController = async(req, res, next)=>{
     
         const existCart = await cartManager.getById(cid)
         if(!existCart){
-            res.status(404).json({ error: `The cart with the id ${cid} was not found` }) 
+            next(new CustomError(ErrorType.ID))
             return
         }else{
             for(const element of products){
@@ -161,7 +166,7 @@ const productsCartController = async(req, res, next)=>{
         }
     } catch (error) {
             
-            next(new Error("Ha ocurrido un error inesperado."))
+        next(new CustomError(ErrorType.General))
     }
     
 }
@@ -206,7 +211,7 @@ const productCartController = async (req, res, next) => {
 
     } catch (error) {
             
-            next(new Error("Ha ocurrido un error inesperado."))
+            next(new CustomError(ErrorType.General))
     }
             
         
@@ -227,7 +232,7 @@ const quantityProductsCartController = async(req, res, next)=>{
         res.status(404).json({ error: `The cart with the id ${id} was not found` });  
     } catch (error) {
             
-            next(new Error("Ha ocurrido un error inesperado."))
+            next(new CustomError(ErrorType.General))
     }
     
 
@@ -240,11 +245,11 @@ const getCartController = async(req, res, next)=>{
             return res.send(cartRes)
             
         }
-        res.status(404).json({ error: `The car with the id ${cid} not exist` });     
+        next(new CustomError(ErrorType.ID))
 
     } catch (error) {
             
-            next(new Error("Ha ocurrido un error inesperado."))
+            next(new CustomError(ErrorType.General))
     }
     
 
@@ -263,7 +268,7 @@ const deleteCartController = async(req, res, next)=>{
 
     } catch (error) {
             
-            next(new Error("Ha ocurrido un error inesperado."))
+        next(new CustomError(ErrorType.General))
     }
 }
 const deleteProductCart = async(req, res, next)=>{
@@ -279,13 +284,13 @@ const deleteProductCart = async(req, res, next)=>{
             return res.sendStatus(200)
             
         }else{
-            res.status(404).json({ error: `The cart with the id ${cid} was not found` }) 
-            return
+            next(new CustomError(ErrorType.ID))
+
         }
 
     } catch (error) {
             
-            next(new Error("Ha ocurrido un error inesperado."))
+        next(new CustomError(ErrorType.General))
     }
 }
 

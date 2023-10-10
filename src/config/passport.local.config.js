@@ -5,6 +5,7 @@ const cartManager = ManagerFactory.getManagerInstance("carts")
 const userManager = ManagerFactory.getManagerInstance("users")
 
 const {hashPassword, isValidPassword}= require('../utils/password.utils')
+const logger = require('../logger')
 
 const LocalStrategy = local.Strategy
 
@@ -41,12 +42,12 @@ const signup = async (req , user , password, done) => {
         }else{
 
             // return res.render('signup', {error: 'Las contraseñas no coinciden.'})
-            console.log('las contraseñas no coinciden')
+            logger.info('las contraseñas no coinciden')
             return done(null, false)
         }
     } catch (error) {
         // return res.render('signup', {error: 'Ha ocurrido un error. Vuelva a intentar.'})
-        console.log('Ha ocurrido un error. Vuelva a intentar.', error)
+        logger.error(`Ha ocurrido un error. Vuelva a intentar., ${error}`)
         return done(null, false)
 
     }
@@ -95,7 +96,7 @@ const login = async(user, password, done) => {
         // })
     } catch (error) {
         // return res.render('login', {error: 'Ha ocurrido un error. Vuelva a intentar'})
-        console.log('Ha ocurrido un error. Vuelva a intentar', error)
+        logger.error(`Ha ocurrido un error. Vuelva a intentar., ${error}`)
         return done(null, false)
     
     }

@@ -51,15 +51,16 @@ async function generateTicket(id) {
     try {
         const requestOptions = {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' }
+          headers: { 
+            'Content-Type': 'application/json'
+            }
         }
         const response = await fetch(`/api/carts/${id}/ticket`, requestOptions)
     
         // console.log(response)
         socket.emit('generateTicket', {id})  
     } catch (error) {
-        console.log(error)
-        
+        console.log('error en la generación de la orden')        
     }
     
 } 
