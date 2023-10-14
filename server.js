@@ -14,8 +14,8 @@
     dotenv.config({
       path: path.join(__dirname, env === 'development' ? '.env.development' : '.env')
     })
-    // console.log(env)
     const config = require('./src/config/config')
+    console.log(config)
 
     const express = require('express')
     const http = require('http')
