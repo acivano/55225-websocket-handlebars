@@ -127,42 +127,40 @@ const productsCartController = async(req, res, next)=>{
         let errores= []
     
         const existCart = await cartManager.getById(cid)
+        console.log(existCart)
+
         if(!existCart){
             next(new CustomError(ErrorType.ID))
             return
         }else{
+            console.log(products)
             for(const element of products){
             
+            console.log(element)
             const existPrd =  await productManager.getById(element._id)
+            console.log(existPrd)
     
             if(existPrd){
-                const exisPrdCart = existCart?.products.some(prd => prd._id?._id?.toString() == element._id)
-                    if(exisPrdCart){
-    
-                        existCart.products?.forEach(elm => {
-    
-                            if (elm._id._id.toString() == element._id){
-                            elm.quantity+= parseInt(element.quantity)
-                            }
-                        })
-    
-                    }  else {
-                        const newProd = {'_id': element._id, quantity:parseInt(element.quantity)}
-                        existCart.products.push(newProd)
-                    }
-    
+                console.log('cid, element._id, element.quantity')
+
+                console.log(cid, element._id, element.quantity)
+                const update = await cartManager.updateCart(cid, element._id, element.quantity)
+                console.log(update)
+                console.log('update')
+
+                if(!update){
+                    let error = `The product with the id ${element._id} cannot be added to this cart`
+                    errores.push(error)
+                }    
             }else{
                     let error = `The prod with the id ${element._id} was not found`
-    
+
                     errores.push(error)
                 }
             }
-            if(errores.length < products.length){
-    
-            const productos = {products: existCart.products}
-            await cartManager.update(cid, productos)
-            }    
+
             res.status(200).json(errores.length>0?{errors:errores}:{status:'success'})
+        
         }
     } catch (error) {
             
@@ -173,6 +171,7 @@ const productsCartController = async(req, res, next)=>{
 
 const productCartController = async (req, res, next) => {
     try {
+        console.log('productCartController')
         const cid = req.params.cid
         const pid = req.params.pid
         const {quantity} = req.body
@@ -185,24 +184,12 @@ const productCartController = async (req, res, next) => {
         }
 
         if(existCart){
-            const exisPrdCart = existCart?.products?.some(prd => prd._id._id.toString() == pid)
-                if(exisPrdCart){
-
-                    existCart.products?.forEach(element => {
-
-                        if (element._id._id.toString() == pid){
-                            element.quantity+= parseInt(quantity)
-                        }
-                    })
-
-                }  else {
-                    const newProd = {'_id': pid, quantity:parseInt(quantity)}
-                    existCart.products.push(newProd)
-                }
-                const productos = {products: existCart.products}
-
-            const update = await cartManager.update(cid, productos)
-            res.status(200).json({'status':'success'})
+            const update = await cartManager.updateCart(cid, pid, quantity)
+            if(update){
+                res.status(200).json({'status':'success'})
+                return
+            }
+            res.status(404).json({ error: `The product cannot be added to the cart` }) 
             return
         }else{
             res.status(404).json({ error: `The cart with the id ${cid} was not found` }) 

@@ -5,6 +5,8 @@ const cartManager = ManagerFactory.getManagerInstance("carts")
 const productManager = ManagerFactory.getManagerInstance("products")
 const chatManager = ManagerFactory.getManagerInstance("chat")
 const { response } = require('express')
+const userManager = require('../managers/user.manager')
+const config = require('../config/config')
 
 async function socketManager(socket) {
 
@@ -34,6 +36,28 @@ async function socketManager(socket) {
   socket.on('products', async()=>{
     const products = await productManager.getProducts()
     socket.emit('products',  products)
+  })
+
+  socket.on('enviarmail', async(usr)=>{
+    try{
+      const user = usr.user
+
+      const servicio = `/resetpassword/${user} `
+      console.log(servicio)
+      const requestOptions = {
+      method: 'POST',
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+          }
+      }
+      const response = await fetch(`http://${config.URL}:${config.PORT}/resetpassword/${user}`, requestOptions)
+      
+      socket.emit('enviarmail',  {})
+      
+    } catch (error) {
+        console.log('error')        
+    }
   })
 
   const messages = await chatManager.getMessages()
@@ -77,17 +101,49 @@ async function socketManager(socket) {
     socket.emit('cart-productos', prdCart)
   }
 
+  socket.on('searchProducto', async (code) => {
+    if (code.codeSearch){
+      logger.debug(code.codeSearch)
+      const product = await productManager.getProductByCode(code.codeSearch)
+      logger.debug('search product')
+  
+      logger.debug(product)
+      let producto = product?.owner == code.user || code.role == 'Admin' ? product : null
+  
+      // console.log(product.owner, code.user, code.role)
+      socket.emit('searchProducto',  producto)
+
+    }
+
+  })
 
   socket.on('addProduct', async (producto) => {
-
-
-
     const newProductBack = await productManager.add(producto)
     if(newProductBack){
       const products = await productManager.getProducts()
       socket.broadcast.emit('products',  products)
     }
   })
+
+  socket.on('editProduct', async (producto) => {
+    console.log(producto)
+    console.log('antes de editar')
+
+    const updateProduct = await productManager.updateProduct(producto._id, producto)
+    console.log('edito')
+
+  })
+
+  
+  socket.on('deleteProduct', async (producto) => {
+    console.log(producto)
+    console.log('antes de eliminar')
+
+    const updateProduct = await productManager.deleteProduct(producto._id)
+    console.log(updateProduct)
+    console.log('elimino')
+
+  })  
 
   socket.on('chat-message', async (msg) => {
     // guardar el mensaje en la DB
@@ -106,36 +162,14 @@ async function socketManager(socket) {
 
 
   socket.on('addProductoCarrito', async (param) => {
-
     const cid = param.idCarrito
     const pid = param.id
-    const quantity = 1
-    const existCart = await cartManager.getById(cid)
-
-    if(existCart){
-
-      const exisPrdCart = existCart?.products?.some(prd => prd._id._id.toString() == pid)
-          if(exisPrdCart){
-
-              existCart.products?.forEach(element => {
-
-                  if (element._id._id.toString() == pid){
-                      element.quantity+= parseInt(quantity)
-                  }
-              })
-
-          }  else {
-            const newProd = {'_id': pid, quantity:parseInt(quantity)}
-            existCart.products.push(newProd)
-          }
-          const productos = {products: existCart.products}
-
-      const update = await cartManager.update(cid, productos)
-      
+    const update = await cartManager.updateCart(cid, pid, 1)
+    if(update){
       const quantityCart = await getQuantityCart(cid)
-
       socket.emit('quantity-cart-productos',  quantityCart)
     }
+    
   })
 
 }

@@ -40,6 +40,12 @@
                                     <a class="nav-link navHover txtColor" href="/addProduct">New Product</a>
                                 </li>
                             {{else}}
+
+                                {{#if user.isPremium}}
+                                    <li class="nav-item ">
+                                        <a class="nav-link navHover txtColor" href="/addProduct">New Product</a>
+                                    </li>
+                                {{/if}}
                                 <li class="nav-item">
                                     <a class="nav-link navHover txtColorCarrito carrito" id="carthref" href="/cart/{{user.cart}}" > <i class="bi bi-cart-check"></i><span id="cantidadEnCarrito" class="badge rounded-pill bg-danger notificacion">0</span></a>                            
                                 </li>

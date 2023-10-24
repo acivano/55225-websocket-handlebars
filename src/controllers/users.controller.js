@@ -24,6 +24,35 @@ const updateUserController = async (req, res, next) => {
     }
 
 }
+
+const updateUserRolController = async (req, res, next) => {
+    try {
+            
+        const uid =  req.params.uid
+        const existing = await userManager.getById(uid)
+    
+        if (!existing) {
+            
+            res.status(404).json({ error: `The user with the id ${uid} was not found` })
+            return
+        }
+        if (existing.role != 'Admin'){
+            let role = existing.role == 'Custommer'? 'Premium' : 'Custommer'
+
+            let usr = { ...existing._doc, role:role}
+            console.log(usr) 
+            const update = await userManager.update(existing._id,usr)
+            res.send(usr)
+            return
+        }    
+        res.status(404).json({ error: `The user with the id ${uid} is Admin` })
+
+    } catch (error) {
+            
+        next(new CustomError(ErrorType.General))
+    }
+
+}
 const getUserByIdController = async (req, res, next)=> {
 
     try {
@@ -41,5 +70,18 @@ const getUserByIdController = async (req, res, next)=> {
        
 }
 
+const getUsers = async (req, res, next)=> {
 
-module.exports = {updateUserController, getUserByIdController}
+    try {
+        const uid = req.params.uid
+        const existing = await userManager.getUsers()
+        res.send(existing)
+    } catch (error) {
+            
+            next(new CustomError(ErrorType.ID))
+    }
+       
+}
+
+
+module.exports = {updateUserController, getUserByIdController, getUsers, updateUserRolController}

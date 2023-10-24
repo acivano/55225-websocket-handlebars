@@ -1,11 +1,37 @@
  <main class="">
         <section class="container  align-content-center flex-lg-row justify-content-lg-between gap-5">
             <form class="formClass needs-validation formMap">
-                <h1 class="container mb-3">Contactanos</h1>
+                <h1 class="container mb-3">ABM Products</h1>
+                <input type="text" class="display-none " id="_id" >
+
                 <div class="formClass__fila">
-                    <div class="row g-2">
+                    <div class="row g-3">
                         <div class="col-md">
                             <div class="form-floating mb-3">
+                                <select class="form-select" id="dropdown" onchange="doSomething()">
+                                    <option value="">Seleccione una accion</option>
+                                    <option value="1">Nuevo</option>
+                                    <option value="2">Modificar</option>
+                                    <option value="3">Eliminar</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md display-none" id="divSearchByCode">
+                            <div class="form-floating mb-3 ">
+                                <input type="text" class="form-control focusColor " id="SearchByCode" placeholder="Code" >
+                                <label for="Code">Code</label>
+                            </div>
+                        </div>
+                        <div class="col-md display-none" id="divSearchButton">
+                            <div class="form-floating mb-3 ">
+                                <button type="button" class="btn btn-primary botonPersonalizado mt-2" id="liveToastBtn" onclick="searchProduct('{{user.user}}', '{{user.role}}')"> Buscar</button>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row g-2">
+                        <div class="col-md">
+                            <div class="form-floating mb-3" id="divCode">
                                 <input type="text" class="form-control focusColor" id="Code" placeholder="Code" required>
                                 <label for="Code">Code</label>
                             </div>
@@ -35,23 +61,102 @@
                         <input type="text" class="form-control focusColor" id="Thumbnail" placeholder="Thumbnail" required>
                         <label for="Thumbnail">Thumbnail</label>
                     </div>
-                    <div class="form-floating mb-3">
-                        <input type="text" class="form-control focusColor" id="Category" placeholder="Category" required>
-                        <label for="Category">Category</label>
+
+                    <div class="row g-2">
+                        <div class="col-md">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control focusColor" id="Category" placeholder="Category" required>
+                                <label for="Category">Category</label>
+                            </div>
+                        </div>
+                    {{#if user.isAdmin}}
+    
+                        <div class="col-md">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control focusColor" id="Owner" placeholder="Owner" value="Admin" readonly>
+                                <label for="Stock">Owner</label>
+                            </div>
+                        </div>
+                    {{else}}
+                            
+                        <div class="col-md">
+                            <div class="form-floating mb-3">
+                                <input type="text" class="form-control focusColor" id="Owner" placeholder="Owner" value="{{user.user}}" readonly>
+                                <label for="Stock">Owner</label>
+                            </div>
+                        </div>
+                    {{/if}}
                     </div>
+
+
+
+
                     <div class="form-floating mb-3">
                         <textarea class="form-control focusColor" placeholder="Description" id="Description" style="height: 250px"></textarea>
                         <label for="Description">Description</label>
                     </div>
                     <div class="formClass__fila">
                         <div class="col-12">
-                            <button class="btn btn-primary botonPersonalizado mt-2" onclick="addProducto()">Enviar</button>
+                            <button class="btn btn-primary botonPersonalizado mt-2" id="enviar-modificar-eliminar"onclick="addProducto()">Guardar</button>
                         </div>
                     </div>
                 </div>
             </form> 
+
         </section>
+
     </main> 
+    <script type='text/javascript'>
+
+        function doSomething() {
+            console.log('entró')
+            let optionValue = document.getElementById("dropdown").value;
+            
+            switch (optionValue) {
+                case '1'://Nuevo
+                    limpiarForm()
+                    document.getElementById("divSearchByCode").style.display = "none";
+                    document.getElementById("divSearchButton").style.display = "none";
+                    document.getElementById("Code").disabled = false;
+                    document.getElementById("enviar-modificar-eliminar").textContent = 'Guardar'
+
+                    break;
+                case '2'://Modificar
+                    limpiarForm()
+                    document.getElementById("divSearchByCode").style.display = "initial"
+                    document.getElementById("divSearchButton").style.display = "initial"
+                    document.getElementById("Code").disabled = true;
+                    document.getElementById("enviar-modificar-eliminar").textContent = 'Guardar'
+
+                    break;
+                case '3'://Eliminar
+                    limpiarForm()
+                    document.getElementById("divSearchByCode").style.display = "initial"
+                    document.getElementById("divSearchButton").style.display = "initial"
+                    document.getElementById("Code").disabled = true;
+                    document.getElementById("enviar-modificar-eliminar").textContent = 'Eliminar'
+
+
+                    break;
+                default: //'Valor inválido(opcion inicial)'
+                    limpiarForm()
+                    document.getElementById("divSearchByCode").style.display = "none";
+                    document.getElementById("divSearchButton").style.display = "none";
+            }
+        }
+
+        function limpiarForm(){
+            document.querySelector('#SearchByCode').value = null
+            document.querySelector('#_id').value = null
+            document.querySelector('#Title').value = null
+            document.querySelector('#Code').value = null
+            document.querySelector('#Description').value = null
+            document.querySelector('#Price').value = null
+            document.querySelector('#Thumbnail').value = null
+            document.querySelector('#Stock').value = null
+            document.querySelector('#Category').value = null
+            document.querySelector('#Owner').value = null
+        }
+    </script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/static/script/index.js"></script>
-

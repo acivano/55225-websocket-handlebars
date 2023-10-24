@@ -1,4 +1,3 @@
-
 const socket = io()
 
 let idCarrito = document.querySelector('#carritoId')?.innerHTML
@@ -14,6 +13,23 @@ if (idCarrito) {
     
     })
 }
+
+socket.on('searchProducto', (product)=>{
+    console.log('llegó searchProducto al front')
+    
+    console.log(product)
+    document.querySelector('#_id').value = product._id
+    document.querySelector('#Title').value = product.title
+    document.querySelector('#Code').value = product.code
+    document.querySelector('#Description').value = product.description
+    document.querySelector('#Price').value = product.price
+    document.querySelector('#Thumbnail').value = product.thumbnail
+    document.querySelector('#Stock').value = product.stock
+    document.querySelector('#Category').value = product.category
+    document.querySelector('#Owner').value = product.owner
+
+    console.log(document.querySelector('#_id').value)
+})
 
 socket.on('products', (products) => {
     let nodopadre = document.getElementById("contenedorPadre")
@@ -53,8 +69,28 @@ socket.on('products', (products) => {
 
 // })
 
+function searchProduct (user, role){
+    // console.log(user)
+    console.log('entró al searchProduct')
+    let codeSearch = document.querySelector('#SearchByCode').value
+    console.log({ codeSearch, user, role })
+    socket.emit('searchProducto', { codeSearch, user, role })
+}
+
+async function enviarMail() {
+
+    const user = document.querySelector('#email').value
+    console.log(user)
+    socket.emit('enviarmail', { user})
+    
+    render
+}
+
+
 function addProducto() {
     
+    let _id = document.querySelector('#_id').value || null
+    console.log(_id)
     let title = document.querySelector('#Title').value
     let code = document.querySelector('#Code').value
     let description = document.querySelector('#Description').value
@@ -62,9 +98,30 @@ function addProducto() {
     let thumbnail = document.querySelector('#Thumbnail').value
     let stock = document.querySelector('#Stock').value
     let category = document.querySelector('#Category').value
-    if(title,code, description, price, thumbnail, stock, category){
+    let owner = document.querySelector('#Owner').value
+    let action = document.getElementById("dropdown").value
 
-        socket.emit('addProduct', { title, code, description, price, thumbnail, stock, category })
+    switch (action) {
+        case '1':
+                if(title,code, description, price, thumbnail, stock, category, owner){
+            
+                    socket.emit('addProduct', {  title, code, description, price, thumbnail, stock, category, owner })
+                }
+            break;
+        case '2':
+                if(title,code, description, price, thumbnail, stock, category, owner){
+                
+                    socket.emit('editProduct', { _id ,title, code, description, price, thumbnail, stock, category, owner })
+                }
+            break;
+        case '3':
+                if(title,code, description, price, thumbnail, stock, category, owner){
+                    
+                    socket.emit('deleteProduct', { _id ,title, code, description, price, thumbnail, stock, category, owner })
+                }
+            break;
+        default:
+            break;
     }
 
 } 

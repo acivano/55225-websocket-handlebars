@@ -10,7 +10,8 @@ const schema = new Schema({
   thumbnail: String,
   stock: { type: Number, default: 0 },
   status: { type: Boolean, default: true },
-  category: String
+  category: String,
+  owner: String //Admin o "user" de usuario (premium)
 })
 
 schema.plugin(paginate)

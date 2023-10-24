@@ -5,7 +5,7 @@ const schema = new Schema({
   password: String,
   firstname: String,
   lastname:String,
-  role:{ type: String, default: 'Custommer' },
+  role:{ type: String, default: 'Custommer' }, //Custommer,Admin,Premium
   cart: { type: Schema.Types.ObjectId, ref: 'carts' },
   createDate:{ type: Number, default: Date.now() }
 })

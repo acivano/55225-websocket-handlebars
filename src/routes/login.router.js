@@ -8,6 +8,12 @@ const userManager = require('../managers/user.manager.js')
 const {hashPassword, isValidPassword} = require('../utils/password.utils.js')
 const { GITHUB_STRATEGY_NAME } = require('../config/config.passwords.js')
 const logger = require('../logger/index.js')
+const { generateTokenPass, expitedToken } = require('../utils/generate.token.js')
+const config = require('../config/config.js')
+const jwt = require('jsonwebtoken')
+const { JWT_SECRET } = require('../config/config.jwt')
+
+
 
 const router = Router()
 
@@ -91,30 +97,40 @@ const signup =  async (req,res, next)=>{
       return res.render('signup', {error: 'Ha ocurrido un error. Vuelva a intentar.'})
   }
 }
+
 const resetpassword = async (req,res, next)=>{
-  const user = req.body
+  
+  const {user, password, password2} = req.body
+  console.log({user, password, password2})
+
 
   try {
-      const existing = await userManager.getUserByUsername(user.user)
+      const existing = await userManager.getUserByUsername(user)
 
 
       if(!existing){
           return res.render('resetpassword', {error: 'EL usuario no existe.'})
       }
-      if(user.password==user.password2){
-          delete user.password2
+      if(password==password2){
 
-          const newUser ={...existing, password: hashPassword(user.password)}
+        console.log(existing.password, password)
 
+         if(!isValidPassword(existing.password, password)){
 
-          const createUsr = await userManager.updateUser(existing._id,newUser)
+          //  delete user.password2
+ 
+           const newUser ={...existing, password: hashPassword(password)}
+           console.log(newUser)
+           const createUsr = await userManager.update(existing._id,newUser)
+           console.log(createUsr)
+  
+           if(createUsr.modifiedCount >=1 ){
+             res.redirect('/login')
+           } else{
+             return res.render('resetpassword', {user: existing.user, error: 'Ha ocurrido un error. Vuelva a intentar.'})
+           }
+         }
 
-
-          if(createUsr.modifiedCount >=1 ){
-            res.redirect('/login')
-          } else{
-            return res.render('resetpassword', {error: 'Ha ocurrido un error. Vuelva a intentar.'})
-          }
 
  
       }else{
@@ -122,7 +138,7 @@ const resetpassword = async (req,res, next)=>{
           return res.render('resetpassword', {error: 'Las contraseñas no coinciden.'})
       }
   } catch (error) {
-      return res.render('resetpassword', {error: 'Ha ocurrido un error. Vuelva a intentar.'})
+      return res.render('resetpassword', {user: user,error: 'Ha ocurrido un error. Vuelva a intentar.'})
   }
 }
 
@@ -141,7 +157,7 @@ const githubCallBack =(req,res)=>{
   res.redirect('/')
 }
 
-router.get('/login', isAuthLogin,(req, res) => {
+router.get('/login', (req, res) => {
   logger.debug('render router')
     res.render('login')
 })
@@ -153,12 +169,13 @@ router.get('/profile', isAuth,(req, res) => {
     res.render('profile',{
         user: req.user ?  {
           ...req.user,
-          isAdmin: req.user.role == 'Admin'? '1' : null
+          isAdmin: req.user.role == 'Admin'? '1' : null,
+          isPremium: req.user.role == 'Premium'? '1' : null
         } : null
     })
 })
 router.get('/logout', isAuth, (req, res) => {
-    const firstname = req.user.firstname
+    const firstname = req.user.firstname 
 
     req.logOut((err) =>{
       res.render('logout',{
@@ -166,9 +183,55 @@ router.get('/logout', isAuth, (req, res) => {
       })
     })
 })
-router.get('/resetpassword', isAuthLogin,(req, res) => {
-  res.render('resetpassword')
+router.get('/resetpasswordUser', (req, res) => {
+
+  res.render('resetpasswordUser')
+
 })
+
+router.get('/resetpwd/:token', (req, res) => {
+  const token = req.params.token
+
+  const credentials = jwt.verify(token, JWT_SECRET)
+  console.log(credentials)
+  // const expired = expitedToken(token)
+  // console.log(expired)
+
+  res.render('resetpassword',{
+    user: credentials.user
+  })
+
+})
+
+router.post('/resetpassword/:user',async(req, res) => {
+  const user = req.params.user
+
+  const token = await generateTokenPass(user)
+  console.log(token)
+  const credentials = jwt.verify(token, JWT_SECRET)
+  console.log(credentials)
+
+
+  const requestOptions = {
+    method: 'POST',
+    headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+    },
+
+    body:JSON.stringify({
+    to: "agustincivano@gmail.com",//hardcodeo por las dudas
+    from: "no-reply@pruebascoderhoyse.com",
+    subject: 'Actualización de contraseña',
+    body: `<a href="http://${config.URL}:${config.PORT}/resetpwd/${token}">
+              <button>Click me</button>
+          </a>  `
+    })
+    }
+    const response = await fetch(`http://${config.URL}:${config.PORT}/api/notification/mail`, requestOptions)
+    res.send('ok')
+})
+
 //LOGIN GITHUB
 router.get('/github', passport.authenticate(GITHUB_STRATEGY_NAME), (_,res) => {})
 
@@ -183,7 +246,7 @@ router.post('/signup', passport.authenticate('local-signup',{
   failureRedirect:'/signup'
 }))
 
-router.post('/resetpassword', resetpassword)
+router.post('/resetpwd/:token', resetpassword)
 
 
 module.exports = router

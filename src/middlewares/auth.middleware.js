@@ -29,6 +29,16 @@ function isAuthAdmin(req, res, next) {
   
     res.redirect('/')
 }
+function isAuthAdmiOrPremium(req, res, next) {
+  if (req.user.role =='Admin' || req.user.role =='Premium') {
+    logger.info('es admin o premium')
+
+    next()
+    return
+  }
+
+  res.redirect('/')
+}
 function isAuthNotAdmin(req, res, next) {
   if (req.user.role !=='Admin') {
     logger.info('no es admin')
@@ -40,4 +50,4 @@ function isAuthNotAdmin(req, res, next) {
   res.redirect('/')
 }
 
-module.exports = {isAuth, isAuthLogin, isAuthAdmin, isAuthNotAdmin}
+module.exports = {isAuth, isAuthLogin, isAuthAdmin, isAuthNotAdmin, isAuthAdmiOrPremium}

@@ -24,7 +24,7 @@
                                 <span>No tienes cuenta? <a href="/signup">Registrate!</a></span>
                         </div>
                         <div class="col-md">
-                                <span>No recordas tu contraseña? <a href="/resetpassword">Cambiar contraseña</a></span>
+                                <span>No recordas tu contraseña? <a href="/resetpasswordUser" >Cambiar contraseña</a></span>
                         </div>
                         {{#if error}}
                             <div class="col-md">
@@ -41,5 +41,26 @@
         </section>
     </main> 
     <script src="/socket.io/socket.io.js"></script>
-    {{!-- <script src="/static/script/index.js"></script> --}}
+    <script type='text/javascript'>
+
+        function enviarMail() {
+            try {
+                    console.log('enviar mail')
+                    const user = document.querySelector('#user').value
+                    const requestOptions = {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json'
+                        }
+                    }
+                    const response = await fetch(`/resetpassword/${user}`, requestOptions)
+                
+                    // console.log(response)
+                    
+                } catch (error) {
+                    console.log('error en la generación de la orden')        
+                }
+        }
+    </script>
+    <script src="/static/script/index.js"></script>
 
