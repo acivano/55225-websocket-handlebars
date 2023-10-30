@@ -19,7 +19,7 @@ const updateCartController = async(req, res, next)=>{
      
         const _user = await userManager.update(uid, {cart: response})
       
-        res.status(201).json({'status':'success'})
+        res.status(201).json({'status':'success', message: 'Asociado con éxito'})
     } catch (error) {
         next(new CustomError(ErrorType.ID))
 
@@ -268,7 +268,7 @@ const deleteProductCart = async(req, res, next)=>{
         if(existCart){
             const update = await cartManager.deleteProductInCart(cid, pid)
     
-            return res.sendStatus(200)
+            return res.status(200).send({status:'success', message:'Eliminado con éxito'})
             
         }else{
             next(new CustomError(ErrorType.ID))

@@ -56,8 +56,10 @@ async function generateTicket(id) {
             }
         }
         const response = await fetch(`/api/carts/${id}/ticket`, requestOptions)
-    
-        // console.log(response)
+        console.log(`/api/carts/${id}/ticket`)
+        console.log('response')
+
+        console.log(response)
         socket.emit('generateTicket', {id})  
     } catch (error) {
         console.log('error en la generación de la orden')        

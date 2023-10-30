@@ -138,8 +138,10 @@ const deleteProductController = async(req, res, next)=>{
            res.status(404).json({ error: `The product with the id ${id} was not found` });
            return  
         }
-        await productManager.delete(id)
-        res.sendStatus(200)
+        const rta = await productManager.delete(id)
+        if(rta.deletedCount>0){
+            res.status(200).json({status: 'success', message:'Registrado con éxito'})
+        }
 
     
     } catch (error) {

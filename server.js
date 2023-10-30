@@ -1,3 +1,4 @@
+
 (async()=>{
     const { Command } = require('commander')
 
@@ -31,6 +32,8 @@
     const initPassportLocal = require('./src/config/passport.init.js')
     const loggerMiddleware =require('./src/middlewares/logger.middleware')
     const socketManager = require('./src/websocket')
+    const swaggerJsdoc = require('swagger-jsdoc')
+    const swaggerUiExpress = require('swagger-ui-express')
 
     try {
       await mongoose.connect(config.MONGO_URL)
@@ -38,7 +41,19 @@
       const server = http.createServer(app) 
       const io = new Server(server) 
       
-  
+      const specs = swaggerJsdoc({
+        definition: {
+          openapi: '3.0.1',
+          info: {
+            title: 'Ecommerce API',
+            description: 'Documentacion para Ecommerce API'
+          }
+        },
+        apis: [`${__dirname}/src/doc/*.yaml`]
+        
+      })
+      console.log(`${__dirname}/src/doc/*.yaml`)
+      
       app.use(loggerMiddleware)
       app.engine('handlebars', handlebars.engine()) 
       app.set('views', path.join(__dirname, '/src/views')) 
@@ -69,6 +84,8 @@
       
       app.use('/', Routes.home)
       app.use('/api', Routes.api)
+      app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
+
       
       app.use((err, req, res, next) => {
           logger.error(err.message)

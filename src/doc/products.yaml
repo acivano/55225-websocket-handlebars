@@ -1,0 +1,234 @@
+paths:
+  /api/products:
+    get:
+      summary: Obtener todos los productos existentes
+      tags:
+        - Products
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                 $ref: '#components/schemas/Products'
+        500:
+          description: Failure
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Status'   
+        401:
+          description: Unauthorized    
+    post:
+      summary: Crear un nuevo producto
+      tags:
+        - Products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+            $ref: '#components/schemas/Product'        
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                 $ref: '#components/schemas/Products'
+        500:
+          description: Failure
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Status'   
+        401:
+          description: Unauthorized            
+  /api/products/{id}:
+    get:
+      summary: Obtener un producto por su id
+      tags:
+        - Products
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: El identificador del producto en mongo
+          schema:
+            $type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                 $ref: '#components/schemas/Products'
+        500:
+          description: Failure
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Status'   
+        401:
+          description: Unauthorized   
+    put:
+      summary: Modificar un producto mediante su id
+      tags:
+        - Products  
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: El identificador del producto en mongo
+          schema:
+            $type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+            $ref: '#components/schemas/Product'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Products'
+        500:
+          description: Failure
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Status'   
+        401:
+          description: Unauthorized    
+    delete:
+      summary: Eliminar un producto mediante su id
+      tags:
+        - Products
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: El identificador del producto en mongo
+          schema:
+            $type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Status'
+        500:
+          description: Failure
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Status'  
+        401:
+          description: Unauthorized                       
+components:
+  schemas:
+    Status:
+      type: object
+      properties:
+        status:
+          type: string
+        message: 
+          type: string
+    Products:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: ObjectId
+          description: Id de mongo
+        code:
+          type: string
+          description: Identificador generado del producto
+        title:
+          type: string
+          description: Titulo del producto
+        description:
+          type: string
+          description: Descripción del producto
+        price:
+          type: number
+          format: double
+          description: Correo electronico del usuario
+        thumbnail:
+          type: string
+          description: Url de la imagen del producto
+        stock:
+          type: number
+          default: 0
+          description: Cantidad de stock del producto
+        status:
+          type: Boolean
+          default: true
+          description: Define si el producto está activo para ser vendido          
+        category:
+          type: string
+          description: Categoria del producto
+        owner:
+          type: string
+          description: Si el producto fue creado por un Admin o usuario Premium                                   
+      example:
+        _id: 6533c03d6598731a857d7784
+        code: 978-0-9750197-4-0
+        title: Pizza
+        description: Carbonite web goalkeeper gloves are ergonomically designed to give easy fit
+        price: 198.00
+        thumbnail: https://loremflickr.com/640/480/product?lock=8371831165681664
+        stock: 72
+        status: false
+        category: Jardineria
+        owner: ab@ab.com
+    Product:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Identificador generado del producto
+        title:
+          type: string
+          description: Titulo del producto
+        description:
+          type: string
+          description: Descripción del producto
+        price:
+          type: number
+          format: double
+          description: Correo electronico del usuario
+        thumbnail:
+          type: string
+          description: Url de la imagen del producto
+        stock:
+          type: number
+          default: 0
+          description: Cantidad de stock del producto
+        status:
+          type: Boolean
+          default: true
+          description: Define si el producto está activo para ser vendido          
+        category:
+          type: string
+          description: Categoria del producto
+        owner:
+          type: string
+          description: Si el producto fue creado por un Admin o usuario Premium                                   
+      example:
+        code: 978-0-9750197-4-0
+        title: Pizza
+        description: Carbonite web goalkeeper gloves are ergonomically designed to give easy fit
+        price: 198.00
+        thumbnail: https://loremflickr.com/640/480/product?lock=8371831165681664
+        stock: 72
+        status: false
+        category: Jardineria
+        owner: ab@ab.com  
+      

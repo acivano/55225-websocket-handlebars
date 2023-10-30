@@ -1,0 +1,324 @@
+paths:
+  /api/carts/{id}:
+    get:
+      summary: Obtener carrito por su identificador
+      tags:
+        - Carts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: El identificador del carrito en mongo
+          schema:
+            $type: string  
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/CartProducts'
+        500:
+          description: Failure
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Status'   
+        401:
+          description: Unauthorized 
+    post:
+      summary: Le asocio un carrito nuevo a un usuario
+      tags:
+        - Carts
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: El identificador del usuario en mongo
+          schema:
+            $type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Status'
+        500:
+          description: Failure
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Status'  
+        401:
+          description: Unauthorized                    
+    delete:
+      summary: Eliminar el carrito mediante su id
+      tags:
+        - Carts
+      parameters:
+        - name: id
+          in: path
+          required: true
+          description: El identificador del carrito en mongo
+          schema:
+            $type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Status'
+        500:
+          description: Failure
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Status'  
+        401:
+          description: Unauthorized  
+  /api/carts/{cid}/products:
+    post:
+      summary: Agrego productos al carrito
+      tags:
+        - Carts      
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: El identificador del carrito en mongo
+          schema:
+            $type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+            $ref: '#components/schemas/ProductsCart'
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Status'
+        500:
+          description: Failure
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Status'   
+        401:
+          description: Unauthorized 
+  /api/carts/{cid}/ticket:
+    post:
+      summary: Genero el ticket en base el carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: El identificador del carrito en mongo
+          schema:
+            $type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  quantity:
+                    type: number
+        500:
+          description: Failure
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Status'   
+        401:
+          description: Unauthorized             
+  /api/carts/{cid}/product/{pid}:
+    put:
+      summary: Agrego unidades de un producto existente en el carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: El identificador del carrito en mongo
+          schema:
+            $type: string      
+        - name: pid
+          in: path
+          required: true
+          description: El identificador del producto en mongo
+          schema:
+            $type: string 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: number
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Status'
+        500:
+          description: Failure
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Status'   
+        401:
+          description: Unauthorized    
+    get:
+      summary: Obtengo la cantidad de unidades de un producto en un carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: El identificador del carrito en mongo
+          schema:
+            $type: string
+        - name: pid
+          in: path
+          required: true
+          description: El identificador del producto en mongo
+          schema:
+            $type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  quantity:
+                    type: number
+        500:
+          description: Failure
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Status'   
+        401:
+          description: Unauthorized                       
+    delete:
+      summary: Elimino un producto del carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: El identificador del carrito en mongo
+          schema:
+            $type: string
+        - name: pid
+          in: path
+          required: true
+          description: El identificador del producto en mongo
+          schema:
+            $type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Status'                   
+        500:
+          description: Failure
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Status'   
+        401:
+          description: Unauthorized             
+components:
+    Status:
+      type: object
+      properties:
+        status:
+          type: string
+        message: 
+          type: string
+    CartProducts:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: ObjectId
+          description: Id de mongo
+        products:
+          type: array
+          items:
+            $ref: '#components/schemas/Products'
+    Products:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: ObjectId
+          description: Id de mongo
+        code:
+          type: string
+          description: Identificador generado del producto
+        title:
+          type: string
+          description: Titulo del producto
+        description:
+          type: string
+          description: Descripción del producto
+        price:
+          type: number
+          format: double
+          description: Correo electronico del usuario
+        thumbnail:
+          type: string
+          description: Url de la imagen del producto
+        stock:
+          type: number
+          default: 0
+          description: Cantidad de stock del producto
+        status:
+          type: Boolean
+          default: true
+          description: Define si el producto está activo para ser vendido          
+        category:
+          type: string
+          description: Categoria del producto
+        owner:
+          type: string
+          description: Si el producto fue creado por un Admin o usuario Premium
+    ProductsCart:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            $ref: '#components/schemas/ProductsIdQuantity'
+    ProductsIdQuantity:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Id de mongo
+        quantity:
+          type: number
+          description: Cantidad de unidades del producto
