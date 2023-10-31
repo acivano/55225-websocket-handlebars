@@ -251,6 +251,7 @@ paths:
         401:
           description: Unauthorized             
 components:
+  schemas:
     Status:
       type: object
       properties:
