@@ -75,7 +75,7 @@ async function socketManager(socket) {
           'Content-Type': 'application/json'
           }
       }
-      const response = await fetch(`http://${config.URL}/resetpassword/${user}`, requestOptions)
+      const response = await fetch(`/resetpassword/${user}`, requestOptions)
       // const response = await fetch(`http://${config.URL}:${config.PORT}/resetpassword/${user}`, requestOptions)
 
       
@@ -118,7 +118,7 @@ async function socketManager(socket) {
     `
     })
     }
-    const response = await fetch(`http://${config.URL}/api/notification/mail`, requestOptions)
+    const response = await fetch(`/api/notification/mail`, requestOptions)
     // const response = await fetch(`http://${config.URL}:${config.PORT}/api/notification/mail`, requestOptions)
 
 
@@ -138,7 +138,7 @@ async function socketManager(socket) {
           'Content-Type': 'application/json'
           }
       }
-      const response = await fetch(`http://${config.URL}/api/user/${obj.uid}`, requestOptions)
+      const response = await fetch(`/api/user/${obj.uid}`, requestOptions)
       // const response = await fetch(`http://${config.URL}:${config.PORT}/api/user/${obj.uid}`, requestOptions)
 
       

@@ -243,7 +243,7 @@ router.post('/resetpassword/:user',async(req, res) => {
           </a>  `
     })
     }
-    const response = await fetch(`http://${config.URL}/api/notification/mail`, requestOptions)
+    const response = await fetch(`/api/notification/mail`, requestOptions)
     // const response = await fetch(`http://${config.URL}:${config.PORT}/api/notification/mail`, requestOptions)
 
     res.send('ok')
