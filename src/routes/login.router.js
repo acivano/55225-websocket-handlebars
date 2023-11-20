@@ -238,12 +238,14 @@ router.post('/resetpassword/:user',async(req, res) => {
     to: "agustincivano@gmail.com",//hardcodeo por las dudas
     from: "no-reply@pruebascoderhoyse.com",
     subject: 'Actualización de contraseña',
-    body: `<a href="http://${config.URL}:${config.PORT}/resetpwd/${token}">
+    body: `<a href="http://${config.URL}/resetpwd/${token}">
               <button>Click me</button>
           </a>  `
     })
     }
-    const response = await fetch(`http://${config.URL}:${config.PORT}/api/notification/mail`, requestOptions)
+    const response = await fetch(`http://${config.URL}/api/notification/mail`, requestOptions)
+    // const response = await fetch(`http://${config.URL}:${config.PORT}/api/notification/mail`, requestOptions)
+
     res.send('ok')
 })
 

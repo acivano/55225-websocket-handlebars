@@ -107,7 +107,9 @@ const createTicketController = async(req, res, next)=>{
             body: `<p>Compra confirmada $${ticket.amount} - Codigo compra: ${ticket.code}<p>`
             })
         }
-        const response = await fetch(`http://${config.URL}:${config.PORT}/api/notification/mail`, requestOptions)
+        const response = await fetch(`http://${config.URL}/api/notification/mail`, requestOptions)
+        // const response = await fetch(`http://${config.URL}:${config.PORT}/api/notification/mail`, requestOptions)
+
     
         res.send(newTicket)          
 

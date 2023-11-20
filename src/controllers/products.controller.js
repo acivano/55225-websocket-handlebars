@@ -158,7 +158,9 @@ const deleteProductController = async(req, res, next)=>{
                 })
             }
             console.log(requestOptions)
-            const response = await fetch(`http://${config.URL}:${config.PORT}/api/notification/mail`, requestOptions)
+            const response = await fetch(`http://${config.URL}/api/notification/mail`, requestOptions)
+            // const response = await fetch(`http://${config.URL}:${config.PORT}/api/notification/mail`, requestOptions)
+
             console.log(response)    
         }
         const rta = await productManager.delete(id)

@@ -11,8 +11,10 @@ const config = require('../config/config')
 const GitHubAccessConfig ={
     clientID: config.GITHUB_CLIENT_ID,
     clientSecret: config.GITHUB_CLIENT_SECRET, 
-    callBackURL: `http://${config.URL}:${config.PORT}/githubSessions`
+    callBackURL: `http://${config.URL}/githubSessions`
 }
+// callBackURL: `http://${config.URL}:${config.PORT}/githubSessions`
+
 
 const gitHubUsers = async(profile, done)=>{
     const {name, email} = profile._json
