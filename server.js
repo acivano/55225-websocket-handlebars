@@ -10,11 +10,11 @@
     const { env } = program.opts()
 
     const path = require('path')
-    const dotenv = require('dotenv')
+    // const dotenv = require('dotenv')
     
-    dotenv.config({
-      path: path.join(__dirname, env === 'development' ? '.env.development' : '.env')
-    })
+    // dotenv.config({
+    //   path: path.join(__dirname, env === 'development' ? '.env.development' : '.env')
+    // })
     const config = require('./src/config/config')
     console.log(config)
 

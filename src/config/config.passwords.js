@@ -1,5 +1,9 @@
-const HOST = 'localhost'
-const PORT = 8081
+const config = require("./config")
+
+
+
+const HOST = config.URL
+const PORT = config.PORT
 
 const MONGO_USER="agustincivano"
 const MONGO_PASS="CyIyEfz39CK8k6Je"
