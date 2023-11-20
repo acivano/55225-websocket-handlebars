@@ -1,3 +1,5 @@
+const config = require('../config/config')
+
 const { CustomError, ErrorType } = require('../errors/custom.error')
 const ManagerFactory = require('../managers/manager.factory')
 const productManager = ManagerFactory.getManagerInstance("products")
@@ -134,9 +136,30 @@ const deleteProductController = async(req, res, next)=>{
             
         const id = req.params.id
         const prd = await productManager.getById(id)
+        console.log(prd)
         if (!prd){
            res.status(404).json({ error: `The product with the id ${id} was not found` });
            return  
+        }
+        if (prd.owner !== 'Admin') {
+            console.log('no es admin')
+            const requestOptions = {
+                method: 'POST',
+                headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+                },
+    
+                body:JSON.stringify({
+                to: "agustincivano@gmail.com",//hardcodeo por las dudas - debería ir prd.owner
+                from: "no-reply@pruebascoderhoyse.com",
+                subject: `El producto ${prd.code} eliminado`,
+                body: `<p>El producto con código ${prd.code}, ha sido eliminado de manera permanente<p>`
+                })
+            }
+            console.log(requestOptions)
+            const response = await fetch(`http://${config.URL}:${config.PORT}/api/notification/mail`, requestOptions)
+            console.log(response)    
         }
         const rta = await productManager.delete(id)
         if(rta.deletedCount>0){

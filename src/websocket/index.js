@@ -7,6 +7,7 @@ const chatManager = ManagerFactory.getManagerInstance("chat")
 const { response } = require('express')
 const userManager = require('../managers/user.manager')
 const config = require('../config/config')
+const { updateUserRolController } = require('../controllers/users.controller')
 
 async function socketManager(socket) {
 
@@ -37,7 +38,30 @@ async function socketManager(socket) {
     const products = await productManager.getProducts()
     socket.emit('products',  products)
   })
+  socket.on('users-list', async()=>{
 
+    await generateUserList()
+
+  })  
+
+  async function  generateUserList(){
+    const users = await userManager.getAll()
+    let users2 = users.map(element => {
+      let inactivo = false
+      let admin = false
+      if(Date.now() - element.last_connection > 1800000){
+        inactivo = true
+      }
+      if(element.role== 'Admin'){
+        admin = true
+      }
+       element.admin = admin
+       element.inactivo = inactivo
+      return element
+       
+    });    
+    socket.emit('users-list',  users2)
+  }
   socket.on('enviarmail', async(usr)=>{
     try{
       const user = usr.user
@@ -73,8 +97,50 @@ async function socketManager(socket) {
   //   console.log('petición productos')
   // })
 
-  socket.on('generateTicket', async(obj) => {
-    const actualiza = await updateCartFront(obj.id)
+  socket.on('deleteUser', async(obj) => {
+    const actualiza = await userManager.delete(obj.uid)
+    console.log(actualiza)
+
+    const requestOptions = {
+    method: 'POST',
+    headers: {
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
+    },
+
+    body:JSON.stringify({
+    to: "agustincivano@gmail.com",//hardcodeo por las dudas
+    from: "no-reply@pruebascoderhoyse.com",
+    subject: 'Eliminación de usuario',
+    body: `<h1>Tu usuario fue eliminado por un administrador</h1>
+    `
+    })
+    }
+    const response = await fetch(`http://${config.URL}:${config.PORT}/api/notification/mail`, requestOptions)
+
+    await generateUserList()
+
+  })
+
+  socket.on('changeRol', async(obj) => {
+    console.log(obj)
+    try{
+      const servicio = `user/${obj.uid} `
+      console.log(servicio)
+      const requestOptions = {
+      method: 'POST',
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+          }
+      }
+      const response = await fetch(`http://${config.URL}:${config.PORT}/api/user/${obj.uid}`, requestOptions)
+      
+      await generateUserList()
+      
+    } catch (error) {
+        console.log('error')        
+    }
   })
 
 

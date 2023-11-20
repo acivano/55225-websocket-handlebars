@@ -1,5 +1,5 @@
 const { Router } = require('express')
-const {homerViewController, realTimeProductsViewController, cartViewController, addProductViewController, chatViewController} = require('../controllers/home.controller')
+const {homerViewController, realTimeProductsViewController, cartViewController, addProductViewController, chatViewController, usersViewController} = require('../controllers/home.controller')
 const {isAuth, isAuthLogin, isAuthAdmin, isAuthNotAdmin, isAuthAdmiOrPremium} = require('../middlewares/auth.middleware.js')
 const { generateUsersRecord } = require('./api/products.seed')
 const { now } = require('mongoose')
@@ -13,6 +13,7 @@ router.get('/realtimeproducts', realTimeProductsViewController)
 //agregar middleware isAuth
 router.get('/cart/:id', isAuth, isAuthNotAdmin, cartViewController)
 router.get('/addProduct', isAuth, isAuthAdmiOrPremium, addProductViewController)
+router.get('/users', isAuth, isAuthAdmin, usersViewController)
 
 router.get('/chat', isAuth, isAuthNotAdmin,chatViewController)
 

@@ -101,10 +101,10 @@
       
       //---- Defino Express------
       
+      const PORT = process.env.PORT || 8081
       
-      
-      server.listen(config.PORT, ()=>{
-          logger.info(`Express Server listening at http://${config.URL}:${config.PORT}`)
+      server.listen( PORT, ()=>{
+          logger.info(`Express Server listening at http://${config.URL}:${PORT}`)
       })
 
       logger.debug('Se ha conectado a la base de datos.')

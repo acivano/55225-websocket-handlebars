@@ -52,11 +52,11 @@ const signup = async (req , user , password, done) => {
 
     }
 }
-const login = async(user, password, done) => {    
+const login = async(usr, password, done) => {    
 
     try {
     
-        const existing = await userManager.getUserByUsername( user.toLowerCase())
+        const existing = await userManager.getUserByUsername( usr.toLowerCase())
 
         
         if(!existing){
@@ -69,6 +69,7 @@ const login = async(user, password, done) => {
             return done(null, false)
         }
         // const cartExisting = await cartManager.getCartByUser(existing._id)
+        console.log(existing)
         const _user = {
             firstname: existing.firstname,
             lastname: existing.lastname,
@@ -76,24 +77,14 @@ const login = async(user, password, done) => {
             cart: existing.cart._id,
             ...existing
         }
-
+        const last_connection = Date.now()
+        let user = existing
+        user = {...user, last_connection}
+        console.log(user)
+        const update = userManager.update(user._id, user)
 
         done(null, _user)
-        // req.session.user = {
-        //     firstname: existing.firstname,
-        //     lastname: existing.lastname,
-        //     id: existing._id,
-        //     role: existing.role,
-        //     cart: cartExisting._id,
-        //     // role: 'Admin'
-        //     ...user
-        // }
-        
-        // req.session.save((err) => {
-        //     if(!err) {
-        //     res.redirect('/')
-        //     }
-        // })
+
     } catch (error) {
         // return res.render('login', {error: 'Ha ocurrido un error. Vuelva a intentar'})
         logger.error(`Ha ocurrido un error. Vuelva a intentar., ${error}`)

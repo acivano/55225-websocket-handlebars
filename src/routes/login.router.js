@@ -143,7 +143,10 @@ const resetpassword = async (req,res, next)=>{
 }
 
 const githubCallBack =(req,res)=>{
-  const user = req.user
+  const last_connection = Date.now()
+  let user = req.user 
+  user = {...user, last_connection}
+  console.log(user)
 
   req.session.user = {
     firstname: user.firstname,
@@ -154,6 +157,9 @@ const githubCallBack =(req,res)=>{
     // role: 'Admin'
     ...user
   }
+   
+  const update = userManager.update(user._id, user)
+  console.log('aca se debe actualizar el last-connection cuando viene por github')
   res.redirect('/')
 }
 
@@ -176,6 +182,15 @@ router.get('/profile', isAuth,(req, res) => {
 })
 router.get('/logout', isAuth, (req, res) => {
     const firstname = req.user.firstname 
+    console.log(req.user)
+
+    const last_connection = Date.now()
+    let user = req.user 
+    user = {...user, last_connection}
+
+    const update = userManager.update(user._id, user)
+
+    console.log('aca se debe lograr el last-connection')
 
     req.logOut((err) =>{
       res.render('logout',{

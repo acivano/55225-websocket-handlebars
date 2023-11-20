@@ -1,6 +1,9 @@
 const socket = io()
 
 let idCarrito = document.querySelector('#carritoId')?.innerHTML
+console.log(idCarrito)
+let users_datos = document.querySelector('#users_datos')?.innerHTML
+console.log(users_datos)
 
 socket.emit('products', {}) 
 if (idCarrito) {
@@ -12,6 +15,11 @@ if (idCarrito) {
         let spanCarrito = document.querySelector('#cantidadEnCarrito').innerHTML = quantity
     
     })
+}
+if(users_datos){
+    console.log('estoy parado en users')
+    socket.emit('users-list', {})
+
 }
 
 socket.on('searchProducto', (product)=>{

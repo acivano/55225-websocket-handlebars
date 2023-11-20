@@ -1,3 +1,4 @@
+const userManager = require("../managers/user.manager")
 
 
 const homerViewController = async (req, res) => {
@@ -38,6 +39,33 @@ const addProductViewController = (req, res) => {
     } : null
   })
 }
+//queda pendiente
+const usersViewController = async (req, res) => {
+  // const users = await userManager.getAll()
+  // let users2 = users.map(element => {
+  //   let inactivo = false
+  //   let admin = false
+  //   if(Date.now() - element.last_connection > 1800000){
+  //     inactivo = true
+  //   }
+  //   if(element.role== 'Admin'){
+  //     admin = true
+  //   }
+  //    element.admin = admin
+  //    element.inactivo = inactivo
+  //   return element
+     
+  // });
+
+  // console.log(users2)
+  res.render('users',{
+    user: req.user ?  {
+      ...req.user,
+      isAdmin: req.user.role == 'Admin'? '1' : null,
+      isPremium: req.user.role == 'Premium'? '1' : null
+
+    } : null})
+}
 const chatViewController = (req, res) => {
   res.render('chat',{
     user: req.user ?  {
@@ -49,4 +77,4 @@ const chatViewController = (req, res) => {
 }
 
 
-module.exports = {homerViewController, realTimeProductsViewController, cartViewController, addProductViewController, chatViewController}
+module.exports = {homerViewController, realTimeProductsViewController, cartViewController, addProductViewController, chatViewController, usersViewController}

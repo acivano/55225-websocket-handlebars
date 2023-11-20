@@ -7,7 +7,8 @@ const schema = new Schema({
   lastname:String,
   role:{ type: String, default: 'Custommer' }, //Custommer,Admin,Premium
   cart: { type: Schema.Types.ObjectId, ref: 'carts' },
-  createDate:{ type: Number, default: Date.now() }
+  createDate:{ type: Number, default: Date.now() },
+  last_connection: { type: Number, default: Date.now() }
 })
 
 const userModel  = model('users', schema)

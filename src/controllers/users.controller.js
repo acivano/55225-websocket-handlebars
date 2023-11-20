@@ -1,6 +1,8 @@
 const ManagerFactory = require('../managers/manager.factory')
 const userManager = ManagerFactory.getManagerInstance("users")
 const { CustomError, ErrorType} = require('../errors/custom.error')
+const config = require('../config/config')
+
 
 const updateUserController = async (req, res, next) => {
     try {
@@ -83,5 +85,71 @@ const getUsers = async (req, res, next)=> {
        
 }
 
+const deleteInactiveUsersController = async (req, res, next)=> {
 
-module.exports = {updateUserController, getUserByIdController, getUsers, updateUserRolController}
+    try {
+        const existing = await userManager.getUsers()
+        // res.send(existing)
+
+        existing.forEach(async element => {
+            if(element.rol !== 'Admin'){
+                if(Date.now() - element.last_connection > 1800000){
+
+                    const requestOptions = {
+                        method: 'POST',
+                        headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                        },
+            
+                        body:JSON.stringify({
+                        to: "agustincivano@gmail.com",//hardcodeo por las dudas
+                        from: "no-reply@pruebascoderhoyse.com",
+                        subject: 'Eliminación de usuario',
+                        body: `<h1>Tu usuario fue eliminado por inactividad</h1>`
+                        })
+                    }
+                    const response = await fetch(`http://${config.URL}:${config.PORT}/api/notification/mail`, requestOptions)
+
+                    const resultado = userManager.delete(element._id())
+                    // console.log(resultado)
+                }
+            }
+            res.status(201).json({'status':'success', message: 'Eliminados con éxito'})
+            
+        });
+
+    } catch (error) {
+            
+            next(new CustomError(ErrorType.ID))
+    }
+       
+}
+
+
+const getReducidoUsersController = async (req, res, next)=> {
+    console.log('getReducidoUsersController')
+    try {
+        const existing = await userManager.getUsers()
+        existing.forEach(element => {
+            delete element._id
+            delete element.password
+            delete element.cart
+            delete element.createDate
+            delete element.__v
+            delete element.last_connection
+
+
+            console.log(element)
+        })
+        console.log(existing)
+        res.send(existing)
+    } catch (error) {
+            
+            next(new CustomError(ErrorType.General))
+    }
+       
+}
+
+
+module.exports = {updateUserController, getUserByIdController, getUsers, updateUserRolController, getReducidoUsersController, deleteInactiveUsersController}
