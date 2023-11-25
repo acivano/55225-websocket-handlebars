@@ -77,6 +77,7 @@ async function socketManager(socket) {
       }
       const response = await fetch(`/resetpassword/${user}`, requestOptions)
       // const response = await fetch(`http://${config.URL}:${config.PORT}/resetpassword/${user}`, requestOptions)
+      console.log(response)
 
       
       socket.emit('enviarmail',  {})
@@ -120,6 +121,7 @@ async function socketManager(socket) {
     }
     const response = await fetch(`/api/notification/mail`, requestOptions)
     // const response = await fetch(`http://${config.URL}:${config.PORT}/api/notification/mail`, requestOptions)
+    console.log(response)
 
 
     await generateUserList()
@@ -138,8 +140,9 @@ async function socketManager(socket) {
           'Content-Type': 'application/json'
           }
       }
-      const response = await fetch(`/api/user/${obj.uid}`, requestOptions)
+      const response = await fetch(`${window.location.origin}/api/user/${obj.uid}`, requestOptions)
       // const response = await fetch(`http://${config.URL}:${config.PORT}/api/user/${obj.uid}`, requestOptions)
+      console.log(response)
 
       
       await generateUserList()
