@@ -141,8 +141,8 @@ async function socketManager(socket) {
           }
       }
       // console.log(window.location.origin)
-      // const response = await fetch(`${window.location.origin}/api/user/${obj.uid}`, requestOptions)
-      const response = await fetch(`http://${config.URL}:${config.PORT}/api/user/${obj.uid}`, requestOptions)
+      const response = await fetch(`https://55225-agustincivano-production.up.railway.app/api/user/${obj.uid}`, requestOptions)
+      // const response = await fetch(`https://${config.URL}:${config.PORT}/api/user/${obj.uid}`, requestOptions)
       console.log(response)
 
       
