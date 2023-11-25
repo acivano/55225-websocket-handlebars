@@ -75,7 +75,7 @@ async function socketManager(socket) {
           'Content-Type': 'application/json'
           }
       }
-      const response = await fetch(`/resetpassword/${user}`, requestOptions)
+      const response = await fetch(`https://55225-agustincivano-production.up.railway.app/resetpassword/${user}`, requestOptions)
       // const response = await fetch(`http://${config.URL}:${config.PORT}/resetpassword/${user}`, requestOptions)
       console.log(response)
 
@@ -119,7 +119,7 @@ async function socketManager(socket) {
     `
     })
     }
-    const response = await fetch(`/api/notification/mail`, requestOptions)
+    const response = await fetch(`https://55225-agustincivano-production.up.railway.app/api/notification/mail`, requestOptions)
     // const response = await fetch(`http://${config.URL}:${config.PORT}/api/notification/mail`, requestOptions)
     console.log(response)
 

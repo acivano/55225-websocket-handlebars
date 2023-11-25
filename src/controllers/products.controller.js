@@ -158,7 +158,7 @@ const deleteProductController = async(req, res, next)=>{
                 })
             }
             console.log(requestOptions)
-            const response = await fetch(`/api/notification/mail`, requestOptions)
+            const response = await fetch(`https://55225-agustincivano-production.up.railway.app/api/notification/mail`, requestOptions)
             // const response = await fetch(`http://${config.URL}:${config.PORT}/api/notification/mail`, requestOptions)
 
             console.log(response)    

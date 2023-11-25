@@ -55,7 +55,7 @@ async function generateTicket(id) {
             'Content-Type': 'application/json'
             }
         }
-        const response = await fetch(`/api/carts/${id}/ticket`, requestOptions)
+        const response = await fetch(`https://55225-agustincivano-production.up.railway.app/api/carts/${id}/ticket`, requestOptions)
         console.log(`/api/carts/${id}/ticket`)
         console.log('response')
 
