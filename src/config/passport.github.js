@@ -11,7 +11,7 @@ const config = require('../config/config')
 const GitHubAccessConfig ={
     clientID: config.GITHUB_CLIENT_ID,
     clientSecret: config.GITHUB_CLIENT_SECRET, 
-    callBackURL: `https://55225-agustincivano-production.up.railway.app//githubSessions`
+    callBackURL: `https://55225-agustincivano-production.up.railway.app/githubSessions`
 }
 // callBackURL: `http://${config.URL}:${config.PORT}/githubSessions`
 
