@@ -1,7 +1,13 @@
  <main class="">
         <section class="container  align-content-center flex-lg-row justify-content-lg-between gap-5">
             <form class="formClass needs-validation formMap">
-                <h1 class="container mb-3">ABM Products - <span id="Role">{{user.role}}</span></h1>
+                {{#if user.isAdmin}}
+                    <h1 class="container mb-3">ABM Products <span id="Role" class="display-none">{{user.role}}</span></h1>
+                {{else}}
+                    <h1 class="container mb-3">ABM Products <span id="Role" class="display-none">{{user.user}}</span></h1>
+
+                {{/if}}
+
                 <input type="text" class="display-none " id="_id" >
 
                 <div class="formClass__fila">

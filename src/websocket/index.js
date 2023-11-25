@@ -222,6 +222,30 @@ async function socketManager(socket) {
 
     const updateProduct = await productManager.deleteProduct(producto._id)
     console.log(updateProduct)
+    if(updateProduct.deletedCount > 0){
+      if (producto.owner !== 'Admin') {
+        console.log('no es admin') 
+        const requestOptions = {
+            method: 'POST',
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+            },
+
+            body:JSON.stringify({
+            to: "agustincivano@gmail.com",//hardcodeo por las dudas - debería ir prd.owner
+            from: "no-reply@pruebascoderhoyse.com",
+            subject: `El producto ${producto.code} eliminado`,
+            body: `<p>El producto con código ${producto.code}, ha sido eliminado de manera permanente<p>`
+            })
+        }
+        console.log(requestOptions)
+        const response = await fetch(`${config.URL}/api/notification/mail`, requestOptions)
+        // const response = await fetch(`http://${config.URL}:${config.PORT}/api/notification/mail`, requestOptions)
+
+        console.log(response)    
+    }
+    }
     console.log('elimino')
 
   })  
