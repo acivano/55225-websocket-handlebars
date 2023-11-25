@@ -91,7 +91,7 @@ const createTicketController = async(req, res, next)=>{
         }
     
         const newTicket = await ticketManager.add(ticket)
-        console.log(newTicket)
+        logger.info(newTicket)
     
         const requestOptions = {
             method: 'POST',
@@ -130,13 +130,13 @@ const productsCartController = async(req, res, next)=>{
         let errores= []
     
         const existCart = await cartManager.getById(cid)
-        console.log(existCart)
+        logger.info(existCart)
 
         if(!existCart){
             next(new CustomError(ErrorType.ID))
             return
         }else{
-            console.log(products)
+            logger.info(products)
             for(const element of products){
             
             console.log(element)

@@ -12,8 +12,9 @@ if (idCarrito) {
     
     
     socket.on('quantity-cart-productos', (quantity)=>{
-        let spanCarrito = document.querySelector('#cantidadEnCarrito').innerHTML = quantity
-    
+        if(document.querySelector('#cantidadEnCarrito')?.innerHTML){
+            document.querySelector('#cantidadEnCarrito').innerHTML= quantity || 0
+        }
     })
 }
 if(users_datos){
@@ -95,8 +96,9 @@ async function enviarMail() {
 }
 
 
-function addProducto() {
-    
+function addProducto(e) {
+    // e.preventDefault()
+    console.log('entro al addProducto')
     let _id = document.querySelector('#_id').value || null
     console.log(_id)
     let title = document.querySelector('#Title').value
@@ -108,21 +110,28 @@ function addProducto() {
     let category = document.querySelector('#Category').value
     let owner = document.querySelector('#Owner').value
     let action = document.getElementById("dropdown").value
-
+    console.log(action)
     switch (action) {
         case '1':
+                console.log('caso 1')   
                 if(title,code, description, price, thumbnail, stock, category, owner){
-            
+                    console.log(title,code, description, price, thumbnail, stock, category, owner)
+                    
                     socket.emit('addProduct', {  title, code, description, price, thumbnail, stock, category, owner })
+
                 }
             break;
         case '2':
+                console.log('caso 2')   
+
                 if(title,code, description, price, thumbnail, stock, category, owner){
                 
                     socket.emit('editProduct', { _id ,title, code, description, price, thumbnail, stock, category, owner })
                 }
             break;
         case '3':
+                console.log('caso 3')   
+
                 if(title,code, description, price, thumbnail, stock, category, owner){
                     
                     socket.emit('deleteProduct', { _id ,title, code, description, price, thumbnail, stock, category, owner })

@@ -140,8 +140,9 @@ async function socketManager(socket) {
           'Content-Type': 'application/json'
           }
       }
-      const response = await fetch(`${window.location.origin}/api/user/${obj.uid}`, requestOptions)
-      // const response = await fetch(`http://${config.URL}:${config.PORT}/api/user/${obj.uid}`, requestOptions)
+      // console.log(window.location.origin)
+      // const response = await fetch(`${window.location.origin}/api/user/${obj.uid}`, requestOptions)
+      const response = await fetch(`http://${config.URL}:${config.PORT}/api/user/${obj.uid}`, requestOptions)
       console.log(response)
 
       
@@ -193,6 +194,9 @@ async function socketManager(socket) {
   })
 
   socket.on('addProduct', async (producto) => {
+
+    console.log('llega al back')
+    
     const newProductBack = await productManager.add(producto)
     if(newProductBack){
       const products = await productManager.getProducts()
@@ -200,8 +204,10 @@ async function socketManager(socket) {
     }
   })
 
+
+
   socket.on('editProduct', async (producto) => {
-    console.log(producto)
+    console.log('editProduct')
     console.log('antes de editar')
 
     const updateProduct = await productManager.updateProduct(producto._id, producto)

@@ -1,7 +1,7 @@
  <main class="">
         <section class="container  align-content-center flex-lg-row justify-content-lg-between gap-5">
             <form class="formClass needs-validation formMap">
-                <h1 class="container mb-3">ABM Products</h1>
+                <h1 class="container mb-3">ABM Products - <span id="Role">{{user.role}}</span></h1>
                 <input type="text" class="display-none " id="_id" >
 
                 <div class="formClass__fila">
@@ -97,7 +97,7 @@
                     </div>
                     <div class="formClass__fila">
                         <div class="col-12">
-                            <button class="btn btn-primary botonPersonalizado mt-2" id="enviar-modificar-eliminar"onclick="addProducto()">Guardar</button>
+                            <button class="btn btn-primary botonPersonalizado mt-2" id="enviar-modificar-eliminar"onclick="addProducto(event)">Guardar</button>
                         </div>
                     </div>
                 </div>
@@ -110,11 +110,13 @@
 
         function doSomething() {
             console.log('entró')
+            let originalOwner = document.getElementById("Owner").value
             let optionValue = document.getElementById("dropdown").value;
             
             switch (optionValue) {
                 case '1'://Nuevo
                     limpiarForm()
+                    document.querySelector('#Owner').value = document.querySelector('#Role').innerHTML
                     document.getElementById("divSearchByCode").style.display = "none";
                     document.getElementById("divSearchButton").style.display = "none";
                     document.getElementById("Code").disabled = false;
@@ -123,6 +125,7 @@
                     break;
                 case '2'://Modificar
                     limpiarForm()
+                    document.querySelector('#Owner').value = null
                     document.getElementById("divSearchByCode").style.display = "initial"
                     document.getElementById("divSearchButton").style.display = "initial"
                     document.getElementById("Code").disabled = true;
@@ -131,6 +134,7 @@
                     break;
                 case '3'://Eliminar
                     limpiarForm()
+                    document.querySelector('#Owner').value =null
                     document.getElementById("divSearchByCode").style.display = "initial"
                     document.getElementById("divSearchButton").style.display = "initial"
                     document.getElementById("Code").disabled = true;
@@ -155,8 +159,12 @@
             document.querySelector('#Thumbnail').value = null
             document.querySelector('#Stock').value = null
             document.querySelector('#Category').value = null
+        }
+        function limpiarOwnerForm(){
             document.querySelector('#Owner').value = null
         }
+
+        
     </script>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/static/script/index.js"></script>
