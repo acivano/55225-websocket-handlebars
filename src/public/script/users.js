@@ -1,6 +1,5 @@
 
 socket.on('users-list', (usersList) => {
-    console.log('llegó al users-list')
     let users = document.querySelector('#users_datos')
     users.innerHTML=''
 
@@ -44,12 +43,10 @@ socket.on('users-list', (usersList) => {
 })
 
 function deleteUser(uid) {
-    console.log('sale del front el eliminar')
 
     socket.emit('deleteUser', {uid})    
 } 
 function changeRol(uid) {
-    console.log('sale del front')
     socket.emit('changeRol', {uid})    
 } 
 

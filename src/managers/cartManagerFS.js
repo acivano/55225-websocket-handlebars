@@ -18,12 +18,9 @@ class cartManager {
     await fs.writeFile(this.filepath, data)
     }
     async update(id, products){
-        // console.log(products)
         await this.#readFile()
         const cart = await this.getById(id)
-        // console.log(cart)
         cart.products= products.products
-        // console.log(cart)
 
         this.#carts = this.#carts.filter(cart => cart._id != id)
         this.#carts.push(cart)
@@ -39,7 +36,6 @@ class cartManager {
         await this.#readFile()
         const cart = this.#carts.find(cart => cart._id == id)
         const prod = await productManager.getById(pid)
-        // console.log(prod)
 
 
         if(!cart || !prod){
@@ -57,13 +53,11 @@ class cartManager {
     async add({products}){
         await this.#readFile()
         const _id = this.#carts.length  ? Math.max(...this.#carts.map(cart => cart._id)) + 1 : 1
-            // const prd = {id:id, }
 
             this.#carts.push({
                 _id: _id.toString(),
                 products
             })
-            // console.log(this.#carts)
             await this.#writeFile()
             return await this.getById(_id)
     }

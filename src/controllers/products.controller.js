@@ -11,39 +11,11 @@ const getProductController = async(req, res, next)=>{
             
         const { query, sort , limit } = req.query
         const ipage = req.query.page
-        // console.log(`Buscando productos con ${query}`)
     
     
         const prdRes = await productManager.getProducts(ipage, limit,sort,query)
         let prd = prdRes
-        // console.log(prdRes)
-        // let hasquery = ''
-        // let hasSort =''
-        // // if (query) {
-        // //      filtrar
-        // //     prd.docs = prd.docs
-        // //       .filter(p => p.code.toLowerCase().includes(query.toLowerCase()) || 
-        // //       p.title.toLowerCase().includes(query.toLowerCase()) || 
-        // //       p.description.toLowerCase().includes(query.toLowerCase()) || 
-        // //       p.category.toLowerCase().includes(query.toLowerCase()))
-    
-              
-        // //     }
-        //   hasquery= query?`&query=${query}`:''
-        //   hasSort= sort?`&sort=${sort}`:'' 
-    
-        //   const status = prd.docs.length>=1 ? 'success':'error'
-        //   const payload = prd.docs
-        //   const totalPages = prd.totalPages
-        //   const prevPage = prd.prevPage
-        //   const nextPage = prd.nextPage
-        //   const page = prd.page
-        //   const hasPrevPage= prd.hasPrevPage
-        //   const hasNextPage = prd.hasNextPage
-        //   const prevLink = hasPrevPage? `http://localhost:8081/api/products/?limit=${prd.limit}&page=${prevPage}${hasSort}${hasquery}`:null
-        //   const nextLink = hasNextPage? `http://localhost:8081/api/products/?limit=${prd.limit}&page=${nextPage}${hasSort}${hasquery}`:null
-          
-        //   const respuesta = {status, payload, totalPages, prevPage, nextPage,page, hasPrevPage,hasNextPage, prevLink, nextLink} 
+        
         res.send(prdRes)
 
     } catch (error) {
@@ -77,7 +49,6 @@ const newProductController = async(req, res, next)=>{
     try {
             
         const {body}  = req
-        console.log(body)
     
         if(!body.title || !body.description || !body.price || !body.thumbnail || !body.stock || !body.code || !body.category  ){
             res.status(404).json({error:'Todos los datos son obligatorios'})
@@ -136,13 +107,11 @@ const deleteProductController = async(req, res, next)=>{
             
         const id = req.params.id
         const prd = await productManager.getById(id)
-        console.log(prd)
         if (!prd){
            res.status(404).json({ error: `The product with the id ${id} was not found` });
            return  
         }
         if (prd.owner !== 'Admin') {
-            console.log('no es admin')
             const requestOptions = {
                 method: 'POST',
                 headers: {
@@ -151,17 +120,15 @@ const deleteProductController = async(req, res, next)=>{
                 },
     
                 body:JSON.stringify({
-                to: "agustincivano@gmail.com",//hardcodeo por las dudas - debería ir prd.owner
-                from: "no-reply@pruebascoderhoyse.com",
+                to: prd.owner,//hardcodeo por las dudas - debería ir prd.owner
+                from: "no-reply@pruebascoderhouse.com",
                 subject: `El producto ${prd.code} eliminado`,
                 body: `<p>El producto con código ${prd.code}, ha sido eliminado de manera permanente<p>`
                 })
             }
-            console.log(requestOptions)
             const response = await fetch(`${config.URL}/api/notification/mail`, requestOptions)
             // const response = await fetch(`http://${config.URL}:${config.PORT}/api/notification/mail`, requestOptions)
 
-            console.log(response)    
         }
         const rta = await productManager.delete(id)
         if(rta.deletedCount>0){

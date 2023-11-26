@@ -42,7 +42,6 @@ const updateUserRolController = async (req, res, next) => {
             let role = existing.role == 'Custommer'? 'Premium' : 'Custommer'
 
             let usr = { ...existing._doc, role:role}
-            console.log(usr) 
             const update = await userManager.update(existing._id,usr)
             res.send(usr)
             return
@@ -103,8 +102,8 @@ const deleteInactiveUsersController = async (req, res, next)=> {
                         },
             
                         body:JSON.stringify({
-                        to: "agustincivano@gmail.com",//hardcodeo por las dudas
-                        from: "no-reply@pruebascoderhoyse.com",
+                        to: element.user,
+                        from: "no-reply@pruebascoderhouse.com",
                         subject: 'Eliminación de usuario',
                         body: `<h1>Tu usuario fue eliminado por inactividad</h1>`
                         })
@@ -112,10 +111,8 @@ const deleteInactiveUsersController = async (req, res, next)=> {
                     const response = await fetch(`${config.URL}/api/notification/mail`, requestOptions)
                     // const response = await fetch(`http://${config.URL}:${config.PORT}/api/notification/mail`, requestOptions)
 
-                    console.log(response)
 
                     const resultadoDelete = userManager.delete(element._id())
-                    // console.log(resultado)
                 }
             }
             res.status(201).json({'status':'success', message: 'Eliminados con éxito'})
@@ -131,7 +128,6 @@ const deleteInactiveUsersController = async (req, res, next)=> {
 
 
 const getReducidoUsersController = async (req, res, next)=> {
-    console.log('getReducidoUsersController')
     try {
         const existing = await userManager.getUsers()
         existing.forEach(element => {
@@ -143,9 +139,7 @@ const getReducidoUsersController = async (req, res, next)=> {
             delete element.last_connection
 
 
-            console.log(element)
         })
-        console.log(existing)
         res.send(existing)
     } catch (error) {
             

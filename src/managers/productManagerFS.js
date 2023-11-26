@@ -56,7 +56,6 @@ class ProductManager {
     }
     async getById(id){
         await this.#readFile()
-        // console.log(this.#products.find(prd => prd._id == id))
         return this.#products.find(prd => prd._id == id)
     }
 

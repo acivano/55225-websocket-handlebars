@@ -16,7 +16,6 @@ class ticketManager extends BaseManager {
       .populate({ path: 'user', select: ['user']})
       .populate({ path: 'products._id', select: ['code','price', 'title']})
       .lean()
-    // console.log('getTikt')
     return orders
   }
 }

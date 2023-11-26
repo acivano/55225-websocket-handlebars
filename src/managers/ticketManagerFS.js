@@ -32,16 +32,13 @@ class ticketManager{
 
   async getById(id) {
     await this.#readFile()
-    // console.log(this.#tickets.find(prd => prd._id == id))
     return this.#tickets.find(prd => prd._id == id)
   }
 
   async add(body) {
-    // console.log(body)
     await this.#readFile()
 
       const _id = this.#tickets.length  ? Math.max(...this.#tickets.map(prd => prd._id)) + 1 : 1
-        // const prd = {id:id, }
 
         this.#tickets.push({
             _id: _id.toString(),

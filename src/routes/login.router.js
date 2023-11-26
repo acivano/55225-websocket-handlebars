@@ -101,7 +101,7 @@ const signup =  async (req,res, next)=>{
 const resetpassword = async (req,res, next)=>{
   
   const {user, password, password2} = req.body
-  console.log({user, password, password2})
+  //console.log({user, password, password2})
 
 
   try {
@@ -113,16 +113,16 @@ const resetpassword = async (req,res, next)=>{
       }
       if(password==password2){
 
-        console.log(existing.password, password)
+        //console.log(existing.password, password)
 
          if(!isValidPassword(existing.password, password)){
 
           //  delete user.password2
  
            const newUser ={...existing, password: hashPassword(password)}
-           console.log(newUser)
+           //console.log(newUser)
            const createUsr = await userManager.update(existing._id,newUser)
-           console.log(createUsr)
+           //console.log(createUsr)
   
            if(createUsr.modifiedCount >=1 ){
              res.redirect('/login')
@@ -159,7 +159,7 @@ const githubCallBack =(req,res)=>{
   }
    
   const update = userManager.update(user._id, user)
-  console.log('aca se debe actualizar el last-connection cuando viene por github')
+  //console.log('aca se debe actualizar el last-connection cuando viene por github')
   res.redirect('/')
 }
 
@@ -182,7 +182,7 @@ router.get('/profile', isAuth,(req, res) => {
 })
 router.get('/logout', isAuth, (req, res) => {
     const firstname = req.user.firstname 
-    console.log(req.user)
+    //console.log(req.user)
 
     const last_connection = Date.now()
     let user = req.user 
@@ -190,7 +190,7 @@ router.get('/logout', isAuth, (req, res) => {
 
     const update = userManager.update(user._id, user)
 
-    console.log('aca se debe lograr el last-connection')
+    //console.log('aca se debe lograr el last-connection')
 
     req.logOut((err) =>{
       res.render('logout',{
@@ -208,7 +208,7 @@ router.get('/resetpwd/:token', (req, res) => {
   const token = req.params.token
 
   const credentials = jwt.verify(token, JWT_SECRET)
-  console.log(credentials)
+  //console.log(credentials)
   // const expired = expitedToken(token)
   // console.log(expired)
 
@@ -222,9 +222,9 @@ router.post('/resetpassword/:user',async(req, res) => {
   const user = req.params.user
 
   const token = await generateTokenPass(user)
-  console.log(token)
+  //console.log(token)
   const credentials = jwt.verify(token, JWT_SECRET)
-  console.log(credentials)
+  //console.log(credentials)
 
 
   const requestOptions = {
@@ -236,7 +236,7 @@ router.post('/resetpassword/:user',async(req, res) => {
 
     body:JSON.stringify({
     to: "agustincivano@gmail.com",//hardcodeo por las dudas
-    from: "no-reply@pruebascoderhoyse.com",
+    from: "no-reply@pruebascoderhouse.com",
     subject: 'Actualización de contraseña',
     body: `<a href="${config.URL}/resetpwd/${token}">
               <button>Click me</button>
@@ -244,7 +244,7 @@ router.post('/resetpassword/:user',async(req, res) => {
     })
     }
     const response = await fetch(`${config.URL}/api/notification/mail`, requestOptions)
-    console.log(response)
+    //console.log(response)
     res.send('ok')
 })
 

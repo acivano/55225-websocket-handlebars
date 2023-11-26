@@ -34,17 +34,14 @@ class ProductManager extends BaseManager{
                                                             {code :{$regex : query,$options : 'i'}}]},{stock:{$ne: 0}}]} ,{limit, page, lean:true, sort:{price: sort}} )
 
                                                             
-            // console.log(resultado)                                                
             return resultado.docs
         }
         const productos = await productModel.paginate({stock:{$ne: 0}}, {limit, page, lean:true})
-        // console.log(productos)
         return productos.docs
     }
     //ok
     async getProductByCode(code){
         const product = await productModel.find({code : code}).lean()
-        // console.log(product[0])
         return product[0]
     }
     //ok

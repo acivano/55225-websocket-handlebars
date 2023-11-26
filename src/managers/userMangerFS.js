@@ -45,18 +45,15 @@ class UserManager{
     }
     async getUserByUsername(user){
         await this.#readFile()
-        // console.log(this.#users.find(usr => usr.user == user))
         return this.#users.find(usr => usr.user == user)
     }
 
     async getById(id){
         await this.#readFile()
-        // console.log(this.#users.find(usr => usr._id == id))
         return this.#users.find(usr => usr._id == id)
     }
     async update(_id, entity) {
 
-        // console.log('entra al update')
         await this.#readFile()
         let existing = await this.getById(_id)
 

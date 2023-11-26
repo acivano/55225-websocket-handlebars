@@ -69,7 +69,6 @@ const login = async(usr, password, done) => {
             return done(null, false)
         }
         // const cartExisting = await cartManager.getCartByUser(existing._id)
-        console.log(existing)
         const _user = {
             firstname: existing.firstname,
             lastname: existing.lastname,
@@ -80,7 +79,6 @@ const login = async(usr, password, done) => {
         const last_connection = Date.now()
         let user = existing
         user = {...user, last_connection}
-        console.log(user)
         const update = userManager.update(user._id, user)
 
         done(null, _user)

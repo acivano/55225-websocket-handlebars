@@ -9,7 +9,6 @@ const getTicketController = async (req, res, next) => {
       .populate({ path: 'user', select: ['user']})
       .populate({ path: 'products._id', select: ['code','price', 'title']})
       .lean()
-    // console.log('getTikt')
     res.send(orders)
 
 } catch (error) {

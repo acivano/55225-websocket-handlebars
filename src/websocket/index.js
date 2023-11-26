@@ -67,7 +67,6 @@ async function socketManager(socket) {
       const user = usr.user
 
       const servicio = `/resetpassword/${user} `
-      console.log(servicio)
       const requestOptions = {
       method: 'POST',
       headers: {
@@ -77,7 +76,6 @@ async function socketManager(socket) {
       }
       const response = await fetch(`${config.URL}/resetpassword/${user}`, requestOptions)
       // const response = await fetch(`http://${config.URL}:${config.PORT}/resetpassword/${user}`, requestOptions)
-      console.log(response)
 
       
       socket.emit('enviarmail',  {})
@@ -102,7 +100,7 @@ async function socketManager(socket) {
 
   socket.on('deleteUser', async(obj) => {
     const actualiza = await userManager.delete(obj.uid)
-    console.log(actualiza)
+    //console.log(actualiza)
 
     const requestOptions = {
     method: 'POST',
@@ -113,7 +111,7 @@ async function socketManager(socket) {
 
     body:JSON.stringify({
     to: "agustincivano@gmail.com",//hardcodeo por las dudas
-    from: "no-reply@pruebascoderhoyse.com",
+    from: "no-reply@pruebascoderhouse.com",
     subject: 'Eliminación de usuario',
     body: `<h1>Tu usuario fue eliminado por un administrador</h1>
     `
@@ -121,7 +119,7 @@ async function socketManager(socket) {
     }
     const response = await fetch(`${config.URL}/api/notification/mail`, requestOptions)
     // const response = await fetch(`http://${config.URL}:${config.PORT}/api/notification/mail`, requestOptions)
-    console.log(response)
+    //console.log(response)
 
 
     await generateUserList()
@@ -132,7 +130,7 @@ async function socketManager(socket) {
     console.log(obj)
     try{
       const servicio = `user/${obj.uid} `
-      console.log(servicio)
+      //console.log(servicio)
       const requestOptions = {
       method: 'POST',
       headers: {
@@ -143,7 +141,7 @@ async function socketManager(socket) {
       // console.log(window.location.origin)
       const response = await fetch(`${config.URL}/api/user/${obj.uid}`, requestOptions)
       // const response = await fetch(`https://${config.URL}:${config.PORT}/api/user/${obj.uid}`, requestOptions)
-      console.log(response)
+      //console.log(response)
 
       
       await generateUserList()
@@ -195,7 +193,7 @@ async function socketManager(socket) {
 
   socket.on('addProduct', async (producto) => {
 
-    console.log('llega al back')
+    //console.log('llega al back')
     
     const newProductBack = await productManager.add(producto)
     if(newProductBack){
@@ -207,24 +205,24 @@ async function socketManager(socket) {
 
 
   socket.on('editProduct', async (producto) => {
-    console.log('editProduct')
-    console.log('antes de editar')
+    //console.log('editProduct')
+    //console.log('antes de editar')
 
     const updateProduct = await productManager.updateProduct(producto._id, producto)
-    console.log('edito')
+    //console.log('edito')
 
   })
 
   
   socket.on('deleteProduct', async (producto) => {
     console.log(producto)
-    console.log('antes de eliminar')
+    //console.log('antes de eliminar')
 
     const updateProduct = await productManager.deleteProduct(producto._id)
-    console.log(updateProduct)
+    //console.log(updateProduct)
     if(updateProduct.deletedCount > 0){
       if (producto.owner !== 'Admin') {
-        console.log('no es admin') 
+        //console.log('no es admin') 
         const requestOptions = {
             method: 'POST',
             headers: {
@@ -233,20 +231,20 @@ async function socketManager(socket) {
             },
 
             body:JSON.stringify({
-            to: "agustincivano@gmail.com",//hardcodeo por las dudas - debería ir prd.owner
-            from: "no-reply@pruebascoderhoyse.com",
+            to: producto.owner,//hardcodeo por las dudas - debería ir prd.owner
+            from: "no-reply@pruebascoderhouse.com",
             subject: `El producto ${producto.code} eliminado`,
             body: `<p>El producto con código ${producto.code}, ha sido eliminado de manera permanente<p>`
             })
         }
-        console.log(requestOptions)
+        //console.log(requestOptions)
         const response = await fetch(`${config.URL}/api/notification/mail`, requestOptions)
         // const response = await fetch(`http://${config.URL}:${config.PORT}/api/notification/mail`, requestOptions)
 
-        console.log(response)    
+        //console.log(response)    
     }
     }
-    console.log('elimino')
+    //console.log('elimino')
 
   })  
 

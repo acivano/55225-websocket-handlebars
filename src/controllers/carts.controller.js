@@ -42,10 +42,8 @@ const createTicketController = async(req, res, next)=>{
         const productsTicket = []
     
         for (prd of productsCart){
-            // console.log('cada producto')
     
             const prodData = await productManager.getById(prd._id)
-            // console.log(prodData)
     
             if(prodData.stock == 0){
                 newProductsCart.push({
@@ -75,8 +73,9 @@ const createTicketController = async(req, res, next)=>{
         }
     
         const updateCart = await cartManager.update(cid, {products: newProductsCart})
+        const userCart = await cartManager.getUserByCart(cid)
+
         const code = await ticketManager.getNextTicket()
-        // console.log(req.user)
     
         const ticket = {
             user: req.user?._id ?? "",
@@ -101,16 +100,14 @@ const createTicketController = async(req, res, next)=>{
             },
 
             body:JSON.stringify({
-            to: "agustincivano@gmail.com",//hardcodeo por las dudas
-            from: "no-reply@pruebascoderhoyse.com",
+            to: userCart.user,
+            from: "no-reply@pruebascoderhouse.com",
             subject: 'Tu compra fue confirmada',
             body: `<p>Compra confirmada $${ticket.amount} - Codigo compra: ${ticket.code}<p>`
             })
         }
         const response = await fetch(`${config.URL}/api/notification/mail`, requestOptions)
         // const response = await fetch(`http://${config.URL}:${config.PORT}/api/notification/mail`, requestOptions)
-        console.log(response)
-
     
         res.send(newTicket)          
 
@@ -139,17 +136,11 @@ const productsCartController = async(req, res, next)=>{
             logger.info(products)
             for(const element of products){
             
-            console.log(element)
             const existPrd =  await productManager.getById(element._id)
-            console.log(existPrd)
     
             if(existPrd){
-                console.log('cid, element._id, element.quantity')
 
-                console.log(cid, element._id, element.quantity)
                 const update = await cartManager.updateCart(cid, element._id, element.quantity)
-                console.log(update)
-                console.log('update')
 
                 if(!update){
                     let error = `The product with the id ${element._id} cannot be added to this cart`
@@ -174,7 +165,6 @@ const productsCartController = async(req, res, next)=>{
 
 const productCartController = async (req, res, next) => {
     try {
-        console.log('productCartController')
         const cid = req.params.cid
         const pid = req.params.pid
         const {quantity} = req.body

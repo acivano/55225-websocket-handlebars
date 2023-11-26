@@ -1,9 +1,7 @@
 const socket = io()
 
 let idCarrito = document.querySelector('#carritoId')?.innerHTML
-console.log(idCarrito)
 let users_datos = document.querySelector('#users_datos')?.innerHTML
-console.log(users_datos)
 
 socket.emit('products', {}) 
 if (idCarrito) {
@@ -18,15 +16,12 @@ if (idCarrito) {
     })
 }
 if(users_datos){
-    console.log('estoy parado en users')
     socket.emit('users-list', {})
 
 }
 
 socket.on('searchProducto', (product)=>{
-    console.log('llegó searchProducto al front')
     
-    console.log(product)
     document.querySelector('#_id').value = product._id
     document.querySelector('#Title').value = product.title
     document.querySelector('#Code').value = product.code
@@ -37,7 +32,6 @@ socket.on('searchProducto', (product)=>{
     document.querySelector('#Category').value = product.category
     document.querySelector('#Owner').value = product.owner
 
-    console.log(document.querySelector('#_id').value)
 })
 
 socket.on('products', (products) => {
@@ -54,8 +48,10 @@ socket.on('products', (products) => {
                                     <div class="card-body d-flex flex-column align-content-center justify-content-center">
                                         <img class="img-fluid" src="${producto.thumbnail}" alt="${producto.title}">
                                     </div>
-                                    <div>
+                                    <div class="d-flex flex-column align-content-center">
                                         <p class="card-text text-center mt-1 altotexto">${producto.title}</p>
+                                        <p class="card-text text-center ">${producto.code}</p>
+
                                         <h3 class="montoDonacion text-center mt-1">${redondeo(producto.price)}</h3>
                                        
                                         <h6 id="idProducto" class="display-none">${producto.code}</h6>
@@ -79,17 +75,13 @@ socket.on('products', (products) => {
 // })
 
 function searchProduct (user, role){
-    // console.log(user)
-    console.log('entró al searchProduct')
     let codeSearch = document.querySelector('#SearchByCode').value
-    console.log({ codeSearch, user, role })
     socket.emit('searchProducto', { codeSearch, user, role })
 }
 
 async function enviarMail() {
 
     const user = document.querySelector('#email').value
-    console.log(user)
     socket.emit('enviarmail', { user})
     
     render
@@ -98,9 +90,7 @@ async function enviarMail() {
 
 function addProducto(e) {
     // e.preventDefault()
-    console.log('entro al addProducto')
     let _id = document.querySelector('#_id').value || null
-    console.log(_id)
     let title = document.querySelector('#Title').value
     let code = document.querySelector('#Code').value
     let description = document.querySelector('#Description').value
@@ -110,19 +100,15 @@ function addProducto(e) {
     let category = document.querySelector('#Category').value
     let owner = document.querySelector('#Owner').value
     let action = document.getElementById("dropdown").value
-    console.log(action)
     switch (action) {
         case '1':
-                console.log('caso 1')   
                 if(title,code, description, price, thumbnail, stock, category, owner){
-                    console.log(title,code, description, price, thumbnail, stock, category, owner)
                     
                     socket.emit('addProduct', {  title, code, description, price, thumbnail, stock, category, owner })
 
                 }
             break;
         case '2':
-                console.log('caso 2')   
 
                 if(title,code, description, price, thumbnail, stock, category, owner){
                 
@@ -130,7 +116,6 @@ function addProducto(e) {
                 }
             break;
         case '3':
-                console.log('caso 3')   
 
                 if(title,code, description, price, thumbnail, stock, category, owner){
                     
