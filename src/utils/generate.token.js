@@ -13,7 +13,6 @@ const generateTokenPass = user => jwt.sign(
 
 const expitedToken = (token) =>{
 
-    //console.log('isExpired is:', isJwtExpired(token))
     return isJwtExpired(token)
 }
 

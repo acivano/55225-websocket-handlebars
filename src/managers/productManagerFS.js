@@ -22,7 +22,6 @@ class ProductManager {
 
         if(!this.#products.find(element => element.code === code)){
             const _id = this.#products.length  ? Math.max(...this.#products.map(prd => prd._id)) + 1 : 1
-            // const prd = {id:id, }
 
             this.#products.push({
                 _id: _id.toString(),

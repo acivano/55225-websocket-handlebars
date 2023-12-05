@@ -8,8 +8,7 @@ const schema = new Schema({
     }],
     default: []
   }
-  // ,
-  // createdDate: { type: Number, default: Date.now() }
+
 })
 schema.pre("find", function () {
   this.populate({ path: 'products._id', select: ['code', 'title', 'price', 'thumbnail', 'category'] })

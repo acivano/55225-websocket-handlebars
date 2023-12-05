@@ -1,11 +1,7 @@
 const messagesEl = document.querySelector('#chat-content')
 const inputElement = document.querySelector('#inputMessage')
 const inputName = document.querySelector('#inputName')
-// const socket = io()
 
-
-// messagesEl.innerHTML = ""
-// messagesEl.appendChild(NUEVO ELEMENTO) 
 
 const appendMessageElement = (own,user, time, msg) => {
   const div = document.createElement('div')
@@ -19,18 +15,12 @@ const appendMessageElement = (own,user, time, msg) => {
   
   messagesEl.appendChild(div)
 
-  // encierro en un set timeout
-  // para que la altura del contenedor se actualice
-  // con el nuevo nodo
+
   setTimeout(() => {
     messagesEl.scrollTo(0, messagesEl.scrollHeight);
   }, 250)
 }
 
-
-// logica
-
-// let username = null
 let currentMessages = []
 
 socket.on('chat-messages', (messagesList) => {
@@ -64,7 +54,6 @@ inputElement.addEventListener('keyup', ({ key, target }) => {
 
   if(inputName){
 
-    // enviar el mensaje al socket
     const fecha = new Date()
     const datetime = fecha.toLocaleTimeString('en-US')
   

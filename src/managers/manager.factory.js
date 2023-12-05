@@ -15,7 +15,6 @@ class ManagerFactory {
 
   static getManagerInstance(name) {
     if (PERSISTANCE == "mongo") {
-        // regresar alguno de los managers de mongo
         switch(name) {
           case "products":
             return productManager
@@ -29,7 +28,6 @@ class ManagerFactory {
             return ticketManager        
         }
     } else {
-      // regresar alguno de los managers de json
       switch(name) {
         case "products":
           return productManagerFile

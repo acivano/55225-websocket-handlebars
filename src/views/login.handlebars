@@ -45,7 +45,6 @@
 
         function enviarMail() {
             try {
-                    //console.log('enviar mail')
                     const user = document.querySelector('#user').value
                     const requestOptions = {
                     method: 'POST',
@@ -55,7 +54,6 @@
                     }
                     const response = await fetch(`${config.URL}/resetpassword/${user}`, requestOptions)
                 
-                    //console.log(response)
                     
                 } catch (error) {
                     console.log('error en la generación de la orden')        

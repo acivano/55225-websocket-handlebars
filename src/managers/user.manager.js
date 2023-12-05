@@ -6,13 +6,7 @@ class UserManager extends BaseManager{
     constructor(){
         super(userModel)
     }
-    //ok
-    // async addUser(user){
 
-    //     return await userModel.create(user)
-        
-    // }
-    //ok
     async getUsers(){
         return userModel.find().lean()
     }

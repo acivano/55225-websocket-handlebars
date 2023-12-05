@@ -12,7 +12,6 @@ const mailNotificationController = async (req, res, next) => {
     const from = req.body.from
     const subject = req.body.subject
     const body = req.body.body
-  // ejecutar send de mail.sender
     logger.info(to, from, subject, body)
   
     await mailSenderService.send(to, from, subject, body)

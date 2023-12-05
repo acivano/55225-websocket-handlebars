@@ -13,7 +13,6 @@ const GitHubAccessConfig ={
     clientSecret: config.GITHUB_CLIENT_SECRET, 
     callBackURL: `${config.URL}/githubSessions`
 }
-// callBackURL: `http://${config.URL}:${config.PORT}/githubSessions`
 
 
 const gitHubUsers = async(profile, done)=>{

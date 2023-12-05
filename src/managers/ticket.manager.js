@@ -20,4 +20,4 @@ class ticketManager extends BaseManager {
   }
 }
 
-module.exports = new ticketManager() // singleton
+module.exports = new ticketManager() 

@@ -10,11 +10,11 @@
     const { env } = program.opts()
 
     const path = require('path')
-    // const dotenv = require('dotenv')
+    const dotenv = require('dotenv')
     
-    // dotenv.config({
-    //   path: path.join(__dirname, env === 'development' ? '.env.development' : '.env')
-    // })
+    dotenv.config({
+      path: path.join(__dirname, env === 'development' ? '.env.development' : '.env')
+    })
     const config = require('./src/config/config')
     console.log(config)
 
@@ -52,7 +52,6 @@
         apis: [`${__dirname}/src/doc/*.yaml`]
         
       })
-      console.log(`${__dirname}/src/doc/*.yaml`)
       
       app.use(loggerMiddleware)
       app.engine('handlebars', handlebars.engine()) 
@@ -96,15 +95,13 @@
           })
         })
       
-      // websocket
       io.on('connection',  socketManager)
       
-      //---- Defino Express------
       
       const PORT = process.env.PORT || 8081
       
       server.listen( PORT, ()=>{
-          logger.info(`Express Server listening at http://${config.URL}:${PORT}`)
+          logger.info(`Express Server listening at ${config.URL}`)
       })
 
       logger.debug('Se ha conectado a la base de datos.')

@@ -10,42 +10,8 @@ class cartManager extends BaseManager{
     constructor(){
         super(cartModel)
     }
-    //ok
-    // async addCart(){
-    //     const products = []
-    //     const newCart= await this.model.create({products})
-    //     return newCart
-        
-    // }
-    //ok
-    // async getCartById(cartId){
-    //     const cart = await cartModel.find({_id : cartId}).lean()
-    //     return cart[0]
-    // }
+    ok
 
-    // async updateCart(id, pid,quantity){
-    //     const cart = await this.model.findOne({_id: id}).lean()
-    //     const prod = await productModel.findOne({_id: pid}).lean()
-
-    //     const existe = cart?.products?.some(prd => prd._id.toString() == prod._id.toString())
-    //     if(existe){
-
-    //         cart.products?.forEach(element => {
-
-    //             if (element._id.toString() == prod._id.toString()){
-    //                 element.quantity+= parseInt(quantity)
-    //             }
-    //         })
-
-    //     }  else {
-    //         const newProd = {'_id': prod._id.toString(), quantity:parseInt(quantity)}
-    //         cart.products.push(newProd)
-    //     }
-    //     const productos = {products: cart.products}
-    //     const result = await this.model.updateOne({_id: id}, productos)
-
-    //     return result.modifiedCount >=1? await this.model.findOne({_id: id}).lean():null
-    // }
 
     async updateCart(cid, pid,quantity){
 
@@ -57,7 +23,7 @@ class cartManager extends BaseManager{
         const prd = await productManager.getById(pid)
     
         
-        if(user.role == 'Premium' && user.user == prd.owner) return null
+        if(user && user.role == 'Premium' && user.user == prd.owner) return null
     
         if(existCart){
     

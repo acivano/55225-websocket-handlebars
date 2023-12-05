@@ -15,7 +15,6 @@ class chatManager{
     const data = JSON.stringify(this.#messages, null, 2)
     await fs.writeFile(this.filepath, data)
     }
-    //ok
     async addMessage(message){
         await this.#readFile()
 
@@ -27,7 +26,6 @@ class chatManager{
         return {user: message.user, text: message.message, datetime: fecha.toLocaleTimeString('en-US') }
         
     }
-    //ok
     async getMessages(){
         await this.#readFile()
         return this.#messages

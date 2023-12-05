@@ -120,14 +120,13 @@ const deleteProductController = async(req, res, next)=>{
                 },
     
                 body:JSON.stringify({
-                to: prd.owner,//hardcodeo por las dudas - debería ir prd.owner
+                to: prd.owner,
                 from: "no-reply@pruebascoderhouse.com",
                 subject: `El producto ${prd.code} eliminado`,
                 body: `<p>El producto con código ${prd.code}, ha sido eliminado de manera permanente<p>`
                 })
             }
             const response = await fetch(`${config.URL}/api/notification/mail`, requestOptions)
-            // const response = await fetch(`http://${config.URL}:${config.PORT}/api/notification/mail`, requestOptions)
 
         }
         const rta = await productManager.delete(id)

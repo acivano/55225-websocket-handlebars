@@ -88,7 +88,6 @@ const deleteInactiveUsersController = async (req, res, next)=> {
 
     try {
         const existing = await userManager.getUsers()
-        // res.send(existing)
 
         existing.forEach(async element => {
             if(element.rol !== 'Admin'){
@@ -109,7 +108,6 @@ const deleteInactiveUsersController = async (req, res, next)=> {
                         })
                     }
                     const response = await fetch(`${config.URL}/api/notification/mail`, requestOptions)
-                    // const response = await fetch(`http://${config.URL}:${config.PORT}/api/notification/mail`, requestOptions)
 
 
                     const resultadoDelete = userManager.delete(element._id())

@@ -29,7 +29,6 @@ const login = async(req, res, next) => {
         if(!existing){
           return res.render('login', {error:'Usuario inexistente'})
         }
-        //user.password!=existing.password
         if(!isValidPassword(user.password, existing.password)){
           return res.render('login', {error:'Contraseña incorrecta'})
         }
@@ -40,7 +39,6 @@ const login = async(req, res, next) => {
           id: existing._id,
           role: existing.role,
           cart: existing.cart._id,
-          // role: 'Admin'
           ...user
         }
       
@@ -66,6 +64,8 @@ const signup =  async (req,res, next)=>{
       if(existing){
           return res.render('signup', {error: 'EL usuario ya existe.'})
       }
+      console.log('ingresó login router')
+      console.log(user.password, user.password2)
       if(user.password==user.password2){
           delete user.password2
           const products = []
@@ -101,7 +101,6 @@ const signup =  async (req,res, next)=>{
 const resetpassword = async (req,res, next)=>{
   
   const {user, password, password2} = req.body
-  //console.log({user, password, password2})
 
 
   try {
@@ -113,16 +112,12 @@ const resetpassword = async (req,res, next)=>{
       }
       if(password==password2){
 
-        //console.log(existing.password, password)
 
          if(!isValidPassword(existing.password, password)){
 
-          //  delete user.password2
  
            const newUser ={...existing, password: hashPassword(password)}
-           //console.log(newUser)
            const createUsr = await userManager.update(existing._id,newUser)
-           //console.log(createUsr)
   
            if(createUsr.modifiedCount >=1 ){
              res.redirect('/login')
@@ -153,13 +148,11 @@ const githubCallBack =(req,res)=>{
     lastname: user.lastname,
     id: user._id,
     role: user.role,
-    // cart: cartExisting._id,
-    // role: 'Admin'
+
     ...user
   }
    
   const update = userManager.update(user._id, user)
-  //console.log('aca se debe actualizar el last-connection cuando viene por github')
   res.redirect('/')
 }
 
@@ -182,7 +175,6 @@ router.get('/profile', isAuth,(req, res) => {
 })
 router.get('/logout', isAuth, (req, res) => {
     const firstname = req.user.firstname 
-    //console.log(req.user)
 
     const last_connection = Date.now()
     let user = req.user 
@@ -190,7 +182,6 @@ router.get('/logout', isAuth, (req, res) => {
 
     const update = userManager.update(user._id, user)
 
-    //console.log('aca se debe lograr el last-connection')
 
     req.logOut((err) =>{
       res.render('logout',{
@@ -208,9 +199,6 @@ router.get('/resetpwd/:token', (req, res) => {
   const token = req.params.token
 
   const credentials = jwt.verify(token, JWT_SECRET)
-  //console.log(credentials)
-  // const expired = expitedToken(token)
-  // console.log(expired)
 
   res.render('resetpassword',{
     user: credentials.user
@@ -220,11 +208,31 @@ router.get('/resetpwd/:token', (req, res) => {
 
 router.post('/resetpassword/:user',async(req, res) => {
   const user = req.params.user
+  const existing = await userManager.getUserByUsername(user)
+
+  console.log(existing)
+  if (existing === null){
+    console.log('renderizar')
+      return res.render('resetpasswordUser', {
+        error: 'Usuario inexistente'
+      })
+
+    
+  }
+
+  if (existing?.password === '') {
+    console.log('renderizar')
+
+    return res.render('resetpasswordUser', {
+      error: 'Usuario de GitHub'
+    })
+    
+  }
+
+
 
   const token = await generateTokenPass(user)
-  //console.log(token)
   const credentials = jwt.verify(token, JWT_SECRET)
-  //console.log(credentials)
 
 
   const requestOptions = {
@@ -235,7 +243,7 @@ router.post('/resetpassword/:user',async(req, res) => {
     },
 
     body:JSON.stringify({
-    to: "agustincivano@gmail.com",//hardcodeo por las dudas
+    to: user,
     from: "no-reply@pruebascoderhouse.com",
     subject: 'Actualización de contraseña',
     body: `<a href="${config.URL}/resetpwd/${token}">
@@ -244,11 +252,10 @@ router.post('/resetpassword/:user',async(req, res) => {
     })
     }
     const response = await fetch(`${config.URL}/api/notification/mail`, requestOptions)
-    //console.log(response)
+    console.log(response)
     res.send('ok')
 })
 
-//LOGIN GITHUB
 router.get('/github', passport.authenticate(GITHUB_STRATEGY_NAME), (_,res) => {})
 
 router.get('/githubSessions', passport.authenticate(GITHUB_STRATEGY_NAME), githubCallBack)

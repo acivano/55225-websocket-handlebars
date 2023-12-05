@@ -66,13 +66,6 @@ socket.on('products', (products) => {
     }
 })
 
-// socket.on('addProductoCarrito', ()=>{
-//     let cantCarrito = document.querySelector('#cantidadEnCarrito')
-
-//     let cantidad = parseInt(cantCarrito.innerHTML) +1
-//     cantCarrito.innerHTML = cantidad
-
-// })
 
 function searchProduct (user, role){
     let codeSearch = document.querySelector('#SearchByCode').value
@@ -80,16 +73,13 @@ function searchProduct (user, role){
 }
 
 async function enviarMail() {
-
     const user = document.querySelector('#email').value
     socket.emit('enviarmail', { user})
     
-    render
 }
 
 
 function addProducto(e) {
-    // e.preventDefault()
     let _id = document.querySelector('#_id').value || null
     let title = document.querySelector('#Title').value
     let code = document.querySelector('#Code').value

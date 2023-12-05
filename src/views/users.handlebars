@@ -1,38 +1,10 @@
     <main>
         <div class="d-flex flex-column justify-content-center">
           <div class="seccion_datos w-75 align-self-center" id="users_datos">
-            {{!-- <div class="container d-flex flex-column justify-content-between" >
-                {{#each user.users}}
-                    <div class="d-flex flex-row justify-content-between align-items-center border-bottom mt-3">
-                        
-                        <div class="d-flex flex-column columnaNombreCarrito w-50">
-                            <h2 class="align-self-start mt-1">{{user}}</h2>
-                            <div class="d-flex flex-row justify-content-between align-items-end">
-                                <h4 class=" text-start mt-1 w-75">{{firstname}} {{lastname}} </h4>   
-                            </div>
-                                <h4 class=" text-start mt-1 w-75">{{role}} </h4>  
-                        </div> 
-                        {{#unless admin}}
-                            <div class="d-flex flex-column justify-content-between align-items-center">
-                                    {{#if inactivo}}
-                                        <span class="badge bg-warning text-dark ">Inactivo</span>
-                                    {{else}}    
-                                        <span class="badge bg-success">Activo</span>
-                                    {{/if}}
-                                    <button class="btn btn-primary botonPersonalizado mt-2 " >Cambiar Rol</button>
-                                    <button class="btn txtColorCarrito carrito " ><i class="bi bi-trash"></i></button>
-                            </div>
-                        {{/unless}}     
-                    </div> 
-                {{/each}}
 
-            </div> --}}
           </div>
         </div>
     </main>
     <script src="/socket.io/socket.io.js"></script>
     <script src="/static/script/index.js" ></script>
     <script src="/static/script/users.js" ></script>
-    {{!-- <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>  --}}
-
-    {{!-- <script src="/static/script/cart.js" defer></script> --}}

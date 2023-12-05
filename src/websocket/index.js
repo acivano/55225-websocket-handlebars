@@ -1,4 +1,3 @@
-// const productManager = require('../managers/product.manager')
 const logger = require('../logger')
 const ManagerFactory = require('../managers/manager.factory')
 const cartManager = ManagerFactory.getManagerInstance("carts")
@@ -22,12 +21,7 @@ async function socketManager(socket) {
   
   socket.on('cart', async(id) => {
      const prdCart = await cartManager.getById(id)
-    // console.log(prdCart)
-    // let quantity = 0
-    // prdCart.products.forEach(element => {
-    //   console.log(element)
-    //   quantity=quantity+element.quantity
-    // });
+
     const quantity = await getQuantityCart(id)
     socket.emit('quantity-cart-productos', quantity)
     socket.emit('cart-productos', prdCart)
@@ -75,7 +69,6 @@ async function socketManager(socket) {
           }
       }
       const response = await fetch(`${config.URL}/resetpassword/${user}`, requestOptions)
-      // const response = await fetch(`http://${config.URL}:${config.PORT}/resetpassword/${user}`, requestOptions)
 
       
       socket.emit('enviarmail',  {})
@@ -94,13 +87,10 @@ async function socketManager(socket) {
     logger.debug('user disconnected')
   })
 
-  // socket.on('cart-productos', (id) => {
-  //   console.log('petición productos')
-  // })
+
 
   socket.on('deleteUser', async(obj) => {
     const actualiza = await userManager.delete(obj.uid)
-    //console.log(actualiza)
 
     const requestOptions = {
     method: 'POST',
@@ -110,7 +100,7 @@ async function socketManager(socket) {
     },
 
     body:JSON.stringify({
-    to: "agustincivano@gmail.com",//hardcodeo por las dudas
+    to: obj.user,
     from: "no-reply@pruebascoderhouse.com",
     subject: 'Eliminación de usuario',
     body: `<h1>Tu usuario fue eliminado por un administrador</h1>
@@ -118,9 +108,6 @@ async function socketManager(socket) {
     })
     }
     const response = await fetch(`${config.URL}/api/notification/mail`, requestOptions)
-    // const response = await fetch(`http://${config.URL}:${config.PORT}/api/notification/mail`, requestOptions)
-    //console.log(response)
-
 
     await generateUserList()
 
@@ -130,7 +117,6 @@ async function socketManager(socket) {
     console.log(obj)
     try{
       const servicio = `user/${obj.uid} `
-      //console.log(servicio)
       const requestOptions = {
       method: 'POST',
       headers: {
@@ -138,11 +124,7 @@ async function socketManager(socket) {
           'Content-Type': 'application/json'
           }
       }
-      // console.log(window.location.origin)
       const response = await fetch(`${config.URL}/api/user/${obj.uid}`, requestOptions)
-      // const response = await fetch(`https://${config.URL}:${config.PORT}/api/user/${obj.uid}`, requestOptions)
-      //console.log(response)
-
       
       await generateUserList()
       
@@ -184,7 +166,6 @@ async function socketManager(socket) {
       logger.debug(product)
       let producto = product?.owner == code.user || code.role == 'Admin' ? product : null
   
-      // console.log(product.owner, code.user, code.role)
       socket.emit('searchProducto',  producto)
 
     }
@@ -193,7 +174,6 @@ async function socketManager(socket) {
 
   socket.on('addProduct', async (producto) => {
 
-    //console.log('llega al back')
     
     const newProductBack = await productManager.add(producto)
     if(newProductBack){
@@ -205,24 +185,18 @@ async function socketManager(socket) {
 
 
   socket.on('editProduct', async (producto) => {
-    //console.log('editProduct')
-    //console.log('antes de editar')
 
     const updateProduct = await productManager.updateProduct(producto._id, producto)
-    //console.log('edito')
 
   })
 
   
   socket.on('deleteProduct', async (producto) => {
     console.log(producto)
-    //console.log('antes de eliminar')
 
     const updateProduct = await productManager.deleteProduct(producto._id)
-    //console.log(updateProduct)
     if(updateProduct.deletedCount > 0){
       if (producto.owner !== 'Admin') {
-        //console.log('no es admin') 
         const requestOptions = {
             method: 'POST',
             headers: {
@@ -231,25 +205,20 @@ async function socketManager(socket) {
             },
 
             body:JSON.stringify({
-            to: producto.owner,//hardcodeo por las dudas - debería ir prd.owner
+            to: producto.owner,
             from: "no-reply@pruebascoderhouse.com",
             subject: `El producto ${producto.code} eliminado`,
             body: `<p>El producto con código ${producto.code}, ha sido eliminado de manera permanente<p>`
             })
         }
-        //console.log(requestOptions)
         const response = await fetch(`${config.URL}/api/notification/mail`, requestOptions)
-        // const response = await fetch(`http://${config.URL}:${config.PORT}/api/notification/mail`, requestOptions)
-
-        //console.log(response)    
+   
     }
     }
-    //console.log('elimino')
 
   })  
 
   socket.on('chat-message', async (msg) => {
-    // guardar el mensaje en la DB
     await chatManager.addMessage(msg)
     socket.broadcast.emit('chat-message', msg)
   })
@@ -274,8 +243,6 @@ async function socketManager(socket) {
     }
     
   })
-
-
 
 }
 

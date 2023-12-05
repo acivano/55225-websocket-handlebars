@@ -37,8 +37,7 @@ const createTicketController = async(req, res, next)=>{
     
         const productsCart = cart.products
         const newProductsCart = []
-        // _id: { type: Schema.Types.ObjectId, ref: 'products' },
-        // quantity: { type: Number, default: 0 }
+
         const productsTicket = []
     
         for (prd of productsCart){
@@ -107,7 +106,6 @@ const createTicketController = async(req, res, next)=>{
             })
         }
         const response = await fetch(`${config.URL}/api/notification/mail`, requestOptions)
-        // const response = await fetch(`http://${config.URL}:${config.PORT}/api/notification/mail`, requestOptions)
     
         res.send(newTicket)          
 

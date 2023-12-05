@@ -18,14 +18,10 @@ class BaseManager {
       return entities[0]
     }
   
-    //cart -> producto = []
-    //product -> no existe previamente con el code
-    //user
     async add(body) {
         return this.model.create(body)
     }
-    //cart -> cart existente, producto existente, products actualizado con sus quantity actualizado, 
-    //no devuelve el elemento insertado
+
     async update(id, entity) {
       const result = await this.model.updateOne({ _id: id }, entity)
   

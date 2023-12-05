@@ -10,7 +10,6 @@ const logger = require('../logger/index')
 
 router.get('/', homerViewController)
 router.get('/realtimeproducts', realTimeProductsViewController)
-//agregar middleware isAuth
 router.get('/cart/:id', isAuth, isAuthNotAdmin, cartViewController)
 router.get('/addProduct', isAuth, isAuthAdmiOrPremium, addProductViewController)
 router.get('/users', isAuth, isAuthAdmin, usersViewController)
@@ -34,7 +33,6 @@ router.get('/loggerTest', async(_req,res)=>{
         logger.info(`Este es un mensaje de información. -${new Date()}`)
         logger.warn(`Este es un mensaje de warn. -${new Date()}`)
         logger.error(`Este es un mensaje de error. -${new Date()}`)
-        // logger.fatal(`Este es un mensaje de fatal. -${new Date()}`)
         res.send({Mensaje: `Revisar error.log y la consola -${new Date()}`})
 })
 

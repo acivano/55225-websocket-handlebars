@@ -3,7 +3,6 @@ const {updateUserController, getUserByIdController, getUsers, updateUserRolContr
 const router = Router()
 
 router.post('/', updateUserController)
-//obtengo usuario por id
 router.get('/:uid', getUserByIdController)
 router.get('/', getUsers)
 router.delete('/deleteInactive', deleteInactiveUsersController)

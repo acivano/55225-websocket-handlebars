@@ -10,6 +10,7 @@ const logger = require('../logger')
 const LocalStrategy = local.Strategy
 
 const signup = async (req , user , password, done) => {
+
     const usuBody = req.body
     const _user = {...usuBody, user : usuBody.user.toLowerCase()}
 
@@ -20,8 +21,8 @@ const signup = async (req , user , password, done) => {
         if(existing){
             return done(null, false)
         }
-        if(user.password==user.password2){
-            delete user.password2
+        if(_user.password==_user.password2){
+            delete _user.password2
             const products = []
             const cart =  await cartManager.add({products})
 
@@ -41,12 +42,10 @@ const signup = async (req , user , password, done) => {
 
         }else{
 
-            // return res.render('signup', {error: 'Las contraseñas no coinciden.'})
             logger.info('las contraseñas no coinciden')
             return done(null, false)
         }
     } catch (error) {
-        // return res.render('signup', {error: 'Ha ocurrido un error. Vuelva a intentar.'})
         logger.error(`Ha ocurrido un error. Vuelva a intentar., ${error}`)
         return done(null, false)
 
@@ -60,15 +59,11 @@ const login = async(usr, password, done) => {
 
         
         if(!existing){
-            // return res.render('login', {error:'Usuario inexistente'})
             return done(null, false)
         }
-        //user.password!=existing.password
         if(!isValidPassword(password, existing.password)){
-            // return res.render('login', {error:'Contraseña incorrecta'})
             return done(null, false)
         }
-        // const cartExisting = await cartManager.getCartByUser(existing._id)
         const _user = {
             firstname: existing.firstname,
             lastname: existing.lastname,
@@ -84,7 +79,6 @@ const login = async(usr, password, done) => {
         done(null, _user)
 
     } catch (error) {
-        // return res.render('login', {error: 'Ha ocurrido un error. Vuelva a intentar'})
         logger.error(`Ha ocurrido un error. Vuelva a intentar., ${error}`)
         return done(null, false)
     
