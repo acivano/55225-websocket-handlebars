@@ -1,0 +1,243 @@
+paths:
+  /api/user:
+    get:
+      summary: Obtener todos los usuarios existentes
+      tags:
+        - Users
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                 $ref: '#components/schemas/Users'
+        500:
+          description: Failure
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Status'   
+        401:
+          description: Unauthorized    
+    post:
+      summary: Crear un nuevo usuario
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+            $ref: '#components/schemas/Users'        
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                 $ref: '#components/schemas/Users'
+        500:
+          description: Failure
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Status'   
+        401:
+          description: Unauthorized            
+  /api/user/{id}:
+    get:
+      summary: Obtener un usuario por su id
+      tags:
+        - Users
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: El identificador del usuario en mongo
+          schema:
+            $type: string
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                 $ref: '#components/schemas/Users'
+        500:
+          description: Failure
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Status'   
+        401:
+          description: Unauthorized
+    post:
+      summary: Cambiar de Premium a Custommer o Custommer a Premium
+      tags:
+        - Users
+      parameters:
+        - name: uid
+          in: path
+          required: true
+          description: El identificador del usuario en mongo
+          schema:
+            $type: string    
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                 $ref: '#components/schemas/Users'
+        500:
+          description: Failure
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Status'   
+        401:
+          description: Unauthorized  
+  /api/user/deleteInactive:
+    delete:
+      summary: Elimina los usuarios inactivos
+      tags:
+        - Users
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Status'
+        500:
+          description: Failure
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Status'  
+        401:
+          description: Unauthorized
+  /api/user/reducido/all:
+    get:
+      summary: Obtener usuarios con datos reducidos
+      tags:
+        - Users
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                 $ref: '#components/schemas/UsersReducido'
+        500:
+          description: Failure
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Status'  
+        401:
+          description: Unauthorized                                  
+components:
+  schemas:
+    Status:
+      type: object
+      properties:
+        status:
+          type: string
+        message: 
+          type: string
+    Users:
+      type: object
+      properties:
+        _id:
+          type: string
+          format: ObjectId
+          description: Id de mongo
+        user:
+          type: string
+          description: Identificador/correo del usuario
+        password:
+          type: string
+          description: Contrasena del usuario
+        firstname:
+          type: string
+          description: Nombre
+        lstname:
+          type: string
+          description: Apellido  
+        role:
+          type: string
+          description: Rol (Admin-custommer-premium)
+        cart:
+          type: string
+          format: ObjectId
+          description: Id del cart de mongo
+        createDate:
+          type: number
+          description: Fecha de creacion
+        last_connection:
+          type: number
+          description: Fecha de creacion
+    UsersReducido:
+      type: object
+      properties:
+        user:
+          type: string
+          description: Identificador/correo del usuario
+        firstname:
+          type: string
+          description: Nombre
+        lstname:
+          type: string
+          description: Apellido  
+        role:
+          type: string
+          description: Rol (Admin-custommer-premium)
+    Product:
+      type: object
+      properties:
+        code:
+          type: string
+          description: Identificador generado del producto
+        title:
+          type: string
+          description: Titulo del producto
+        description:
+          type: string
+          description: Descripción del producto
+        price:
+          type: number
+          format: double
+          description: Correo electronico del usuario
+        thumbnail:
+          type: string
+          description: Url de la imagen del producto
+        stock:
+          type: number
+          default: 0
+          description: Cantidad de stock del producto
+        status:
+          type: Boolean
+          default: true
+          description: Define si el producto está activo para ser vendido          
+        category:
+          type: string
+          description: Categoria del producto
+        owner:
+          type: string
+          description: Si el producto fue creado por un Admin o usuario Premium                                   
+      example:
+        code: 978-0-9750197-4-0
+        title: Pizza
+        description: Carbonite web goalkeeper gloves are ergonomically designed to give easy fit
+        price: 198.00
+        thumbnail: https://loremflickr.com/640/480/product?lock=8371831165681664
+        stock: 72
+        status: false
+        category: Jardineria
+        owner: ab@ab.com  
+      
