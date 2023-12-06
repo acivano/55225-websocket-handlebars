@@ -91,7 +91,7 @@ const deleteInactiveUsersController = async (req, res, next)=> {
 
         existing.forEach(async element => {
             if(element.rol !== 'Admin'){
-                if(Date.now() - element.last_connection > 1800000){
+                if(Date.now() - element.last_connection > (60000 * 60 * 24 * 2)){
 
                     const requestOptions = {
                         method: 'POST',
